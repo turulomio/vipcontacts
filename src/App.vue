@@ -35,22 +35,7 @@
         </v-list>
         </v-menu>
       <v-spacer></v-spacer>
-    
-      <v-btn @click.native.stop="dialog = true" text >
-        <v-icon>mdi-account</v-icon>
-        <span class="mr-2">Sign in</span>
-      </v-btn>    
-        <v-dialog v-model="dialog" max-width="290">
-        <v-card>
-            <v-card-title class="headline">Use Google's location service?</v-card-title>
-            <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-            <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-            <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
-            </v-card-actions>
-        </v-card>
-        </v-dialog>
+    <btnSignIn></btnSignIn>
     </v-app-bar>
 
     <v-main>   
@@ -61,15 +46,16 @@
 
 <script>
 
+import btnSignIn from './components/btnSignIn';
 export default {
     name: 'App',
 
     components: {
+        btnSignIn,
     },
 
     data () {
         return {
-        dialog: false,
             items: [
                 { title: 'Person', icon: 'mdi-view-dashboard', route:"/"},
                 { title: 'HelloWorld', icon: 'mdi-image', route:"/helloworld"},
@@ -79,6 +65,7 @@ export default {
         }
     },
 };
+
 </script>
 <style>
 h1 {

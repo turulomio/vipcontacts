@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 
@@ -7,7 +8,18 @@ Vue.config.productionTip = false
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
+Vue.use(Vuex);
 
+var mem={
+    usermem: "usermem",
+    passmem: "passmem",
+  };
+export const store = new Vuex.Store({
+  state: {
+    user: "user",
+    pass: "pass",
+  },
+})
 import About from './components/about';
 import Home from './components/views/home';
 import HelloWorld from './components/HelloWorld';
@@ -22,8 +34,11 @@ const router = new VueRouter({
   ]
 });
 
+
 new Vue({
-  router,
-  vuetify,
-  render: h => h(App)
+    store:store,
+    router,
+    data: mem,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')
