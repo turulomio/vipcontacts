@@ -8,6 +8,7 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+import About from './components/about';
 import Home from './components/views/home';
 import HelloWorld from './components/HelloWorld';
 
@@ -17,6 +18,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', component: Home },
     { path: '/helloworld', component: HelloWorld },
+    { path: '/about', component: About },
   ]
 });
 
