@@ -11,8 +11,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 var mem={
-    usermem: "usermem",
-    passmem: "passmem",
+    token:null,
   };
 export const store = new Vuex.Store({
   state: {
