@@ -26,11 +26,11 @@
         data(){ 
             return{
                 search:"",  
-                data: this.get_persons(),
+                data: [],
                 headers: [
-                    { text: 'Name', align: 'start', sortable: false, value: 'name',},
-                    { text: 'Surname', value: 'surname' },
-                    { text: 'Second surname', value: 'surname2' },
+                    { text: this.$t('Name'), align: 'start', sortable: false, value: 'name'},
+                    { text: this.$t('Surname'), value: 'surname' },
+                    { text: this.$t('Second surname'), value: 'surname2' },
                     { text: 'Birth', value: 'birth' },
                     { text: 'Death', value: 'death' },
                 ],
@@ -41,12 +41,9 @@
                 this.get_persons()
             },            
             get_persons(){
-                const formData = new FormData();
-                formData.append('search', this.search);
-                axios.get('http://192.168.1.100:8001/api/persons/', { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`http://192.168.1.100:8001/api/persons/?search=${this.search}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
-                    console.log(response.data);
-                    return response.data;
+                    this.data= response.data;
                 }, (error) => {
                     console.log(error);
                 });

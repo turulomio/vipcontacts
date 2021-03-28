@@ -63,9 +63,9 @@ export default {
     data () {
         return {
             items: [
-                { title: 'Person', icon: 'mdi-view-dashboard', route:"/"},
+                { title: this.$t('Home'), icon: 'mdi-view-dashboard', route:"/"},
                 { title: 'HelloWorld', icon: 'mdi-image', route:"/helloworld"},
-                { title: 'About', icon: 'mdi-help-box', route:"/about" },
+                { title: this.$t('About'), icon: 'mdi-help-box', route:"/about" },
             ],
             right: null,
             logged:false,

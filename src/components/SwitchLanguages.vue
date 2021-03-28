@@ -11,17 +11,16 @@
 
 <script>
     var languages=[
-                            { text: "Español", value: "es" },
-                            { text: "English", value: "en" },
-                        ]
-//     console.log(languages.find(x => x.value === this.$i18n.locale))
+                    { text: "Español", value: "es" },
+                    { text: "English", value: "en" },
+                  ]
     
     export default {
         name: 'SwitchLanguages',
         data(){
             return {
                 locales: languages,
-                current: languages.find(x => x.value === this.$i18n.locale),
+                current: this.get_current(),
             }
         },
         methods:{
@@ -30,6 +29,14 @@
                 if (this.$i18n.locale!== obj.value){
                     this.$i18n.locale=obj.value;
                 }
+                localStorage.locale=obj.value;
+            },
+            get_current(){
+                if (!localStorage.locale) {
+                    localStorage.locale="en"
+                }
+                this.$i18n.locale=localStorage.locale
+                return languages.find(x => x.value === localStorage.locale)
             }
         }
     }

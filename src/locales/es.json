@@ -1,7 +1,13 @@
 {
     "About": "Acerca de",
     "Cancel": "Cancelar",
+    "Log in": "Entrar",
+    "Log out": "Salir",
+    "Login in Vip Contacts": "Autentícate en Vip Contacts",
+    "Name": "Nombre",
     "Password": "Contraseña",
+    "Surname": "Primer apellido",
+    "Second surname": "Segundo apellido",
     "User": "Usuario",
     "message": "Hola i18n !!",
     "hola": "Hola otra vez!!",
