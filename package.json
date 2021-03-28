@@ -5,13 +5,16 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/undefined/**/*.json\""
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-cli-plugin-i18n": "^2.0.2",
     "vue-cli-plugin-vuetify": "^2.3.1",
+    "vue-i18n": "^8.24.2",
     "vue-router": "^3.5.1",
     "vuetify": "^2.4.8",
     "vuetify-loader": "^1.7.2",
