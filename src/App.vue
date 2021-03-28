@@ -35,12 +35,12 @@
         </v-list>
         </v-menu>
       <v-spacer></v-spacer>
+    <SwitchLanguages />
     <btnSignIn v-show="!this.$store.state.logged"></btnSignIn>
     <btnLogOut v-show="this.$store.state.logged"></btnLogOut>
     </v-app-bar>
 
     <v-main>   
-        <SwitchLanguages />
         <router-view></router-view>
     </v-main>
   </v-app>

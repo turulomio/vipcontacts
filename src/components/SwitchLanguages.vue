@@ -1,23 +1,34 @@
 <template>
-    <ul>
-        <li v-for="locale in locales" :key="locale" @click="switchLocale(locale)">
-        {{locale}}
-        </li>
-    </ul>
+    <div>
+        <v-select
+            :items="locales"
+            v-model="current"
+            v-on:change="switchLocale(`${current}`)"
+            item-value="current"
+        ></v-select>
+    </div>
 </template>
 
 <script>
+    var languages=[
+                            { text: "Español", value: "es" },
+                            { text: "English", value: "en" },
+                        ]
+//     console.log(languages.find(x => x.value === this.$i18n.locale))
+    
     export default {
         name: 'SwitchLanguages',
         data(){
             return {
-                locales:process.env.VUE_APP_I18N_SUPPORTED_LOCALE.split(',')
+                locales: languages,
+                current: languages.find(x => x.value === this.$i18n.locale),
             }
         },
         methods:{
-            switchLocale(locale){
-                if (this.$i18n.locale!== locale){
-                    this.$i18n.locale=locale;
+            switchLocale(text){
+                let obj=languages.find(x => x.text === text)
+                if (this.$i18n.locale!== obj.value){
+                    this.$i18n.locale=obj.value;
                 }
             }
         }
