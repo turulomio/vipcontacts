@@ -39,7 +39,7 @@
                 surname2: null,      
                 birth: new Date().toISOString().substr(0, 10),
                 menu_birth: false,
-                death: null,
+                death: "",
                 menu_death: false,
                 gender: 1,
             }
@@ -52,6 +52,12 @@
                 formData.append('surname2', this.surname2);
                 formData.append('birth', this.birth);
                 formData.append('death', this.death);
+                formData.append('gender', this.gender);
+                
+//                 data={
+//                     "name": this.name,
+//                     "surname"
+//                 }
               
                 axios.post('http://192.168.1.100:8001/api/persons/', formData,{ headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
