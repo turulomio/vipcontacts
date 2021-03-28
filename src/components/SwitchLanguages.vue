@@ -36,6 +36,7 @@
                     localStorage.locale="en"
                 }
                 this.$i18n.locale=localStorage.locale
+                this.$vuetify.lang.current = localStorage.locale
                 return languages.find(x => x.value === localStorage.locale)
             }
         }

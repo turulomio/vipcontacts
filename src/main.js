@@ -11,7 +11,6 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 Vue.use(Vuex);
   
-// var computed=
 export const store = new Vuex.Store({
   state: {
     token:null,
@@ -21,6 +20,7 @@ export const store = new Vuex.Store({
 import About from './components/about';
 import Home from './components/views/home';
 import HelloWorld from './components/HelloWorld';
+import PersonAdd from './components/PersonAdd';
 
 const router = new VueRouter({
   mode: 'history',
@@ -29,6 +29,7 @@ const router = new VueRouter({
     { path: '/', component: Home },
     { path: '/helloworld', component: HelloWorld },
     { path: '/about', component: About },
+    { path: '/person/add', component: PersonAdd },
   ]
 });
 
