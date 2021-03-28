@@ -53,6 +53,8 @@ import axios from 'axios'
                         this.$store.state.token=response.data;
                         this.$store.state.logged=true;
                         this.dialog=false;
+                        this.user=null;
+                        this.password=null;
                     }
                 }, (error) => {
                     console.log(error);
