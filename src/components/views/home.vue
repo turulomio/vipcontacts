@@ -1,23 +1,21 @@
-
-
 <template>
-<div class="home">
-  <section class="hero is-dark">
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Welcome to the Animal Rescue League          
-        </h1>
-        <h2 class="subtitle">
-          Make sure you check out our upcoming events below
-        </h2>
-        <div class="button-block">
-          <button class="button is-xl is-dark">Sign Up to Browse Events</button>
+    <div class="home">
+    <section class="hero is-dark">
+        <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+            Welcome to the Animal Rescue League          
+            </h1>
+            <h2 class="subtitle">
+            Make sure you check out our upcoming events below
+            </h2>
+            <div class="button-block">
+            <button class="button is-xl is-dark">Sign Up to Browse Events</button>
+            </div>
         </div>
-      </div>
+        </div>
+    </section>
     </div>
-  </section>
-</div>
 </template>
 <script>
 export default {

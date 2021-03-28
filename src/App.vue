@@ -35,12 +35,13 @@
         </v-list>
         </v-menu>
       <v-spacer></v-spacer>
-    <btnSignIn></btnSignIn>
+    <btnSignIn v-show="!this.$store.state.logged"></btnSignIn>
+    <btnLogOut v-show="this.$store.state.logged"></btnLogOut>
     </v-app-bar>
 
     <v-main>   
-    <SwitchLanguages />
-    <router-view></router-view>
+        <SwitchLanguages />
+        <router-view></router-view>
     </v-main>
   </v-app>
 </template>
@@ -48,12 +49,14 @@
 <script>
 
 import btnSignIn from './components/btnSignIn';
+import btnLogOut from './components/btnLogOut';
 import SwitchLanguages from './components/SwitchLanguages.vue';
 export default {
     name: 'App',
 
     components: {
         btnSignIn,
+        btnLogOut,
         SwitchLanguages,
     },
 
@@ -65,6 +68,7 @@ export default {
                 { title: 'About', icon: 'mdi-help-box', route:"/about" },
             ],
             right: null,
+            logged:false,
         }
     },
 };

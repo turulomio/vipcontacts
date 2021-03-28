@@ -7,6 +7,9 @@
         <p>{{ $t('hola inside') }}</p>
         <p>{{ $t('This is a text') }}</p>
         <p>{{ $t('company', {company: "Google"}) }}</p>
+        <p>{{ $tc('number messages', 0) }}</p>
+        <p>{{ $tc('number messages', 1) }}</p>
+        <p>{{ $tc('number messages', 22) }}</p>
     </div>
 </template>
 

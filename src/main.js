@@ -10,14 +10,12 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
-
-var mem={
-    token:null,
-  };
+  
+// var computed=
 export const store = new Vuex.Store({
   state: {
-    user: "user",
-    pass: "pass",
+    token:null,
+    logged:false
   },
 })
 import About from './components/about';
@@ -36,10 +34,9 @@ const router = new VueRouter({
 
 
 new Vue({
-  i18n,
-  store:store,
-  router,
-  data: mem,
-  vuetify,
-  render: h => h(App)
+    i18n,
+    store:store,
+    router,
+    vuetify,
+    render: h => h(App)
 }).$mount('#app')

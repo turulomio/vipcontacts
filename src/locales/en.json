@@ -1,5 +1,6 @@
 {
   "message": "hello i18n !!",
   "hola": "hello again !!",
-  "company": "Hello {company} company"
+  "company": "Hello {company} company",
+  "number messages": "No message | One message | {count} messages"
 }
