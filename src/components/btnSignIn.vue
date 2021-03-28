@@ -7,12 +7,12 @@
     <v-dialog v-model="dialog" max-width="450">
         <v-card>
             <v-card-title class="headline">Login in Vips Contacts</v-card-title>
-            <v-text-field v-model="user" type="text" :counter="75"  label="User" required placeholder="Enter user" ></v-text-field>
-            <v-text-field v-model="password" type="password" label="Password" :counter="75" placeholder="Enter password" ></v-text-field>
+            <v-text-field v-model="user" type="text" :counter="75"  v-bind:label="$t('User')" required v-bind:placeholder="$t('Enter user')" ></v-text-field>
+            <v-text-field v-model="password" type="password" v-bind:label="$t('Password')" :counter="75" v-bind:placeholder="$t('Enter password')" ></v-text-field>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="login()" >Sign in</v-btn>
-                <v-btn color="error" @click.native="dialog = false">Cancel</v-btn>
+                <v-btn color="primary" @click.native="login()" >{{ $t("Sign in") }}</v-btn>
+                <v-btn color="error" @click.native="dialog = false">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

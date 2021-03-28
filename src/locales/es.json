@@ -1,6 +1,15 @@
 {
-  "message": "Hola i18n !!",
-  "hola": "Hola otra vez!!",
-  "company": "Hola company {company}",
-  "number messages": "Ningún mensaje| Un mensaje| {count} mensajes"
+    "About": "Acerca de",
+    "Cancel": "Cancelar",
+    "Password": "Contraseña",
+    "User": "Usuario",
+    "message": "Hola i18n !!",
+    "hola": "Hola otra vez!!",
+    "company": "Hola company {company}",
+    "number messages": "Ningún mensaje| Un mensaje| {count} mensajes",
+    "Enter password": "Introducir contraseña",
+    "Enter search": "Introducir búsqueda",
+    "Enter user": "Introducir usuario",
+    "String to search in contacts": "Cadena a buscar en los contactos",
+    "This project is in _link_": "Este proyecto se encuentra en {link}"
 }
