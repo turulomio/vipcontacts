@@ -39,6 +39,7 @@
     </v-app-bar>
 
     <v-main>   
+    <SwitchLanguages />
     <router-view></router-view>
     </v-main>
   </v-app>
@@ -47,11 +48,13 @@
 <script>
 
 import btnSignIn from './components/btnSignIn';
+import SwitchLanguages from './components/SwitchLanguages.vue';
 export default {
     name: 'App',
 
     components: {
         btnSignIn,
+        SwitchLanguages,
     },
 
     data () {
