@@ -13,27 +13,8 @@
         <h1>Vip Contacts</h1>
       </div>
       <v-spacer></v-spacer>
-        <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
-            >
-            Person
-            </v-btn>
-        </template>
-        <v-list>
-            <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            router :to="item.route"
-            >
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item>
-        </v-list>
-        </v-menu>
+        <Menu />
+
       <v-spacer></v-spacer>
     <SwitchLanguages />
     <btnSignIn v-show="!this.$store.state.logged"></btnSignIn>
@@ -48,6 +29,7 @@
 
 <script>
 
+import Menu from './components/Menu';
 import btnSignIn from './components/btnSignIn';
 import btnLogOut from './components/btnLogOut';
 import SwitchLanguages from './components/SwitchLanguages.vue';
@@ -57,17 +39,12 @@ export default {
     components: {
         btnSignIn,
         btnLogOut,
+        Menu,
         SwitchLanguages,
     },
 
     data () {
         return {
-            items: [
-                { title: this.$t('Home'), icon: 'mdi-view-dashboard', route:"/"},
-                { title: 'HelloWorld', icon: 'mdi-image', route:"/helloworld"},
-                { title: this.$t('About'), icon: 'mdi-help-box', route:"/about" },
-            ],
-            right: null,
             logged:false,
         }
     },
