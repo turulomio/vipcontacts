@@ -19,7 +19,6 @@ export const store = new Vuex.Store({
 })
 import About from './components/about';
 import Home from './components/views/home';
-import HelloWorld from './components/HelloWorld';
 import PersonAdd from './components/PersonAdd';
 
 const router = new VueRouter({
@@ -27,7 +26,6 @@ const router = new VueRouter({
   base: __dirname,
   routes: [
     { path: '/', component: Home },
-    { path: '/helloworld', component: HelloWorld },
     { path: '/about', component: About },
     { path: '/person/add', component: PersonAdd },
   ]

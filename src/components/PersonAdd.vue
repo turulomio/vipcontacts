@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-show="this.$store.state.logged">
         <v-card  class="login">
             <v-card-title class="headline">{{ $t("Add a contact") }}</v-card-title>
             <v-text-field v-model="name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
@@ -18,7 +18,12 @@
                 </template>
                 <v-date-picker v-model="death" @input="menu_death = false" ></v-date-picker>
             </v-menu></v-row>
-            <v-text-field v-model="gender" type="text" v-bind:label="$t('Gender')" :counter="75" v-bind:placeholder="$t('Enter gender')" ></v-text-field>
+            
+        <v-select
+            :items="genders"
+            v-model="gender"
+            :label="$t('Select a gender')"
+        ></v-select>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click.native="person_add()" >{{ $t("Log in") }}</v-btn>
@@ -41,7 +46,11 @@
                 menu_birth: false,
                 death: "",
                 menu_death: false,
-                gender: 1,
+                gender: 0,    
+                genders:[
+                    { text: this.$t("Man"), value: 0 },
+                    { text: this.$t("Woman"), value: 1 },
+                ]
             }
         },
         methods: {
@@ -53,11 +62,6 @@
                 formData.append('birth', this.birth);
                 formData.append('death', this.death);
                 formData.append('gender', this.gender);
-                
-//                 data={
-//                     "name": this.name,
-//                     "surname"
-//                 }
               
                 axios.post('http://192.168.1.100:8001/api/persons/', formData,{ headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
@@ -71,7 +75,7 @@
                 }, (error) => {
                     console.log(error);
                 });
-            }
+            },
         },
     }
 </script>

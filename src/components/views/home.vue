@@ -1,28 +1,31 @@
 <template>
-    <div v-show="this.$store.state.logged">
-        <v-text-field 
-            v-model="search" 
-            type="text" 
-            :counter="100"  
-            v-bind:label="$t('String to search in contacts')" 
-            required 
-            v-bind:placeholder="$t('Enter search')" 
-            @keyup="on_search_change()"
-        ></v-text-field>
+    <div>
+        <h1>{{ $t('Wellcome to Vip Contacts') }}</h1>
+        <div v-show="this.$store.state.logged">
+            <v-text-field 
+                v-model="search" 
+                type="text" 
+                :counter="100"  
+                v-bind:label="$t('String to search in contacts')" 
+                required 
+                v-bind:placeholder="$t('Enter search')" 
+                @keyup="on_search_change()"
+            ></v-text-field>
+                
+            <v-data-table
+                dense
+                :headers="headers"
+                :items="data"
+                item-key="name"
+                class="elevation-1"
+                :locale="this.$i18n.locale"
+            ></v-data-table>
             
-        <v-data-table
-            dense
-            :headers="headers"
-            :items="data"
-            item-key="name"
-            class="elevation-1"
-            :locale="this.$i18n.locale"
-        ></v-data-table>
-        
-        <v-btn 
-            color="primary" 
-            to="/person/add"
-        >{{ $t("Add a contact") }}</v-btn>
+            <v-btn 
+                color="primary" 
+                to="/person/add"
+            >{{ $t("Add a contact") }}</v-btn>
+        </div>
     </div>
 </template>
 <script>
