@@ -15,7 +15,7 @@
             logout(){
                 const formData = new FormData();
                 formData.append('key', this.$store.state.token);
-                axios.post('http://192.168.1.100:8001/logout/', formData)
+                axios.post(`${this.$store.state.apiroot}/logout/`, formData)
                 .then((response) => {
                     console.log(response.data);
                     this.$store.state.token=null;

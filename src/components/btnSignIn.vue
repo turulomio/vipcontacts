@@ -44,7 +44,7 @@ import axios from 'axios'
                 formData.append('username', this.user);
                 formData.append('password', this.password);
               
-                axios.post('http://192.168.1.100:8001/login/', formData)
+                axios.post(`${this.$store.state.apiroot}/login/`, formData)
                 .then((response) => {
                     console.log(response.data);
                     if (response.data.includes(" ")){

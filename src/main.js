@@ -14,7 +14,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     token:null,
-    logged:false
+    logged:false,
+    apiroot: "http://192.168.1.100:8001"
   },
 })
 import About from './components/about';

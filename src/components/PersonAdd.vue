@@ -26,7 +26,7 @@
         ></v-select>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="person_add()" >{{ $t("Log in") }}</v-btn>
+                <v-btn color="primary" @click.native="person_add()" >{{ $t("Add") }}</v-btn>
                 <v-btn color="error" to="/">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -63,15 +63,12 @@
                 formData.append('death', this.death);
                 formData.append('gender', this.gender);
               
-                axios.post('http://192.168.1.100:8001/api/persons/', formData,{ headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.post(`${this.$store.state.apiroot}/api/persons/`, formData,{ headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     console.log(response.data);
-                    if (response.data.includes(" ")){
-                        alert(response.data)
-                    } else {
-                        this.name=null;
-                        this.surname=null;
-                    }
+                    this.name=null;
+                    this.surname=null;
+                    this.$router.push('/');
                 }, (error) => {
                     console.log(error);
                 });

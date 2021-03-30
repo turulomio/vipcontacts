@@ -52,6 +52,7 @@ export default {
 <style>
 h1 {
     text-align:center;
+    padding: 10px;
 }
 </style>
 
