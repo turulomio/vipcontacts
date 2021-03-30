@@ -2,66 +2,35 @@
     <div>
         <h1>{{ $t('Wellcome to Vip Contacts') }}</h1>
         <div v-show="this.$store.state.logged">
-            <v-text-field 
-                class="w-50"
-                v-model="search" 
-                type="text" 
-                :counter="100"  
-                v-bind:label="$t('String to search in contacts')" 
-                required 
-                v-bind:placeholder="$t('Enter search')" 
-                @keyup="on_search_change()"
-            ></v-text-field>
-                  
-                  
-                  
-                  
-        <v-data-table
-            :headers="headers"
-            :items="data"
-            sort-by="name"
-            class="elevation-1"
-        >
-  
-  
-  
-    <template v-slot:top>
-      <v-toolbar
-        flat
-      >
-        <v-toolbar-title>Search results</v-toolbar-title>
-        <v-divider
-          class="mx-4"
-          inset
-          vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-<!--    <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click=""
-      >
-        Add contact
-      </v-btn>
-    </template>-->
-  </v-data-table>
+            <v-container>
+                <v-text-field 
+                    class="w-50"
+                    v-model="search" 
+                    type="text" 
+                    :counter="100"  
+                    v-bind:label="$t('String to search in contacts')" 
+                    required 
+                    v-bind:placeholder="$t('Enter search')" 
+                    @keyup="on_search_change()"
+                ></v-text-field>
+                        
+            <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1" v-show="data.length>0">
+                <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-toolbar-title>Search results</v-toolbar-title>
+                        <v-divider class="mx-4" inset vertical></v-divider>
+                        <v-spacer></v-spacer>
+                    </v-toolbar>
+                </template>
+                <template v-slot:item.actions="{ item }">
+                    <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                    <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+                </template>
+            </v-data-table>
+            <br>
+            <v-alert type="info" 
+      border="left" dense v-show="data.length==0 && search!=''">{{ this.$t('No contacts found') }}</v-alert>
+            </v-container>
         </div>
     </div>
 </template>
@@ -116,6 +85,4 @@
         }
     }
 </script>
-<style>
-</style>
 
