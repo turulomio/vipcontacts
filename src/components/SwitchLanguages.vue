@@ -19,31 +19,30 @@
                     { text: "Español", value: "es", icon: require("../assets/es.svg")}, //Got from https://github.com/hampusborgos/country-flags
                     { text: "English", value: "en", icon: require("../assets/us.svg")},
                   ]
-    
+
     export default {
         name: 'SwitchLanguages',
         data(){
             return {
                 locales: languages,
-                current: this.get_current(),
+                current: this.getStoredCurrent()
             }
-        },
+        },  
         methods:{
             switchLocale(item){
-                if (this.$i18n.locale!== item.value){
-                    this.$i18n.locale=item.value;
-                }
-                localStorage.locale=item.value;
                 this.current=item;
+                localStorage.locale=item.value;
+                this.$i18n.locale=item.value;
+                this.$vuetify.lang.current = item.value;
             },
-            get_current(){
+            getStoredCurrent() {
                 if (!localStorage.locale) {
-                    localStorage.locale="en"
+                 localStorage.locale="en"
                 }
-                this.$i18n.locale=localStorage.locale
-                this.$vuetify.lang.current = localStorage.locale
-                return languages.find(x => x.value === localStorage.locale)
+                var item=languages.find(x => x.value === localStorage.locale)
+                this.switchLocale(item);
+                return item;
             }
-        }
+        },
     }
 </script>
