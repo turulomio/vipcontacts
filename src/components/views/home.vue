@@ -65,7 +65,6 @@
                 });
             },
             editItem (item) {
-                item;
                 this.$router.replace({ name: 'person_edit', params: { "id": item.id }})
             },
 

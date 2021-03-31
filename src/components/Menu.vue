@@ -9,7 +9,7 @@
                 v-bind="attrs"
                 v-on="on"
                 >
-                {{ $t('Contact') }}  {{hola}}
+                {{ $t('Contact') }}
                 </v-btn>
             </template>
             <v-list>
@@ -39,7 +39,6 @@
 <script>
     export default {
         name: 'Menu',
-        props: ["hola"],
         data () {
             return {
             }
