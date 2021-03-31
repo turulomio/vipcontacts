@@ -29,7 +29,7 @@
         </template>
             <v-list>
                 <v-list-item key="0" router to="/about/"><v-list-item-title>{{ $t('About') }}</v-list-item-title></v-list-item>
-                <v-list-item key="0" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Github') }}</v-list-item-title></v-list-item>
+                <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Github') }}</v-list-item-title></v-list-item>
             </v-list>
         </v-menu>    
         

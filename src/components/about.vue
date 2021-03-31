@@ -2,6 +2,8 @@
     <div>
         <h1>{{ $t("About") }}</h1>
         <p class="text-justify">{{ $t("This project is in _link_", link="<a href="https://github.com/turulomio/vipcontacts">Github</a>") }}</p>
+        
+        <p class="text-justify">{{ $t("Language flags are from country-flags project (https://github.com/hampusborgos/country-flags)")}}
         <p>{{ $t('message') }}</p>
         <p>{{ $t('hola') }}</p>
         <p>{{ $t('hola inside') }}</p>
