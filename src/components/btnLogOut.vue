@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn text  @click.native="logout()" >
+        <v-btn @click.native="logout()" color="primary" >
             <v-icon>mdi-logout</v-icon>
             <span class="mr-2">{{ $t("Log out") }}</span>
         </v-btn>   

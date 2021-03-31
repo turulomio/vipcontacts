@@ -1,6 +1,6 @@
 <template>
     <div>
-    <v-btn @click.native.stop="dialog = true" text >
+    <v-btn @click.native.stop="dialog = true" color="primary">
         <v-icon>mdi-account</v-icon>
         <span class="mr-2">{{ $t("Log in") }}</span>
     </v-btn>    
