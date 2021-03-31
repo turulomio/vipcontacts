@@ -21,6 +21,7 @@ export const store = new Vuex.Store({
 import About from './components/about';
 import Home from './components/views/home';
 import PersonAdd from './components/PersonAdd';
+import PersonEdit from './components/PersonEdit';
 
 const router = new VueRouter({
   mode: 'history',
@@ -29,6 +30,7 @@ const router = new VueRouter({
     { path: '/', component: Home },
     { path: '/about', component: About },
     { path: '/person/add', component: PersonAdd },
+    { path: '/person/edit/:prueba', component: PersonEdit, props: true },
   ]
 });
 

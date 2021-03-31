@@ -65,12 +65,15 @@
                 });
             },
             editItem (item) {
-                this.editedIndex = this.desserts.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog = true
+                item;
+                this.$router.push({ path: '/person/edit/HOLA', params: { "prueba": "item pasado muy bien"} })
             },
 
             deleteItem (item) {
+               var r = confirm("Do you want to delete this item?");
+               if(r == false) {
+                  return
+               } 
                 axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
