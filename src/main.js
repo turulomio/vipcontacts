@@ -27,10 +27,10 @@ const router = new VueRouter({
   mode: 'history',
   base: __dirname,
   routes: [
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '/person/add', component: PersonAdd },
-    { path: '/person/edit/:prueba', component: PersonEdit, props: true },
+    { path: '/', name: 'home', component: Home },
+    { path: '/about', name: 'about', component: About },
+    { path: '/person/add', name: 'person_add', component: PersonAdd },
+    { path: '/person/edit/', name: 'person_edit', component: PersonEdit, props: true },
   ]
 });
 

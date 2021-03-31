@@ -66,7 +66,7 @@
             },
             editItem (item) {
                 item;
-                this.$router.push({ path: '/person/edit/HOLA', params: { "prueba": "item pasado muy bien"} })
+                this.$router.replace({ name: 'person_edit', params: { "id": item.id }})
             },
 
             deleteItem (item) {
