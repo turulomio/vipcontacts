@@ -29,7 +29,8 @@
         </template>
             <v-list>
                 <v-list-item key="0" router to="/about/"><v-list-item-title>{{ $t('About') }}</v-list-item-title></v-list-item>
-                <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Github') }}</v-list-item-title></v-list-item>
+                <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Vip Contacts Github') }}</v-list-item-title></v-list-item>
+                <v-list-item key="2" href="https://github.com/turulomio/django_vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Django Vip Contacts Github') }}</v-list-item-title></v-list-item>
             </v-list>
         </v-menu>    
         

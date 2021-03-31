@@ -1,39 +1,89 @@
 <template>
     <div v-show="this.$store.state.logged">
-        <v-card  class="login">
-            <v-card-title class="headline">{{ $t("Edit a contact") }}</v-card-title>
-            <v-text-field v-model="person.name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
-            <v-text-field v-model="person.surname" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
-            <v-text-field v-model="person.surname2" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
+            <h1>{{ this.fullName }}</h1>
+        <div class="login    ">
             <v-row>
-            <v-menu v-model="menu_birth" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-model="person.birth" :label="$t('Birth date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-                    <v-btn x-small @click="person.birth=null" ><v-icon x-small>mdi-backspace</v-icon></v-btn>
-                </template>
-                <v-date-picker v-model="person.birth" @input="menu_birth = false" ></v-date-picker>
-            </v-menu>            
-            <v-menu v-model="menu_death" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-text-field v-model="person.death" :label="$t('Death date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-                    <v-btn x-small @click="person.death=null" ><v-icon x-small>mdi-backspace</v-icon></v-btn>
-                </template>
-                <v-date-picker v-model="person.death" @input="menu_death = false" ></v-date-picker>
-            </v-menu>
-            
+            <v-text-field v-model="person.name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-text-field v-model="person.surname" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-text-field v-model="person.surname2" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
             </v-row>
-            
-        <v-select
-            :items="genders"
-            v-model="person.gender"
-            :label="$t('Select a gender')"
-        ></v-select>
-            <v-card-actions>
+            <v-row>
+                <v-menu v-model="menu_birth" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="person.birth" :label="$t('Birth date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker v-model="person.birth" @input="menu_birth = false" ></v-date-picker>
+                </v-menu>         
+                <v-icon x-small  @click="person.birth=null">mdi-backspace</v-icon>  
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="person_edit()" >{{ $t("Update") }}</v-btn>
-                <v-btn color="error" to="/">{{ $t("Cancel") }}</v-btn>
-            </v-card-actions>
-        </v-card>
+                <v-menu v-model="menu_death" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field v-model="person.death" :label="$t('Death date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker v-model="person.death" @input="menu_death = false" ></v-date-picker>
+                </v-menu>
+                <v-icon x-small @click="person.death=null">mdi-backspace</v-icon>
+                <v-spacer></v-spacer>
+                
+                <v-select :items="genders" v-model="person.gender" :label="$t('Select a gender')" ></v-select>  
+
+            
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click.native="person_edit()" >{{ $t("Update") }}</v-btn>
+                    <v-btn color="error" to="/">{{ $t("Cancel") }}</v-btn>
+                </v-card-actions>            
+            </v-row>
+        </div>
+        
+        <div class="tabs login">
+            <v-card>
+                <v-tabs  background-color="primary" dark v-model="tab"      next-icon="mdi-arrow-right-bold-box-outline"
+      prev-icon="mdi-arrow-left-bold-box-outline"
+      show-arrows
+    >
+                    <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}</v-tab>
+                    <v-tab key="Mails"><v-icon small style="margin:6px">mdi-mail</v-icon>{{ $t("Mails")}}</v-tab>
+                    <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}</v-tab>
+                    <v-tab key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}</v-tab>
+                    <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}</v-tab>
+                    <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}</v-tab>
+                    <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}</v-tab>
+                    <v-tab key="Events"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Events")}}</v-tab>
+
+
+      <v-tabs-slider color="yellow"></v-tabs-slider>
+      </v-tabs>
+
+                <v-tabs-items v-model="tab">
+                    <v-tab-item key="Mails">
+                        <v-card flat>
+                            <v-card-text>Mis mails</v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item key="Phones">
+                        <v-card flat>
+                            <v-card-text>Mis phones</v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item key="Events">
+                        <v-card flat>
+                            <v-card-text>Mis events</v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs-items>
+            </v-card>
+        </div>
+            <v-row> 
+                <v-card-actions style="text-align:right">
+                    <v-spacer></v-spacer>
+                    <v-btn color="debug" @click.native="person_edit()" >{{ $t("Export to vcs") }}</v-btn>
+                    <v-btn color="debug" to="/">{{ $t("Show QR") }}</v-btn>
+                </v-card-actions>            
+            </v-row>
+        
     </div>
 </template>
 
@@ -43,6 +93,7 @@
         name: 'PersonEdit',
         data () {
             return {
+                tab: null,
                 person: {}, //Created in created method works not in mounted                     
                 menu_birth: false,
                 menu_death: false,
@@ -50,6 +101,11 @@
                     { text: this.$t("Man"), value: 0 },
                     { text: this.$t("Woman"), value: 1 },
                 ]
+            }
+        },
+        computed: {
+            fullName: function (){
+                return `${this.person.name} ${this.person.surname} ${this.person.surname2}`
             }
         },
         methods: {
@@ -88,7 +144,10 @@
         }
     }
 </script>
-<style>
+<style scoped>
+.tabicon{
+    margin: 40px;
+}
 .login{
     padding:30px;
 }
