@@ -68,6 +68,7 @@
                 axios.get(`${this.$store.state.apiroot}/api/persons/search/${parsedsearch}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.data= response.data;
+                    console.log(this.data)
                 }, (error) => {
                     console.log(error);
                 });

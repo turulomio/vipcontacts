@@ -62,7 +62,7 @@
                 <v-tabs-items v-model="tab">
                     <v-tab-item key="Alias">
                         <v-card flat>
-                            <TableCrudAlias :alias="this.person.alias"></TableCrudAlias>
+                            <TableCrudAlias :person="this.person" :key="refreshKey"></TableCrudAlias>
                         </v-card>
                     </v-tab-item>
                     
@@ -112,7 +112,8 @@
                 genders:[
                     { text: this.$t("Man"), value: 0 },
                     { text: this.$t("Woman"), value: 1 },
-                ]
+                ],
+                refreshKey:0,
             }
         },
         computed: {
@@ -142,14 +143,19 @@
                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.person= response.data;
-                    console.log(this.person.alias)
-                    //this.person.alias.forEach(element => element.dt_update=this.localtime(element.dt_update))
-                    console.log(this.person.surname2)
+                    console.log(this.person.alias);
+                    console.log(this.person.surname2);
+                    this.PersonEdit_refreshKey();
+                    return response.data;//To make syncronous
                     
                 }, (error) => {
                     console.log(error);
                 });
             },
+            PersonEdit_refreshKey(){
+                this.refreshKey=this.refreshKey+1;
+                console.log(`Updating PersonEdit RefreshKey to ${this.refreshKey}`)
+            }
         },
 
         mounted: function() {

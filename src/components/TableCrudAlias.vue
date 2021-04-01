@@ -1,6 +1,7 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="name" class="elevation-1">
+        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" 
+      :custom-filter="filterObsolete">
               <template v-slot:item.dt_update="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
@@ -9,7 +10,10 @@
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
-        </v-data-table>
+        </v-data-table>            
+        <v-btn color="primary" @click="addAlias()" >{{ $t('Add alias') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}</v-btn>
     </div>
 
 </template>
@@ -19,34 +23,93 @@
     import moment from 'moment'
     export default {
         name: 'TableCrudAlias',
-        props: ['alias'],
+        props: ['person'],
         data () {
             return {
-                tableData: this.alias,
+                refreshKey:0,
                 tableHeaders: [
-                    { text: this.$t('Last update'), align: 'start', value: 'dt_update',sortable: true },
+                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
+                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true,            filter: value => {
+                        if (value==null){
+                            return true;
+                        } else if ( this.vShowObsolete==true) {
+                            return true;
+                        }
+                        return false;
+                    }},
                     { text: this.$t('Name'),  sortable: true, value: 'name'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
-                ],                      
+                ],   
+                tableData: this.person.alias,
+                vShowObsolete:false,
             }
         },
         methods:{
+            addAlias(){
+                var alias={
+                    name:null,
+                    dt_update:new Date(),
+                    dt_obsolete:null,
+                    person:`${this.$store.state.apiroot}/api/persons/${this.person.id}/`,                    
+                }
+                alias.name=prompt(this.$t("Add a alias"), "")
+                axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                .then((response) => {
+                    console.log(response.data);
+                    this.person.alias.push(alias);
+                    this.TableCrudAlias_refreshKey();
+                }, (error) => {
+                    console.log(error);
+                });
+                return alias;
+            },
+            
             editItem(item){
                 item.name=prompt(this.$t("Edit this alias"),item.name)
                 item.dt_update=new Date()                
                 axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data);
+                    this.TableCrudAlias_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
+                return item;
                 
             },
             deleteItem(item){
-                item
+                var r = confirm("Do you want to delete this item?");
+                if(r == false) {
+                    return;
+                }              
+                axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                .then((response) => {
+                    console.log(response);
+                    var i = this.person.alias.indexOf( item );
+                    this.person.alias.splice( i, 1 );
+                    this.TableCrudAlias_refreshKey();
+                }, (error) => {
+                    console.log(error);
+                });
+                return item;
             },
             obsoleteItem(item){
-                item
+                if (item.dt_obsolete == null){
+                    item.dt_obsolete=this.localtime(new Date());
+                }else{
+                    item.dt_obsolete=null;
+                }
+                axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                .then((response) => {
+                    console.log(response.data);
+                    this.TableCrudAlias_refreshKey();
+                }, (error) => {
+                    console.log(error);
+                });
+                return item;
+            },
+            showObsolete(){
+                this.vShowObsolete=!this.vShowObsolete;
             },
             localtime(value){
                 if (value){
@@ -55,9 +118,30 @@
                     var localDate = testDateUtc.local();
                     return (localDate.format(dateFormat)); // 2015-30-01 02:00:00
                 }
-                return null
-            },
+                console.log("REALLY");
+                return null;
+            },          
+            TableCrudAlias_refreshKey(){
+                this.refreshKey=this.refreshKey+1;
+                console.log(`Updating TableCrudAlias RefreshKey to ${this.refreshKey}`)
+            }
+//             get_person(){
+//                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+//                 .then((response) => {
+//                     this.person= response.data;
+//                     console.log(this.person.alias)
+//                     //this.person.alias.forEach(element => element.dt_update=this.localtime(element.dt_update))
+//                     console.log(this.person.surname2)
+//                     
+//                 }, (error) => {
+//                     console.log(error);
+//                 });
+//                 return;
+//             },
         },
+//         mounted:function () {
+//             this.TableCrudAlias_refreshKey();
+//         }
 
     }
 </script>
