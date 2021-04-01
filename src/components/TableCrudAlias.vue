@@ -1,9 +1,6 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="name" class="elevation-1">
-
-<!--            <template v-slot:item.STRT_D="{ item }">
-            </template>-->
               <template v-slot:item.dt_update="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
@@ -18,7 +15,7 @@
 </template>
 
 <script>
-//     import axios from 'axios'
+    import axios from 'axios'
     import moment from 'moment'
     export default {
         name: 'TableCrudAlias',
@@ -27,15 +24,23 @@
             return {
                 tableData: this.alias,
                 tableHeaders: [
-                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Name'), align: 'start', sortable: true, value: 'name'},
+                    { text: this.$t('Last update'), align: 'start', value: 'dt_update',sortable: true },
+                    { text: this.$t('Name'),  sortable: true, value: 'name'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],                      
             }
         },
         methods:{
             editItem(item){
-                item
+                item.name=prompt(this.$t("Edit this alias"),item.name)
+                item.dt_update=new Date()                
+                axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                .then((response) => {
+                    console.log(response.data);
+                }, (error) => {
+                    console.log(error);
+                });
+                
             },
             deleteItem(item){
                 item
@@ -48,8 +53,6 @@
                     var dateFormat = 'YYYY-MM-DD HH:mm:ss';
                     var testDateUtc = moment.utc(value);
                     var localDate = testDateUtc.local();
-//                     console.log(value)
-//                     console.log(localDate.format(dateFormat))
                     return (localDate.format(dateFormat)); // 2015-30-01 02:00:00
                 }
                 return null
