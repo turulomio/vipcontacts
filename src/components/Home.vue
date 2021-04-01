@@ -57,7 +57,15 @@
                 this.get_persons()
             },            
             get_persons(){
-                axios.get(`${this.$store.state.apiroot}/api/persons/?search=${this.search}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                var parsedsearch=this.search;
+                if (this.search == '*'){
+                    parsedsearch="__all__";
+                } else if (this.search == ''){
+                    parsedsearch="__none__";
+                }
+                
+            
+                axios.get(`${this.$store.state.apiroot}/api/persons/search/${parsedsearch}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.data= response.data;
                 }, (error) => {

@@ -38,6 +38,8 @@
             </v-row>
         </div>
         
+            
+            
         <div class="tabs login">
             <v-card>
                 <v-tabs  background-color="primary" dark v-model="tab"      next-icon="mdi-arrow-right-bold-box-outline"
@@ -58,6 +60,12 @@
       </v-tabs>
 
                 <v-tabs-items v-model="tab">
+                    <v-tab-item key="Alias">
+                        <v-card flat>
+                            <TableCrudAlias :alias="this.person.alias"></TableCrudAlias>
+                        </v-card>
+                    </v-tab-item>
+                    
                     <v-tab-item key="Mails">
                         <v-card flat>
                             <v-card-text>Mis mails</v-card-text>
@@ -89,8 +97,12 @@
 
 <script>
     import axios from 'axios'
+    import TableCrudAlias from './TableCrudAlias';
     export default {
-        name: 'PersonEdit',
+        name: 'PersonEdit',    
+        components: {
+            TableCrudAlias,
+        },
         data () {
             return {
                 tab: null,
@@ -130,8 +142,10 @@
                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.person= response.data;
-                    console.log(this.person)
+                    console.log(this.person.alias)
+                    //this.person.alias.forEach(element => element.dt_update=this.localtime(element.dt_update))
                     console.log(this.person.surname2)
+                    
                 }, (error) => {
                     console.log(error);
                 });

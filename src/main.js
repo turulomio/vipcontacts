@@ -19,7 +19,7 @@ export const store = new Vuex.Store({
   },
 })
 import About from './components/about';
-import Home from './components/views/home';
+import Home from './components/Home';
 import PersonAdd from './components/PersonAdd';
 import PersonEdit from './components/PersonEdit';
 
