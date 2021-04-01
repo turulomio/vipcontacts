@@ -82,6 +82,10 @@
                if(r == false) {
                   return
                } 
+               r = confirm("The contact and all it's dependent data will be deleted. Do you want to continue?");
+               if(r == false) {
+                  return
+               } 
                 axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
