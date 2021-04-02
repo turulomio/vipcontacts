@@ -146,8 +146,8 @@
                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.person= response.data;
-                    console.log(this.person.alias);
-                    console.log(this.person.surname2);
+                    console.log("FULL PERSON");
+                    console.log(this.person);
                     this.PersonEdit_refreshKey();
                     return response.data;//To make syncronous
                     
