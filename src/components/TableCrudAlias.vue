@@ -115,24 +115,7 @@
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudAlias RefreshKey to ${this.refreshKey}`)
             }
-//             get_person(){
-//                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
-//                 .then((response) => {
-//                     this.person= response.data;
-//                     console.log(this.person.alias)
-//                     //this.person.alias.forEach(element => element.dt_update=this.localtime(element.dt_update))
-//                     console.log(this.person.surname2)
-//                     
-//                 }, (error) => {
-//                     console.log(error);
-//                 });
-//                 return;
-//             },
         },
-//         mounted:function () {
-//             this.TableCrudAlias_refreshKey();
-//         }
-
     }
 </script>
 <style scoped>

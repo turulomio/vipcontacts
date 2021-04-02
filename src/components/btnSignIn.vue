@@ -61,13 +61,13 @@ import axios from 'axios'
                     console.log(error);
                 });
             },
-            fill_vuex_catalog(){
-                //Get address options
-                axios.options(`${this.$store.state.apiroot}/api/address/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+            fill_vuex_catalog(){                
+                //Get person options
+                axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
-                    this.$store.state.catalogs.countries= response.data.actions.POST.country.choices;
-                    this.$store.state.catalogs.addresstype= response.data.actions.POST.type.choices;
-                    console.log(this.$store.state.catalogs.addresstype);
+                    this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
+                    this.$store.state.catalogs.countries= response.data.actions.POST.address.child.children.country.choices;
+                    this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.type.choices;
                 }, (error) => {
                     console.log(error);
                 });

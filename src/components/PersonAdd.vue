@@ -23,7 +23,7 @@
                 <v-icon x-small @click="person.death=null">mdi-backspace</v-icon>
                 <v-spacer></v-spacer>
             
-                <v-select :items="genders" v-model="person.gender" :label="$t('Select a gender')"></v-select>
+                <v-select :items="this.$store.state.catalogs.persongender" v-model="person.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
             </v-row>
             <v-card-actions> 
                 <v-btn color="primary" @click.native="person_add()" >{{ $t("Add") }}</v-btn>

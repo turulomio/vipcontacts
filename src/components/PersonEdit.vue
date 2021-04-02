@@ -27,7 +27,7 @@
                 <v-icon x-small @click="person.death=null">mdi-backspace</v-icon>
                 <v-spacer></v-spacer>
                 
-                <v-select :items="genders" v-model="person.gender" :label="$t('Select a gender')" ></v-select>  
+                <v-select :items="this.$store.state.catalogs.persongender" v-model="person.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value"  ></v-select>  
 
             
                 <v-card-actions>
@@ -116,10 +116,6 @@
                 person: {}, //Created in created method works not in mounted                     
                 menu_birth: false,
                 menu_death: false,
-                genders:[
-                    { text: this.$t("Man"), value: 0 },
-                    { text: this.$t("Woman"), value: 1 },
-                ],
                 refreshKey:0,
             }
         },
