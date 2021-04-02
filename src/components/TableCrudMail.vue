@@ -4,11 +4,8 @@
               <template v-slot:item.dt_update="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
-              <template v-slot:item.type="{ item }">
-                <span>{{ AddressTypeName(item.retypes) }}</span>
-            </template>
-              <template v-slot:item.country="{ item }">
-                <span>{{ CountryName(item.country) }}</span>
+              <template v-slot:item.retypes="{ item }">
+                <span>{{ MailTypeName(item.retypes) }}</span>
             </template>
             <template v-slot:item.actions="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -16,23 +13,19 @@
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add address') }}</v-btn>
+        <v-btn color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}</v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
         <v-card  class="login">
-            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit address") }}</v-card-title>
-            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add address") }}</v-card-title>
+            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit mail") }}</v-card-title>
+            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add mail") }}</v-card-title>
             
-            <v-select :items="this.$store.state.catalogs.addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-            <v-text-field v-model="selected.address" type="text" :counter="75"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" ></v-text-field>
-            <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="75" :placeholder="$t('Enter a code')" ></v-text-field>
-            <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="75" :placeholder="$t('Enter a city')" ></v-text-field>
-            
-            <v-select :items="this.$store.state.catalogs.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value"  ></v-select> 
-            
+            <v-select :items="this.$store.state.catalogs.mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+            <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" ></v-text-field>
+                        
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
@@ -47,9 +40,9 @@
 
 <script>
     import axios from 'axios'
-    import {localtime, AddressTypeName, CountryName} from '../functions.js'
+    import {localtime, MailTypeName, CountryName} from '../functions.js'
     export default {
-        name: 'TableCrudAddress',
+        name: 'TableCrudMail',
         props: ['person'],
         data () {
             return {
@@ -57,14 +50,11 @@
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'type'},
-                    { text: this.$t('Address'),  sortable: true, value: 'address'},
-                    { text: this.$t('Code'),  sortable: true, value: 'code'},
-                    { text: this.$t('City'),  sortable: true, value: 'city'},
-                    { text: this.$t('Country'),  sortable: true, value: 'country'},
+                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
+                    { text: this.$t('Mail'),  sortable: true, value: 'mail'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
-                tableData: this.person.address,
+                tableData: this.person.mail,
                 vShowObsolete:false,
                 isEdition: true,
                 dialog: false,
@@ -73,14 +63,11 @@
         },
         methods:{
             localtime,
-            AddressTypeName,
+            MailTypeName,
             CountryName,
             addItem(){
                 this.selected={
-                    address: "",
-                    city: "",
-                    code: "",
-                    country: this.$i18n.locale.toUpperCase(), //To use locale country
+                    mail: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
                     person: `http://192.168.1.100:8001/api/persons/${this.person.id}/`,
@@ -91,13 +78,13 @@
             },
             acceptAddition(){
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/address/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/mail/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
-                    this.person.address.push(this.selected);
+                    this.person.mail.push(this.selected);
                     this.dialog=false;
-                    this.TableCrudAddress_refreshKey();
+                    this.TableCrudMail_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -110,12 +97,13 @@
             },
             acceptEdition(){
                 this.selected.dt_update=new Date();
+                console.log(this.selected)
                 axios.put(this.selected.url, this.selected,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableCrudAddress_refreshKey();
+                    this.TableCrudMail_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -125,16 +113,16 @@
                 this.dialog = false;                
             },
             deleteItem(item){
-                var r = confirm("Do you want to delete this address?");
+                var r = confirm("Do you want to delete this mail?");
                 if(r == false) {
                     return;
                 }  
                 axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
-                    var i = this.person.address.indexOf( item ); //Remove item
-                    this.person.address.splice( i, 1 );
-                    this.TableCrudAddress_refreshKey();
+                    var i = this.person.mail.indexOf( item ); //Remove item
+                    this.person.mail.splice( i, 1 );
+                    this.TableCrudMail_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -149,7 +137,7 @@
                 axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data);
-                    this.TableCrudAddress_refreshKey();
+                    this.TableCrudMail_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -158,9 +146,9 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            TableCrudAddress_refreshKey(){
+            TableCrudMail_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudAddress RefreshKey to ${this.refreshKey}`)
+                console.log(`Updating TableCrudMail RefreshKey to ${this.refreshKey}`)
             },
         },
     }

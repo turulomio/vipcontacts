@@ -8,22 +8,11 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import {logout} from '../functions.js'
     export default {
         name: 'btnLogOut',
         methods: {
-            logout(){
-                const formData = new FormData();
-                formData.append('key', this.$store.state.token);
-                axios.post(`${this.$store.state.apiroot}/logout/`, formData)
-                .then((response) => {
-                    console.log(response.data);
-                    this.$store.state.token=null;
-                    this.$store.state.logged=false;
-                }, (error) => {
-                    console.log(error);
-                });
-            }
+            logout,
         },
     }
 </script>

@@ -20,6 +20,7 @@ export const store = new Vuex.Store({
         addresstype: [],
         countries: [],
         genders: [],
+        mailtype: [],
     },
   },
 })

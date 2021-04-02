@@ -56,7 +56,7 @@
                 axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
                     console.log(response.data);
-                    this.person.alias.push(alias);
+                    this.person.alias.push(response.data);
                     this.TableCrudAlias_refreshKey();
                 }, (error) => {
                     console.log(error);
@@ -65,6 +65,7 @@
             },
             
             editItem(item){
+                console.log(item)
                 item.name=prompt(this.$t("Edit this alias"),item.name)
                 item.dt_update=new Date()                
                 axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
@@ -82,6 +83,7 @@
                 if(r == false) {
                     return;
                 }              
+                console.log(item)
                 axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);

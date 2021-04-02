@@ -68,7 +68,7 @@
                     
                     <v-tab-item key="Mails">
                         <v-card flat>
-                            <v-card-text>Mis mails</v-card-text>
+                            <TableCrudMail :person="this.person" :key="refreshKey" />
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Phones">
@@ -104,11 +104,14 @@
     import axios from 'axios'
     import TableCrudAlias from './TableCrudAlias';
     import TableCrudAddress from './TableCrudAddress';
+    import TableCrudMail from './TableCrudMail';
+    import {logout} from '../functions.js'
     export default {
         name: 'PersonEdit',    
         components: {
             TableCrudAlias,
             TableCrudAddress,
+            TableCrudMail,
         },
         data () {
             return {
@@ -125,6 +128,7 @@
             }
         },
         methods: {
+            logout,
             person_edit(){             
                 axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person ,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
@@ -138,8 +142,7 @@
             },
             get_person(){
                 if (!this.$route.params.id){
-                    alert("No hay id")
-                        
+                    alert(this.$t("Something is wrong"))
                     this.$router.push({ name: 'home'})
                     return
                 }

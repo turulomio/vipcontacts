@@ -67,7 +67,9 @@ import axios from 'axios'
                 .then((response) => {
                     this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
                     this.$store.state.catalogs.countries= response.data.actions.POST.address.child.children.country.choices;
-                    this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.type.choices;
+                    this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.retypes.choices;
+                    this.$store.state.catalogs.mailtype= response.data.actions.POST.mail.child.children.retypes.choices;
+                    console.log(this.$store.state.catalogs.mailtype);
                 }, (error) => {
                     console.log(error);
                 });
