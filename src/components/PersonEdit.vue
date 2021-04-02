@@ -76,6 +76,11 @@
                             <v-card-text>Mis phones</v-card-text>
                         </v-card>
                     </v-tab-item>
+                    <v-tab-item key="Address">
+                        <v-card flat>
+                            <TableCrudAddress :person="this.person" :key="refreshKey"></TableCrudAddress>
+                        </v-card>
+                    </v-tab-item>
                     <v-tab-item key="Events">
                         <v-card flat>
                             <v-card-text>Mis events</v-card-text>
@@ -98,10 +103,12 @@
 <script>
     import axios from 'axios'
     import TableCrudAlias from './TableCrudAlias';
+    import TableCrudAddress from './TableCrudAddress';
     export default {
         name: 'PersonEdit',    
         components: {
             TableCrudAlias,
+            TableCrudAddress,
         },
         data () {
             return {

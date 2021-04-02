@@ -55,7 +55,19 @@ import axios from 'axios'
                         this.dialog=false;
                         this.user=null;
                         this.password=null;
+                        this.fill_vuex_catalog();
                     }
+                }, (error) => {
+                    console.log(error);
+                });
+            },
+            fill_vuex_catalog(){
+                //Get address options
+                axios.options(`${this.$store.state.apiroot}/api/address/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                .then((response) => {
+                    this.$store.state.catalogs.countries= response.data.actions.POST.country.choices;
+                    this.$store.state.catalogs.addresstype= response.data.actions.POST.type.choices;
+                    console.log(this.$store.state.catalogs.addresstype);
                 }, (error) => {
                     console.log(error);
                 });

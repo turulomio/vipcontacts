@@ -15,7 +15,12 @@ export const store = new Vuex.Store({
   state: {
     token:null,
     logged:false,
-    apiroot: "http://192.168.1.100:8001"
+    apiroot: "http://192.168.1.100:8001",
+    catalogs: {
+        addresstype: [],
+        countries: [],
+        genders: [],
+    },
   },
 })
 import About from './components/about';
@@ -42,3 +47,8 @@ new Vue({
     vuetify,
     render: h => h(App)
 }).$mount('#app')
+
+
+
+
+

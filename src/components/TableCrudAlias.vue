@@ -1,7 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" 
-      :custom-filter="filterObsolete">
+        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
               <template v-slot:item.dt_update="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
@@ -20,7 +19,7 @@
 
 <script>
     import axios from 'axios'
-    import moment from 'moment'
+    import {localtime} from '../functions.js'
     export default {
         name: 'TableCrudAlias',
         props: ['person'],
@@ -45,6 +44,7 @@
             }
         },
         methods:{
+            localtime,
             addAlias(){
                 var alias={
                     name:null,
@@ -111,16 +111,6 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            localtime(value){
-                if (value){
-                    var dateFormat = 'YYYY-MM-DD HH:mm:ss';
-                    var testDateUtc = moment.utc(value);
-                    var localDate = testDateUtc.local();
-                    return (localDate.format(dateFormat)); // 2015-30-01 02:00:00
-                }
-                console.log("REALLY");
-                return null;
-            },          
             TableCrudAlias_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudAlias RefreshKey to ${this.refreshKey}`)

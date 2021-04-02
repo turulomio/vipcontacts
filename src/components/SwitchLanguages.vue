@@ -36,7 +36,7 @@
                 this.$vuetify.lang.current = item.value;
             },
             getStoredCurrent() {
-                if (!localStorage.locale) {
+                if (!localStorage.locale || localStorage.locale==null) {
                  localStorage.locale="en"
                 }
                 var item=languages.find(x => x.value === localStorage.locale)
