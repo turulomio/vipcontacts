@@ -53,7 +53,7 @@
                     <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}</v-tab>
                     <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}</v-tab>
                     <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}</v-tab>
-                    <v-tab key="Events"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Events")}}</v-tab>
+                    <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}</v-tab>
 
 
       <v-tabs-slider color="yellow"></v-tabs-slider>
@@ -81,9 +81,24 @@
                             <TableCrudAddress :person="this.person" :key="refreshKey"></TableCrudAddress>
                         </v-card>
                     </v-tab-item>
-                    <v-tab-item key="Events">
+                    <v-tab-item key="Jobs">
                         <v-card flat>
-                            <v-card-text>Mis events</v-card-text>
+                            Mis jobs
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item key="Relations">
+                        <v-card flat>
+                            My relations
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item key="Groups">
+                        <v-card flat>
+                            My groups
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab-item key="Logs">
+                        <v-card flat>
+                            <TableCrudLog :person="this.person" :key="refreshKey" />
                         </v-card>
                     </v-tab-item>
                 </v-tabs-items>
@@ -104,6 +119,7 @@
     import axios from 'axios'
     import TableCrudAlias from './TableCrudAlias';
     import TableCrudAddress from './TableCrudAddress';
+    import TableCrudLog from './TableCrudLog';
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
     import {logout} from '../functions.js'
@@ -114,6 +130,7 @@
             TableCrudAddress,
             TableCrudMail,
             TableCrudPhone,
+            TableCrudLog,
         },
         data () {
             return {

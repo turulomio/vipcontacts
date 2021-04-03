@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import {myheaders} from '../functions.js'
+    import {myheaders,vuex_update_catalogs} from '../functions.js'
     import axios from 'axios'
     export default {
         name: 'btnSignIn',
@@ -30,14 +30,11 @@
                 password: null,
                 dialog: false,
                 valid: false,
-//                 required(propertyType: any){
-//                     return (v: string) => 
-//                         (v && v.length > 0) || `You must input a ${propertyType}`
-//                 }
             }
         },
         methods: {
             myheaders,
+            vuex_update_catalogs,
             login(){
                 const formData = new FormData();
                 formData.append('username', this.user);
@@ -45,35 +42,23 @@
               
                 axios.post(`${this.$store.state.apiroot}/login/`, formData)
                 .then((response) => {
-                    console.log(response.data);
                     if (response.data.includes(" ")){
+                        console.log("Error authenticating")
                         alert(response.data)
                     } else {
+                        console.log("Authenticated");
                         this.$store.state.token=response.data;
                         this.$store.state.logged=true;
+                        this.vuex_update_catalogs();
                         this.dialog=false;
                         this.user=null;
                         this.password=null;
-                        this.fill_vuex_catalog();
                     }
                 }, (error) => {
                     console.log(error);
-                });
+                })
             },
-            fill_vuex_catalog(){                
-                //Get person options
-                axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: this.myheaders() })
-                .then((response) => {
-                    this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
-                    this.$store.state.catalogs.countries= response.data.actions.POST.address.child.children.country.choices;
-                    this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.retypes.choices;
-                    this.$store.state.catalogs.mailtype= response.data.actions.POST.mail.child.children.retypes.choices;
-                    this.$store.state.catalogs.phonetype= response.data.actions.POST.phone.child.children.retypes.choices;
-                    return response
-                }, (error) => {
-                    console.log(error);
-                });
-            }
+
         },
     }
 </script>

@@ -19,8 +19,10 @@ export const store = new Vuex.Store({
     catalogs: {
         addresstype: [],
         countries: [],
-        genders: [],
+        persongender: [],
         mailtype: [],
+        phonetype: [],
+        logtype: [],
     },
   },
 })

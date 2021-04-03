@@ -27,6 +27,11 @@ export function MailTypeName(value){
     return retypes.display_name;
 }
 
+export function LogTypeName(value){
+    var retypes=this.$store.state.catalogs.logtype.find(t => t.value==value);
+    return retypes.display_name;
+}
+
 export function PhoneTypeName(value){
     var retypes=this.$store.state.catalogs.phonetype.find(t => t.value==value);
     return retypes.display_name;
@@ -40,7 +45,24 @@ export function myheaders(){
     }
 }
 
-
+export function vuex_update_catalogs(){   
+    console.log("INSIDE")
+    axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: this.myheaders() })
+    .then((response) => {
+        this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
+        this.$store.state.catalogs.countries= response.data.actions.POST.address.child.children.country.choices;
+        this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.retypes.choices;
+        this.$store.state.catalogs.mailtype= response.data.actions.POST.mail.child.children.retypes.choices;
+        this.$store.state.catalogs.phonetype= response.data.actions.POST.phone.child.children.retypes.choices;
+        this.$store.state.catalogs.logtype= response.data.actions.POST.log.child.children.retypes.choices;
+        console.log("Updated catalogs")
+        console.log(this.$store.state)
+        return
+    }, (error) => {
+        console.log(error);
+    });
+    return;
+}
 export function logout(){
     const formData = new FormData();
     formData.append('key', this.$store.state.token);

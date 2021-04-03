@@ -10,6 +10,7 @@
                     :counter="100"  
                     v-bind:label="$t('String to search in contacts')" 
                     required 
+                    autofocus
                     v-bind:placeholder="$t('Enter search')" 
                     @keyup="on_search_change()"
                 ></v-text-field>
