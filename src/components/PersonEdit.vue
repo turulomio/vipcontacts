@@ -111,6 +111,8 @@
                     <v-btn color="debug" to="/">{{ $t("Show QR") }}</v-btn>
                 </v-card-actions>            
             </v-row>
+            
+            <p>{{searchString}}</p>
         
     </div>
 </template>
@@ -122,7 +124,7 @@
     import TableCrudLog from './TableCrudLog';
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
-    import {logout} from '../functions.js'
+    import {logout,person_search_string} from '../functions.js'
     export default {
         name: 'PersonEdit',    
         components: {
@@ -139,6 +141,7 @@
                 menu_birth: false,
                 menu_death: false,
                 refreshKey:0,
+                searchString:""
             }
         },
         computed: {
@@ -148,6 +151,7 @@
         },
         methods: {
             logout,
+            person_search_string,
             person_edit(){             
                 axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person ,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
@@ -171,6 +175,7 @@
                     console.log("FULL PERSON");
                     console.log(this.person);
                     this.PersonEdit_refreshKey();
+                    this.searchString=person_search_string(this.person);
                     return response.data;//To make syncronous
                     
                 }, (error) => {

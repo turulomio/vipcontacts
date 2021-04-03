@@ -75,3 +75,23 @@ export function logout(){
         console.log(error);
         });
 }
+
+
+export function person_search_string(person){
+    function nn(s){
+        if (s==null){
+            return "";
+        }
+        return s;
+        
+    }
+    console.log(person);
+    var s=`${nn(person.name)} ${nn(person.surname)} ${nn(person.surname2)} ${nn(person.birth)} ${nn(person.death)}`;
+    person.mail.forEach( o => s=s+ " " + nn(o.mail));
+    person.phone.forEach( o => s=s+ " " + nn(o.phone));
+    person.alias.forEach( o => s=s+ " " + nn(o.name));
+    person.address.forEach( o => s=s+ " " + nn(o.address) + " " + nn(o.city));
+    person.log.forEach( o => s=s+ " "  + nn(o.text));
+    return s
+    
+}

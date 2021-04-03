@@ -12,7 +12,7 @@
                     required 
                     autofocus
                     v-bind:placeholder="$t('Enter search')" 
-                    @keyup="on_search_change()"
+                    v-on:keyup.enter="on_search_change()"
                 ></v-text-field>
                         
             {{this.$store.state.catalogs.persongender}}<p></p>
