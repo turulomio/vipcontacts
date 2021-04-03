@@ -27,6 +27,20 @@ export function MailTypeName(value){
     return retypes.display_name;
 }
 
+export function PhoneTypeName(value){
+    var retypes=this.$store.state.catalogs.phonetype.find(t => t.value==value);
+    return retypes.display_name;
+}
+
+export function myheaders(){
+    return {
+        'Authorization': `Token ${this.$store.state.token}`,
+        'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
+        'Content-Type':'application/json'
+    }
+}
+
+
 export function logout(){
     const formData = new FormData();
     formData.append('key', this.$store.state.token);

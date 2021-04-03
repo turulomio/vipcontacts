@@ -7,7 +7,7 @@
     <v-dialog v-model="dialog" max-width="450">
         <v-card  class="login">
             <v-card-title class="headline">{{ $t("Login in Vip Contacts") }}</v-card-title>
-            <v-text-field v-model="user" type="text" :counter="75"  v-bind:label="$t('User')" required v-bind:placeholder="$t('Enter user')" ></v-text-field>
+            <v-text-field v-model="user" type="text" :counter="75"  v-bind:label="$t('User')" required v-bind:placeholder="$t('Enter user')" autofocus ></v-text-field>
             <v-text-field v-model="password" type="password" v-bind:label="$t('Password')" :counter="75" v-bind:placeholder="$t('Enter password')" ></v-text-field>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -20,10 +20,8 @@
 </template>
 
 <script>
-
-
-
-import axios from 'axios'
+    import {myheaders} from '../functions.js'
+    import axios from 'axios'
     export default {
         name: 'btnSignIn',
         data () {
@@ -39,6 +37,7 @@ import axios from 'axios'
             }
         },
         methods: {
+            myheaders,
             login(){
                 const formData = new FormData();
                 formData.append('username', this.user);
@@ -63,13 +62,14 @@ import axios from 'axios'
             },
             fill_vuex_catalog(){                
                 //Get person options
-                axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: this.myheaders() })
                 .then((response) => {
                     this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
                     this.$store.state.catalogs.countries= response.data.actions.POST.address.child.children.country.choices;
                     this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.retypes.choices;
                     this.$store.state.catalogs.mailtype= response.data.actions.POST.mail.child.children.retypes.choices;
-                    console.log(this.$store.state.catalogs.mailtype);
+                    this.$store.state.catalogs.phonetype= response.data.actions.POST.phone.child.children.retypes.choices;
+                    return response
                 }, (error) => {
                     console.log(error);
                 });

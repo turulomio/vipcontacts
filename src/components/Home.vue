@@ -14,6 +14,8 @@
                     @keyup="on_search_change()"
                 ></v-text-field>
                         
+            {{this.$store.state.catalogs.persongender}}<p></p>
+            {{this.myheaders()}}
             <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1" v-show="data.length>0">
                 <template v-slot:top>
                     <v-toolbar flat>
@@ -36,6 +38,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import {myheaders} from '../functions.js'
     export default {
         name: 'home',
         data(){ 
@@ -53,6 +56,7 @@
             }
         },
         methods: {
+            myheaders,
             on_search_change(){
                 this.get_persons()
             },            

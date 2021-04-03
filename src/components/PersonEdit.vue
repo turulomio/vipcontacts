@@ -73,7 +73,7 @@
                     </v-tab-item>
                     <v-tab-item key="Phones">
                         <v-card flat>
-                            <v-card-text>Mis phones</v-card-text>
+                            <TableCrudPhone :person="this.person" :key="refreshKey" />
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Address">
@@ -105,6 +105,7 @@
     import TableCrudAlias from './TableCrudAlias';
     import TableCrudAddress from './TableCrudAddress';
     import TableCrudMail from './TableCrudMail';
+    import TableCrudPhone from './TableCrudPhone';
     import {logout} from '../functions.js'
     export default {
         name: 'PersonEdit',    
@@ -112,6 +113,7 @@
             TableCrudAlias,
             TableCrudAddress,
             TableCrudMail,
+            TableCrudPhone,
         },
         data () {
             return {
