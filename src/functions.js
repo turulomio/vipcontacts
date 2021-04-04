@@ -75,7 +75,7 @@ export function logout(){
         });
 }
 
-
+/*
 export function person_search_string(person){
     function nn(s){
         if (s==null){
@@ -93,4 +93,4 @@ export function person_search_string(person){
     person.log.forEach( o => s=s+ " "  + nn(o.text));
     return s
     
-}
+}*/

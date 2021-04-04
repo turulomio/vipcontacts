@@ -73,7 +73,7 @@
                     parsedsearch="__none__";
                 }
                 
-                axios.get(`${this.$store.state.apiroot}/api/search/?search=${parsedsearch}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.data= response.data;
                     console.log(this.data)
