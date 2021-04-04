@@ -35,7 +35,7 @@
         methods: {
             myheaders,
             vuex_update_catalogs,
-            login(){
+            login(){            
                 const formData = new FormData();
                 formData.append('username', this.user);
                 formData.append('password', this.password);

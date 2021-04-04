@@ -60,6 +60,7 @@
             myheaders,
             on_search_change(){
                 this.get_persons()
+                alert(process.env.VUE_DJANGO_API);
             },            
             get_persons(){
                 var parsedsearch=this.search;
