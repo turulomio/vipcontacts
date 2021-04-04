@@ -46,7 +46,6 @@ export function myheaders(){
 }
 
 export function vuex_update_catalogs(){   
-    console.log("INSIDE")
     axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: this.myheaders() })
     .then((response) => {
         this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
@@ -61,8 +60,8 @@ export function vuex_update_catalogs(){
     }, (error) => {
         console.log(error);
     });
-    return;
 }
+
 export function logout(){
     const formData = new FormData();
     formData.append('key', this.$store.state.token);

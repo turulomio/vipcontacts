@@ -16,7 +16,7 @@ export const store = new Vuex.Store({
     token:null,
     logged:false,
     version:require('../package.json').version,
-    apiroot:  "http://127.0.0.1:8002",
+    apiroot: "http://127.0.0.1:8002",
     catalogs: {
         addresstype: [],
         countries: [],

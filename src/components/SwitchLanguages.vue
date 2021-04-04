@@ -37,7 +37,9 @@
                 this.current=item;
                 localStorage.locale=item.value;
                 this.$vuetify.lang.current = item.value;
-                this.vuex_update_catalogs();
+                if (this.$store.state.logged == true){
+                    this.vuex_update_catalogs();
+                }
             },
             getStoredCurrent() {
                 if (!localStorage.locale || localStorage.locale==null) {

@@ -3,37 +3,38 @@
         <h1>{{ $t('Wellcome to Vip Contacts') }}</h1>
         <div v-show="this.$store.state.logged">
             <v-container>
-                <v-text-field 
-                    class="w-50"
-                    v-model="search" 
-                    type="text" 
-                    :counter="100"  
-                    v-bind:label="$t('String to search in contacts')" 
-                    required 
-                    autofocus
-                    v-bind:placeholder="$t('Enter search')" 
-                    v-on:keyup.enter="on_search_change()"
-                ></v-text-field>
-                        
-            {{this.$store.state.catalogs.persongender}}<p></p>
-            {{this.myheaders()}}
-            <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1" v-show="data.length>0">
-                <template v-slot:top>
-                    <v-toolbar flat>
-                        <v-toolbar-title>Search results</v-toolbar-title>
-                        <v-divider class="mx-4" inset vertical></v-divider>
-                        <v-spacer></v-spacer>
-                    </v-toolbar>
-                </template>
-                <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                    <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-                </template>
-            </v-data-table>
-            <br>
-            <v-alert type="info" 
-      border="left" dense v-show="data.length==0 && search!=''">{{ this.$t('No contacts found') }}</v-alert>
-            </v-container>
+                <v-row>
+                    <v-text-field 
+                        class="w-50"
+                        v-model="search" 
+                        type="text" 
+                        :counter="100"  
+                        v-bind:label="$t('String to search in contacts')" 
+                        required 
+                        autofocus
+                        v-bind:placeholder="$t('Enter search')" 
+                        v-on:keyup.enter="on_search_change()"
+                    ></v-text-field>
+                    <v-btn ref="cmdSearch" @click="on_search_change()" :disabled="!canclick" color="primary">
+                        <v-icon>mdi-search</v-icon>
+                        <span class="mr-2">{{ $t("Search") }}</span>
+                    </v-btn>    
+                </v-row>
+
+                <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1" enabled="i">
+                    <template v-slot:top>
+                        <v-toolbar flat>
+                            <v-toolbar-title>Search results</v-toolbar-title>
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                        </v-toolbar>
+                    </template>
+                    <template v-slot:item.actions="{ item }">
+                        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+                    </template>
+                </v-data-table>
+                </v-container>
         </div>
     </div>
 </template>
@@ -53,16 +54,18 @@
                     { text: this.$t('Second surname'), value: 'surname2' },
                     { text: this.$t('Birth date'), value: 'birth' },
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
-                    ],      
+                    ],
+                canclick:true,
             }
         },
         methods: {
             myheaders,
+            forceCmdSearchClick(){
+                console.log(this.$refs)
+                this.$refs.cmdSearch.click();
+            },
             on_search_change(){
-                this.get_persons()
-                alert(process.env.VUE_DJANGO_API);
-            },            
-            get_persons(){
+                this.canclick=false;
                 var parsedsearch=this.search;
                 if (this.search == '*'){
                     parsedsearch="__all__";
@@ -70,13 +73,14 @@
                     parsedsearch="__none__";
                 }
                 
-            
-                axios.get(`${this.$store.state.apiroot}/api/persons/search/${parsedsearch}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.$store.state.apiroot}/api/search/?search=${parsedsearch}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.data= response.data;
                     console.log(this.data)
+                    this.canclick=true;
                 }, (error) => {
                     console.log(error);
+                    this.canclick=true;
                 });
             },
             editItem (item) {
