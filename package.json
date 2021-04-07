@@ -11,6 +11,7 @@
   "dependencies": {
     "@intlify/vue-i18n-loader": "^1.1.0",
     "axios": "^0.21.1",
+    "babel-eslint": "^10.1.0",
     "core-js": "^3.6.5",
     "eslint-plugin-vue": "^7.8.0",
     "moment": "^2.29.1",
@@ -26,8 +27,6 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
     "sass": "^1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-i18n": "~2.0.2",

@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>{{ $t("About") }}</h1>
+        <h2>{{ this.$store.state.version }}</h2>
         <p class="text-justify">{{ $t("This project is in _link_", link="<a href="https://github.com/turulomio/vipcontacts">Github</a>") }}</p>
         
         <p class="text-justify">{{ $t("Language flags are from country-flags project (https://github.com/hampusborgos/country-flags)")}}
@@ -18,6 +19,14 @@
 <script>
     export default {
         name: 'About',
+/*        data(){
+            return {
+                version: this.$store.state.version,
+            }
+        },  */
+//         created(){
+//             this.version=
+//         }
     }
 </script>
 <i18n>
