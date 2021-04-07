@@ -6,7 +6,7 @@
                 <v-row>
                     <v-text-field 
                         class="w-50"
-                        v-model="search" 
+                        v-model="this.$store.state.lastsearch" 
                         type="text" 
                         :counter="100"  
                         v-bind:label="$t('String to search in contacts')" 
@@ -45,7 +45,6 @@
         name: 'home',
         data(){ 
             return{
-                search:"",  
                 data: [],
                 dialog:false,
                 headers: [
@@ -66,10 +65,10 @@
             },
             on_search_change(){
                 this.canclick=false;
-                var parsedsearch=this.search;
-                if (this.search == '*'){
+                var parsedsearch=this.$store.state.lastsearch;
+                if (this.$store.state.lastsearch == '*'){
                     parsedsearch="__all__";
-                } else if (this.search == ''){
+                } else if (this.$store.state.lastsearch == ''){
                     parsedsearch="__none__";
                 }
                 

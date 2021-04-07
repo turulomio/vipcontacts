@@ -25,6 +25,7 @@ export const store = new Vuex.Store({
         phonetype: [],
         logtype: [],
     },
+    lastsearch: "*",
   },
 })
 import About from './components/about';
