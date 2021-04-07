@@ -55,18 +55,17 @@
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                     ],
                 canclick:true,
+                search:this.$store.state.lastsearch,
             }
         },
         methods: {
             myheaders,
             forceCmdSearchClick(){
-                console.log(this.$refs)
                 this.$refs.cmdSearch.click();
             },
             on_search_change(){
-                alert(this.search);
-                alert(this.$store.state.lastsearch)
-//                 this.$store.state.lastsearch=this.search
+                this.$store.state.lastsearch=this.search
+                console.log(this.$store.state.lastsearch)
                 this.canclick=false;
                 var parsedsearch=this.search;
                 if (this.search == '*'){
@@ -98,7 +97,7 @@
                if(r == false) {
                   return
                } 
-                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, {headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
                     this.on_search_change()
@@ -107,15 +106,9 @@
                 });
             },
         },
-        
-        computed: {
-            search: {
-                get () {
-                    return this.$store.state.lastsearch
-                },
-                set (value) {
-                    this.$store.state.lastsearch=value
-                }
+        created(){
+            if (this.search!="" ){
+                this.on_search_change()
             }
         }
     }
