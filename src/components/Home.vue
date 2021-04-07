@@ -6,7 +6,7 @@
                 <v-row>
                     <v-text-field 
                         class="w-50"
-                        v-model="this.$store.state.lastsearch" 
+                        v-model="search" 
                         type="text" 
                         :counter="100"  
                         v-bind:label="$t('String to search in contacts')" 
@@ -29,7 +29,7 @@
                             <v-spacer></v-spacer>
                         </v-toolbar>
                     </template>
-                    <template v-slot:item.actions="{ item }">
+                    <template v-slot:[`item.actions`]="{ item }">
                         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
                     </template>
@@ -64,11 +64,14 @@
                 this.$refs.cmdSearch.click();
             },
             on_search_change(){
+                alert(this.search);
+                alert(this.$store.state.lastsearch)
+//                 this.$store.state.lastsearch=this.search
                 this.canclick=false;
-                var parsedsearch=this.$store.state.lastsearch;
-                if (this.$store.state.lastsearch == '*'){
+                var parsedsearch=this.search;
+                if (this.search == '*'){
                     parsedsearch="__all__";
-                } else if (this.$store.state.lastsearch == ''){
+                } else if (this.search == ''){
                     parsedsearch="__none__";
                 }
                 
@@ -103,9 +106,17 @@
                     console.log(error);
                 });
             },
-
         },
-        components: {
+        
+        computed: {
+            search: {
+                get () {
+                    return this.$store.state.lastsearch
+                },
+                set (value) {
+                    this.$store.state.lastsearch=value
+                }
+            }
         }
     }
 </script>
