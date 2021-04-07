@@ -1,16 +1,13 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
-              <template v-slot:item.dt_update="{ item }">
+              <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
-              <template v-slot:item.type="{ item }">
+              <template v-slot:[`item.type`]="{ item }">
                 <span>{{ RelationshipTypeName(item.retypes) }}</span>
             </template>
-              <template v-slot:item.country="{ item }">
-                <span>{{ CountryName(item.country) }}</span>
-            </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
@@ -27,11 +24,8 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add relationship") }}</v-card-title>
             
             <v-select :items="this.$store.state.catalogs.relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-            <v-text-field v-model="selected.relationship" type="text" :counter="75"  v-bind:label="$t('Relationship')" required v-bind:placeholder="$t('Enter a relationship')" ></v-text-field>
-            <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="75" :placeholder="$t('Enter a code')" ></v-text-field>
-            <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="75" :placeholder="$t('Enter a city')" ></v-text-field>
             
-            <v-select :items="this.$store.state.catalogs.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value"  ></v-select> 
+            <SelectPersons v-model="selected.destiny"></SelectPersons>
             
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -48,8 +42,12 @@
 <script>
     import axios from 'axios'
     import {localtime, RelationshipTypeName, CountryName} from '../functions.js'
+    import SelectPersons from './SelectPersons.vue'
     export default {
         name: 'TableCrudRelationship',
+        components: {
+            SelectPersons,
+        },
         props: ['person'],
         data () {
             return {
@@ -58,10 +56,7 @@
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
                     { text: this.$t('Type'),  sortable: true, value: 'type'},
-                    { text: this.$t('Relationship'),  sortable: true, value: 'relationship'},
-                    { text: this.$t('Code'),  sortable: true, value: 'code'},
-                    { text: this.$t('City'),  sortable: true, value: 'city'},
-                    { text: this.$t('Country'),  sortable: true, value: 'country'},
+                    { text: this.$t('Destiny'),  sortable: true, value: 'destiny'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.relationship,
@@ -77,10 +72,7 @@
             CountryName,
             addItem(){
                 this.selected={
-                    relationship: "",
-                    city: "",
-                    code: "",
-                    country: this.$i18n.locale.toUpperCase(), //To use locale country
+                    destiny: null,
                     dt_obsolete: null,
                     dt_update: new Date(),
                     person: `http://192.168.1.100:8001/api/persons/${this.person.id}/`,
@@ -91,11 +83,15 @@
             },
             acceptAddition(){
                 this.selected.dt_update=new Date();
+                console.log("ADDTITON")
+                console.log(this.selected)
                 axios.post(`${this.$store.state.apiroot}/api/relationship/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
-                    this.person.relationship.push(this.selected);
+                    this.tableData.push(this.selected);
+                    console.log(this.tableData)
+                    console.log(this.person.relationship)
                     this.dialog=false;
                     this.TableCrudRelationship_refreshKey();
                 }, (error) => {
@@ -132,8 +128,8 @@
                 axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
-                    var i = this.person.relationship.indexOf( item ); //Remove item
-                    this.person.relationship.splice( i, 1 );
+                    var i = this.tableData.indexOf( item ); //Remove item
+                    this.tableData.splice( i, 1 );
                     this.TableCrudRelationship_refreshKey();
                 }, (error) => {
                     console.log(error);

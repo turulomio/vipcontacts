@@ -1,13 +1,13 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="datetime" class="elevation-1" :key="refreshKey" >
-              <template v-slot:item.datetime="{ item }">
+              <template v-slot:[`item.datetime`]="{ item }">
                 <span>{{ localtime(item.datetime) }}</span>
             </template>
-              <template v-slot:item.retypes="{ item }">
+              <template v-slot:[`item.retypes`]="{ item }">
                 <span>{{ LogTypeName(item.retypes) }}</span>
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
             </template>
@@ -94,7 +94,12 @@
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
-                    this.person.log.push(this.selected);
+                    //this.$emit('input', 'test')//FALTA
+                    this.tableData.push(this.selected);
+                    console.log(this.tableData)
+                    console.log(this.person.log)
+                    
+                    //this.$emit('input', this.
                     this.dialog=false;
                     this.TableCrudLog_refreshKey();
                 }, (error) => {
@@ -130,7 +135,7 @@
                 .then((response) => {
                     console.log(response);
                     var i = this.person.log.indexOf( item ); //Remove item
-                    this.person.log.splice( i, 1 );
+                    this.tableData.splice( i, 1 );
                     this.TableCrudLog_refreshKey();
                 }, (error) => {
                     console.log(error);
