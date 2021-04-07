@@ -10,13 +10,14 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
-  
+
+
 export const store = new Vuex.Store({
   state: {
     token:null,
     logged:false,
-    version:require('../package.json').version,
-    apiroot: "http://127.0.0.1:8002",
+    version:process.env.VUE_APP_VERSION,
+    apiroot: process.env.VUE_APP_URL,
     catalogs: {
         addresstype: [],
         countries: [],
