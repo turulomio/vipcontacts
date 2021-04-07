@@ -37,6 +37,11 @@ export function PhoneTypeName(value){
     return retypes.display_name;
 }
 
+export function RelationshipTypeName(value){
+    var retypes=this.$store.state.catalogs.relationshiptype.find(t => t.value==value);
+    return retypes.display_name;
+}
+
 export function myheaders(){
     return {
         'Authorization': `Token ${this.$store.state.token}`,
@@ -54,6 +59,7 @@ export function vuex_update_catalogs(){
         this.$store.state.catalogs.mailtype= response.data.actions.POST.mail.child.children.retypes.choices;
         this.$store.state.catalogs.phonetype= response.data.actions.POST.phone.child.children.retypes.choices;
         this.$store.state.catalogs.logtype= response.data.actions.POST.log.child.children.retypes.choices;
+        this.$store.state.catalogs.relationshiptype= response.data.actions.POST.relationship.child.children.retypes.choices;
         console.log("Updated catalogs")
         console.log(this.$store.state)
         return
