@@ -88,7 +88,7 @@
                     </v-tab-item>
                     <v-tab-item key="Relations">
                         <v-card flat>
-                            My relations
+                            <TableCrudRelationship :person="this.person" :key="refreshKey"></TableCrudRelationship>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Groups">
@@ -124,6 +124,7 @@
     import TableCrudLog from './TableCrudLog';
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
+    import TableCrudRelationship from './TableCrudRelationship';
     import {logout} from '../functions.js'
     export default {
         name: 'PersonEdit',    
@@ -133,6 +134,7 @@
             TableCrudMail,
             TableCrudPhone,
             TableCrudLog,
+            TableCrudRelationship,
         },
         data () {
             return {
