@@ -7,7 +7,6 @@
         item-text="name"
         item-value="url"
         :no-data-text="$t('You must select a item')"
-        filled
         hide-selected
         outlined
         persistent-hint

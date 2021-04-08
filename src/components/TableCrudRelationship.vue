@@ -98,6 +98,8 @@
                     this.$emit('person')
                     this.dialog=false;
                     this.TableCrudRelationship_refreshKey();
+                    
+                    this.updateRelationshipNames()     
                 }, (error) => {
                     console.log(error);
                 });
@@ -117,6 +119,7 @@
                     this.$emit("person")
                     this.dialog=false;
                     this.TableCrudRelationship_refreshKey();
+                    this.updateRelationshipNames()     
                 }, (error) => {
                     console.log(error);
                 });
@@ -172,18 +175,21 @@
                     return ""
                 }
             
-            }
+            },
+            updateRelationshipNames(){
+                axios.get(`${this.$store.state.apiroot}/api/find/relationship/${this.$route.params.id}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                .then((response) => {
+                    this.relationship_names= response.data;         
+                    console.log(this.relationship_names)
+                    this.TableCrudRelationship_refreshKey();
+                }, (error) => {
+                    console.log(error);
+                });
+            },
         },
+        
         created() {
-            axios.get(`${this.$store.state.apiroot}/api/find/relationship/${this.$route.params.id}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
-            .then((response) => {
-                this.relationship_names= response.data;         
-                console.log(this.relationship_names)
-            }, (error) => {
-                console.log(error);
-            });
-
-            
+            this.updateRelationshipNames()            
         }
     }
 </script>
