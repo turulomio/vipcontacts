@@ -32,30 +32,27 @@
     }),
 
     computed: {
-//       fields () {
-//         if (!this.model) return []
-// 
-//         return Object.keys(this.model).map(key => {
-//           return {
-//             key,
-//             value: this.model[key] || 'n/a',
-//           }
-//         })
-//       },
       items () {
-        return this.entries.map(entry => {
-          const Description = entry.name.length > this.descriptionLimit
-            ? entry.name.slice(0, this.descriptionLimit) + '...'
-            : entry.name
-        console.log("Entry")
-          console.log(entry)
-        console.log("Description")
-          console.log(Description)
-          return Object.assign({}, entry, { Description })
-        })
+//         return this.entries.map(entry => {
+//           const fullname=this.fullName(entry)
+//           const Description = fullname.length > this.descriptionLimit
+//             ? fullname.slice(0, this.descriptionLimit) + '...'
+//             : fullname
+//           console.log("AHORA")
+//           console.log(Object.assign({}, entry, { Description }))
+//           return Object.assign({}, entry, { Description })
+//         })
+        let r=[]
+        this.entries.forEach(entry => r.push({"url": entry.url, "name":this.fullName(entry)}))
+        return r
       },
     },
-
+    methods:{
+        
+      fullName(entry){
+            return `${entry.name} ${entry.surname} ${entry.surname2}`
+      },
+    },
     watch: {
       search (val) {
         // Items have already been loaded
@@ -69,12 +66,7 @@
         
         axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
         .then((response) => {
-            
             this.entries=response.data 
-            console.log("ENTRIES")
-            console.log(this.entries)
-            
-            //this.data= response.data;
             this.canclick=true;
         }, (error) => {
             console.log(error);
@@ -84,10 +76,8 @@
         
       },
      localValue (newValue) {
-       console.log(newValue);
        this.$emit('input', newValue)
        console.log(`LocalValue changed and emited input to ${newValue}`)
-       console.log(newValue);
      },
      value (newValue) {
        this.localValue = newValue

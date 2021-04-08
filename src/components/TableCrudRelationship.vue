@@ -7,6 +7,9 @@
               <template v-slot:[`item.type`]="{ item }">
                 <span>{{ RelationshipTypeName(item.retypes) }}</span>
             </template>
+              <template v-slot:[`item.destiny`]="{ item }">
+                <span>{{ showRelationShipName(item) }}</span>
+            </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -64,6 +67,7 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
+                relationship_names:[]
             }
         },
         methods:{
@@ -89,11 +93,9 @@
                 console.log(this.selected)
                 axios.post(`${this.$store.state.apiroot}/api/relationship/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
-                    console.log(response.data);
                     this.selected=response.data; //To get id
                     this.tableData.push(this.selected);
-                    console.log(this.tableData)
-                    console.log(this.person.relationship)
+                    this.$emit('person')
                     this.dialog=false;
                     this.TableCrudRelationship_refreshKey();
                 }, (error) => {
@@ -112,6 +114,7 @@
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data;
+                    this.$emit("person")
                     this.dialog=false;
                     this.TableCrudRelationship_refreshKey();
                 }, (error) => {
@@ -160,7 +163,28 @@
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudRelationship RefreshKey to ${this.refreshKey}`)
             },
+            showRelationShipName(item){
+                const o = this.relationship_names.filter(x => `${this.$store.state.apiroot}/api/persons/${x.id}/`==item.destiny)
+                if (o.length>0){
+                    return o[0].name
+                }
+                else {
+                    return ""
+                }
+            
+            }
         },
+        created() {
+            axios.get(`${this.$store.state.apiroot}/api/find/relationship/${this.$route.params.id}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+            .then((response) => {
+                this.relationship_names= response.data;         
+                console.log(this.relationship_names)
+            }, (error) => {
+                console.log(error);
+            });
+
+            
+        }
     }
 </script>
 <style scoped>
