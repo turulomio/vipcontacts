@@ -83,6 +83,8 @@
             },
             acceptAddition(){
                 this.selected.dt_update=new Date();
+                console.log("DESTINTY")
+                console.log(this.selected.destiny)
                 console.log("ADDTITON")
                 console.log(this.selected)
                 axios.post(`${this.$store.state.apiroot}/api/relationship/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})

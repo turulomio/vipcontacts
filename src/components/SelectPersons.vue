@@ -12,7 +12,6 @@
         :label="$t('Select a contact')"
         placeholder="Start typing to Search"
         prepend-icon="mdi-database-search"
-        return-object
       ></v-autocomplete>
 </template>
 <script>
@@ -29,7 +28,7 @@
       entries: [],
       isLoading: false,
       search: null,
-      localValue: this.value
+      localValue: null
     }),
 
     computed: {
@@ -48,7 +47,10 @@
           const Description = entry.name.length > this.descriptionLimit
             ? entry.name.slice(0, this.descriptionLimit) + '...'
             : entry.name
-
+        console.log("Entry")
+          console.log(entry)
+        console.log("Description")
+          console.log(Description)
           return Object.assign({}, entry, { Description })
         })
       },
@@ -68,7 +70,8 @@
         axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
         .then((response) => {
             
-            this.entries=response.data   
+            this.entries=response.data 
+            console.log("ENTRIES")
             console.log(this.entries)
             
             //this.data= response.data;
@@ -81,12 +84,14 @@
         
       },
      localValue (newValue) {
+       console.log(newValue);
        this.$emit('input', newValue)
-       console.log("LocalValue changed")
+       console.log(`LocalValue changed and emited input to ${newValue}`)
+       console.log(newValue);
      },
      value (newValue) {
        this.localValue = newValue
-       console.log("value changed")
+       console.log(`value changed to ${newValue}`)
      }
     },
   }
