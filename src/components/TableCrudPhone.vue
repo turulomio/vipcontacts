@@ -1,13 +1,13 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
-              <template v-slot:item.dt_update="{ item }">
+              <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
-              <template v-slot:item.retypes="{ item }">
+              <template v-slot:[`item.retypes`]="{ item }">
                 <span>{{ PhoneTypeName(item.retypes) }}</span>
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
@@ -82,7 +82,7 @@
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
-                    this.person.phone.push(this.selected);
+                    this.tableData.push(this.selected);
                     this.dialog=false;
                     this.TableCrudPhone_refreshKey();
                 }, (error) => {
@@ -120,8 +120,8 @@
                 axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
-                    var i = this.person.phone.indexOf( item ); //Remove item
-                    this.person.phone.splice( i, 1 );
+                    var i = this.tableData.indexOf( item ); //Remove item
+                    this.tableData.splice( i, 1 );
                     this.TableCrudPhone_refreshKey();
                 }, (error) => {
                     console.log(error);

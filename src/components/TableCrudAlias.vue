@@ -1,10 +1,10 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
-              <template v-slot:item.dt_update="{ item }">
+              <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
@@ -56,7 +56,7 @@
                 axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
                     console.log(response.data);
-                    this.person.alias.push(response.data);
+                    this.tableData.push(response.data);
                     this.TableCrudAlias_refreshKey();
                 }, (error) => {
                     console.log(error);
@@ -87,8 +87,8 @@
                 axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
                 .then((response) => {
                     console.log(response);
-                    var i = this.person.alias.indexOf( item );
-                    this.person.alias.splice( i, 1 );
+                    var i = this.tableData.indexOf( item );
+                    this.tableData.splice( i, 1 );
                     this.TableCrudAlias_refreshKey();
                 }, (error) => {
                     console.log(error);
