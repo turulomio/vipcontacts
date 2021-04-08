@@ -4,11 +4,14 @@
         :items="items"
         :loading="isLoading"
         :search-input.sync="search"
-        color="white"
-        hide-no-data
-        hide-selected
         item-text="name"
         item-value="url"
+        :no-data-text="$t('You must select a item')"
+        filled
+        hide-selected
+        outlined
+        persistent-hint
+        chips
         :label="$t('Select a contact')"
         placeholder="Start typing to Search"
         prepend-icon="mdi-database-search"
@@ -33,15 +36,6 @@
 
     computed: {
       items () {
-//         return this.entries.map(entry => {
-//           const fullname=this.fullName(entry)
-//           const Description = fullname.length > this.descriptionLimit
-//             ? fullname.slice(0, this.descriptionLimit) + '...'
-//             : fullname
-//           console.log("AHORA")
-//           console.log(Object.assign({}, entry, { Description }))
-//           return Object.assign({}, entry, { Description })
-//         })
         let r=[]
         this.entries.forEach(entry => r.push({"url": entry.url, "name":this.fullName(entry)}))
         return r
@@ -73,7 +67,6 @@
             this.canclick=true;
         })
           .finally(() => (this.isLoading = false));
-        
       },
      localValue (newValue) {
        this.$emit('input', newValue)
