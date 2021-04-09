@@ -147,12 +147,35 @@
             }
         },
         computed: {
+        
             fullName: function (){
-                return `${this.person.name} ${this.person.surname} ${this.person.surname2}`
+                var age_string="";
+                if (this.person.birth != null && this.person.death == null){
+                    age_string=` ( ${this.age(this.person.birth)} years )`
+                } 
+                else if (this.person.birth != null && this.person.death != null){
+                    age_string=` ( Lived ${this.years_lived(this.person.birth, this.person.death)} years )`
+                } 
+                return `${this.person.name} ${this.person.surname} ${this.person.surname2}${age_string}`
             }
         },
         methods: {
             logout,
+            age(birth_iso_string) {
+                //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
+                // ~~ Math.floor
+                var birth = +new Date(birth_iso_string);
+                console.log(new Date())
+                console.log(birth)
+                console.log(new Date() -birth)
+                return ~~((new Date() - birth ) / (31557600000));
+            },
+            years_lived(birth_iso_string,death_iso_string) {
+                var birth = +new Date(birth_iso_string);
+                var death = +new Date(death_iso_string);
+                //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
+                return ~~((death- birth) / (31557600000));
+            },
             person_edit(){             
 
                 axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
