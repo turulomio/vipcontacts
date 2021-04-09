@@ -5,7 +5,7 @@
         :loading="isLoading"
         :search-input.sync="search"
         item-text="name"
-        item-value="url"
+        item-value="name"
         :no-data-text="$t('You must select a item')"
         hide-selected
         outlined
@@ -19,6 +19,7 @@
 <script>
     import axios from 'axios'
   export default {
+    name: 'AutoCompleteApiOneField',
     props: {
         value: { //v-model
             required: true
@@ -41,12 +42,14 @@
     computed: {
       items () {
         let r=[]
-        this.entries.forEach(entry => r.push({this.field: entry[this.field]}))
+        const field=this.field
+        this.entries.forEach(entry => r.push({"name": entry[field]}))
+        console.log(r)
         return r
       },
     },
     watch: {
-      search (val) {
+      search () {
         // Items have already been loaded
         if (this.items.length > 0) return
 

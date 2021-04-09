@@ -39,8 +39,12 @@
 <script>
     import axios from 'axios'
     import {localtime,} from '../functions.js'
+    import AutoCompleteApiOneField from './AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudJob',
+        components: {
+            AutoCompleteApiOneField,
+        },
         props: ['person'],
         data () {
             return {
