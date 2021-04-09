@@ -154,7 +154,8 @@
         methods: {
             logout,
             person_edit(){             
-                axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person ,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+
+                axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data);
                     this.name=null;

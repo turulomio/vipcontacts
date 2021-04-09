@@ -40,19 +40,15 @@
         data () {
             return {
                 person: {
-                    name: null,
-                    surname: null,
-                    surname2: null,      
+                    name: "",
+                    surname: "",
+                    surname2: "",      
                     birth: new Date().toISOString().substr(0, 10),
                     death: null,
                     gender: 0,
                 },
                 menu_birth: false,
                 menu_death: false,
-                genders:[
-                    { text: this.$t("Man"), value: 0 },
-                    { text: this.$t("Woman"), value: 1 },
-                ]
             }
         },
         methods: {
