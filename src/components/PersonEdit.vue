@@ -37,15 +37,9 @@
                 </v-card-actions>            
             </v-row>
         </div>
-        
-            
-            
         <div class="tabs login">
             <v-card>
-                <v-tabs  background-color="primary" dark v-model="tab"      next-icon="mdi-arrow-right-bold-box-outline"
-      prev-icon="mdi-arrow-left-bold-box-outline"
-      show-arrows
-    >
+                <v-tabs  background-color="primary" dark v-model="tab" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
                     <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}</v-tab>
                     <v-tab key="Mails"><v-icon small style="margin:6px">mdi-mail</v-icon>{{ $t("Mails")}}</v-tab>
                     <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}</v-tab>
@@ -54,11 +48,8 @@
                     <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}</v-tab>
                     <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}</v-tab>
                     <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}</v-tab>
-
-
-      <v-tabs-slider color="yellow"></v-tabs-slider>
-      </v-tabs>
-
+                    <v-tabs-slider color="yellow"></v-tabs-slider>
+                </v-tabs>
                 <v-tabs-items v-model="tab">
                     <v-tab-item key="Alias">
                         <v-card flat>
@@ -83,7 +74,7 @@
                     </v-tab-item>
                     <v-tab-item key="Jobs">
                         <v-card flat>
-                            Mis jobs
+                            <TableCrudJob :person="this.person" :key="refreshKey"></TableCrudJob>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Relations">
@@ -104,16 +95,14 @@
                 </v-tabs-items>
             </v-card>
         </div>
-            <v-row> 
-                <v-card-actions style="text-align:right">
-                    <v-spacer></v-spacer>
-                    <v-btn color="debug" @click.native="person_edit()" >{{ $t("Export to vcs") }}</v-btn>
-                    <v-btn color="debug" to="/">{{ $t("Show QR") }}</v-btn>
-                </v-card-actions>            
-            </v-row>
-            
-            <p>{{searchString}}</p>
-        
+        <v-row> 
+            <v-card-actions style="text-align:right">
+                <v-spacer></v-spacer>
+                <v-btn color="debug" @click.native="person_edit()" >{{ $t("Export to vcs") }}</v-btn>
+                <v-btn color="debug" to="/">{{ $t("Show QR") }}</v-btn>
+            </v-card-actions>            
+        </v-row>
+        <p>{{searchString}}</p>
     </div>
 </template>
 
@@ -121,6 +110,7 @@
     import axios from 'axios'
     import TableCrudAlias from './TableCrudAlias';
     import TableCrudAddress from './TableCrudAddress';
+    import TableCrudJob from './TableCrudJob';
     import TableCrudLog from './TableCrudLog';
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
@@ -133,6 +123,7 @@
             TableCrudAddress,
             TableCrudMail,
             TableCrudPhone,
+            TableCrudJob,
             TableCrudLog,
             TableCrudRelationship,
         },
@@ -147,7 +138,6 @@
             }
         },
         computed: {
-        
             fullName: function (){
                 var age_string="";
                 if (this.person.birth != null && this.person.death == null){
@@ -165,9 +155,6 @@
                 //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
                 // ~~ Math.floor
                 var birth = +new Date(birth_iso_string);
-                console.log(new Date())
-                console.log(birth)
-                console.log(new Date() -birth)
                 return ~~((new Date() - birth ) / (31557600000));
             },
             years_lived(birth_iso_string,death_iso_string) {
