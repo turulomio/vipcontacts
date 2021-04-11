@@ -41,7 +41,6 @@
       },
     },
     methods:{
-        
       fullName(entry){
             return `${entry.name} ${entry.surname} ${entry.surname2}`
       },
@@ -56,7 +55,6 @@
 
         this.isLoading = true
 
-        
         axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
         .then((response) => {
             this.entries=response.data 

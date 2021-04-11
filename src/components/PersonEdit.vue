@@ -84,7 +84,7 @@
                     </v-tab-item>
                     <v-tab-item key="Groups">
                         <v-card flat>
-                            My groups
+                            <TableCrudGroup :person="this.person" :key="refreshKey"></TableCrudGroup>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Logs">
@@ -110,6 +110,7 @@
     import axios from 'axios'
     import TableCrudAlias from './TableCrudAlias';
     import TableCrudAddress from './TableCrudAddress';
+    import TableCrudGroup from './TableCrudGroup';
     import TableCrudJob from './TableCrudJob';
     import TableCrudLog from './TableCrudLog';
     import TableCrudMail from './TableCrudMail';
@@ -126,6 +127,7 @@
             TableCrudJob,
             TableCrudLog,
             TableCrudRelationship,
+            TableCrudGroup,
         },
         data () {
             return {

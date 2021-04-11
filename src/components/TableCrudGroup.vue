@@ -10,19 +10,16 @@
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add job') }}</v-btn>
+        <v-btn color="primary" @click="addItem()" >{{ $t('Add group') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}</v-btn>
 
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
         <v-card  class="login">
-            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
-            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
-            <AutoCompleteApiOneField v-model="selected.profession" v-bind:label="$t('Profession')" v-bind:placeholder="$t('Enter a profession')" canadd oneload :apiurl="`${this.$store.state.apiroot}/api/professions/`" field="profession" />
-            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" canadd oneload :apiurl="`${this.$store.state.apiroot}/api/organizations/`" field="organization" />
-            <AutoCompleteApiOneField v-model="selected.department" v-bind:label="$t('Department')" v-bind:placeholder="$t('Enter a department')" canadd oneload :apiurl="`${this.$store.state.apiroot}/api/departments/`" field="department" />
-            <AutoCompleteApiOneField v-model="selected.title" v-bind:label="$t('Title')" v-bind:placeholder="$t('Enter a title')" canadd oneload :apiurl="`${this.$store.state.apiroot}/api/titles/`" field="title" />   
+            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit group") }}</v-card-title>
+            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add group") }}</v-card-title>
+            <AutoCompleteApiOneField v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd oneload :apiurl="`${this.$store.state.apiroot}/api/professions/`" field="profession" />
 
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -41,7 +38,7 @@
     import {localtime,} from '../functions.js'
     import AutoCompleteApiOneField from './AutoCompleteApiOneField.vue'
     export default {
-        name: 'TableCrudJob',
+        name: 'TableCrudGroup',
         components: {
             AutoCompleteApiOneField,
         },
@@ -52,13 +49,10 @@
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Profession'),  sortable: true, value: 'profession'},
-                    { text: this.$t('Organization'),  sortable: true, value: 'organization'},
-                    { text: this.$t('Department'),  sortable: true, value: 'department'},
-                    { text: this.$t('Title'),  sortable: true, value: 'title'},
+                    { text: this.$t('Group name'),  sortable: true, value: 'name'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
-                tableData: this.person.job,
+                tableData: this.person.group,
                 vShowObsolete:false,
                 isEdition: true,
                 dialog: false,
@@ -69,10 +63,7 @@
             localtime,
             addItem(){
                 this.selected={
-                    profession: "",
-                    organization: "",
-                    department: "",
-                    title: "",
+                    name: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
                     person: `http://192.168.1.100:8001/api/persons/${this.person.id}/`,
@@ -82,13 +73,13 @@
             },
             acceptAddition(){
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/job/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
-                    this.tableData.push(this.selected);
+                    this.tableData.push(this.selected)
                     this.dialog=false;
-                    this.TableCrudJob_refreshKey();
+                    this.TableCrudGroup_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -106,7 +97,7 @@
                     console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableCrudJob_refreshKey();
+                    this.TableCrudGroup_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -116,7 +107,7 @@
                 this.dialog = false;                
             },
             deleteItem(item){
-                var r = confirm("Do you want to delete this job?");
+                var r = confirm("Do you want to delete this group?");
                 if(r == false) {
                     return;
                 }  
@@ -125,7 +116,7 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableCrudJob_refreshKey();
+                    this.TableCrudGroup_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -140,7 +131,7 @@
                 axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data);
-                    this.TableCrudJob_refreshKey();
+                    this.TableCrudGroup_refreshKey();
                 }, (error) => {
                     console.log(error);
                 });
@@ -149,9 +140,9 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            TableCrudJob_refreshKey(){
+            TableCrudGroup_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudJob RefreshKey to ${this.refreshKey}`)
+                console.log(`Updating TableCrudGroup RefreshKey to ${this.refreshKey}`)
             },
         },
     }
