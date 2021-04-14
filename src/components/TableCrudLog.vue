@@ -55,7 +55,8 @@
                             if (this.vShowAutomatic==true){
                                 return true;
                             } else {
-                                if (value==0 || value==1){
+                                
+                                if (value<99){
                                     return false;
                                 } else {
                                     return true;

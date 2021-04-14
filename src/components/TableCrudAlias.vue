@@ -58,6 +58,7 @@
                     console.log(response.data);
                     this.tableData.push(response.data);
                     this.TableCrudAlias_refreshKey();
+                    this.$emit('person')
                 }, (error) => {
                     console.log(error);
                 });
@@ -90,6 +91,7 @@
                     var i = this.tableData.indexOf( item );
                     this.tableData.splice( i, 1 );
                     this.TableCrudAlias_refreshKey();
+                    this.$emit('person')
                 }, (error) => {
                     console.log(error);
                 });

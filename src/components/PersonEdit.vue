@@ -150,6 +150,14 @@
                 } 
                 return `${this.person.name} ${this.person.surname} ${this.person.surname2}${age_string}`
             }
+        },        
+        watch: {
+            person() {
+                console.log("Person changed")
+                console.log(this.person)
+                this.PersonEdit_refreshKey()
+                
+            },
         },
         methods: {
             logout,
