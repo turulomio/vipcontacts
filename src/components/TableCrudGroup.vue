@@ -19,7 +19,7 @@
         <v-card  class="login">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit group") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add group") }}</v-card-title>
-            <AutoCompleteApiOneFieldOneLoad v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd oneload :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" />
+            <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" />
 
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -36,11 +36,11 @@
 <script>
     import axios from 'axios'
     import {localtime,} from '../functions.js'
-    import AutoCompleteApiOneFieldOneLoad from './AutoCompleteApiOneFieldOneLoad.vue'
+    import AutoCompleteApiOneField from './AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudGroup',
         components: {
-            AutoCompleteApiOneFieldOneLoad,
+            AutoCompleteApiOneField,
         },
         props: ['person'],
         data () {
