@@ -1,30 +1,27 @@
 <template>
     <div>
-      <v-combobox  v-show="this.canadd"
+      <v-combobox  v-if="this.canadd"
+        v-model="select"
+        :items="items"
+        :loading="isLoading"
+        :search-input.sync="search"
+        :no-data-text="$t('You can select or add an item')"
+        background-color="#eeffee"
+        outlined
+        :label="label"
+        :placeholder="this.$attrs.placeholder"
+        prepend-icon="mdi-database-search"
+      ></v-combobox>
+      <v-autocomplete v-if="!this.canadd"
         v-model="select"
         :items="items"
         :loading="isLoading"
         :search-input.sync="search" 
-        :no-data-text="$t('You can select a item')"
+        :no-data-text="$t('You can\'t select a item, search again')"
         hide-selected
-        @blur="search = select"
-        background-color="#d8ffdb"
+        background-color="#ffeeee"
         outlined
-        :label="this.$attrs.label"
-        :placeholder="this.$attrs.placeholder"
-        prepend-icon="mdi-database-search"
-      ></v-combobox>
-      <v-autocomplete v-show="!this.canadd"
-        v-model="select"
-        :items="items"
-        @keydown="get_data()"
-        :loading="isLoading"
-        :search-input.sync="select"
-        :no-data-text="$t('You must select a item')"
-        hide-selected
-        background-color="#ffd8db"
-        outlined
-        :label="this.$attrs.label"
+        :label="label"
         :placeholder="this.$attrs.placeholder"
         prepend-icon="mdi-database-search"
       ></v-autocomplete>
@@ -58,28 +55,21 @@
             select: null,
             items:[]
         }),
-//         computed: {
-//             items () {
-//                 let r=[]
-//                 const field=this.field
-//                 this.entries.forEach(entry => r.push(entry[field]))
-//                 console.log(r)
-//                 return r
-//             },
-//         },
+        
+        computed:{
+            label: function(){
+                if (this.canadd){
+                    return `${this.$attrs.label} ${this.$t(" (You can select or add an item)")}`
+                } else {
+                    return `${this.$attrs.label} ${this.$t(" (You must select an item)")}`
+                }
+            }
+            
+        },
         watch: {
             search (val) {
-//                 val && val !== this.select 
-//                 this.get_data(val)
-//                 this.search=val  
-//                 console.log(val)
-                  this.search=val
-//                 return this.search
-//                 console.log(this.search)
+                this.search=val
                 this.get_data()
-            
-
-                
             },
             select (newValue) {
                 this.$emit('input', newValue)
@@ -92,23 +82,18 @@
         },
         methods:{
             get_data(){
-                // Items have already been requested
-//                 console.log(this)
-//                 console.log(this.select)
-//                 console.log(this.value)
-//                 console.log(this.search)
                 if (this.search ==null || this.search=="") return
                 
                 if (this.isLoading) return
                 this.isLoading = true
                 axios.get(`${this.apiurl}?search=${this.search}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
-//                     this.select=this.value
                     this.entries=response.data 
                     this.items=[]
                     this.entries.forEach(entry => this.items.push(entry[this.field]))
                     console.log(`Loaded ${this.entries.length} data with ${this.search}`)
-                    this.items.push(this.search)
+                    this.items.sort()
+                    if (this.canadd==true) {this.items.unshift(this.search)}
                     
                 }, (error) => {
                     console.log(error);

@@ -20,7 +20,7 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
             <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.$store.state.apiroot}/api/professions/`" field="profession" />
-            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" canadd :apiurl="`${this.$store.state.apiroot}/api/organizations/`" field="organization" />
+            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" :apiurl="`${this.$store.state.apiroot}/api/organizations/`" field="organization" />
             <AutoCompleteApiOneField v-model="selected.department" v-bind:label="$t('Department')" v-bind:placeholder="$t('Enter a department')" canadd :apiurl="`${this.$store.state.apiroot}/api/departments/`" field="department" />
             <AutoCompleteApiOneField v-model="selected.title" v-bind:label="$t('Title')" v-bind:placeholder="$t('Enter a title')" canadd :apiurl="`${this.$store.state.apiroot}/api/titles/`" field="title" />   
 
