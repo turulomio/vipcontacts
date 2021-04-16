@@ -152,17 +152,20 @@
             }
         },        
         watch: {
-            person() {
-                console.log("Person changed")
-                console.log(this.person)
-                this.PersonEdit_refreshKey()
-                
-            },
+//             person() {
+//                 console.log("Person changed")
+//                 console.log(this.person)
+//                 this.PersonEdit_refreshKey()
+//                 
+//             },
         },
         methods: {
             logout,
             after_crud: function(va) {
                 va //No hace falta pasarlo porque se pasa el objeto por referencia, es el mismo
+                console.log("after_crud")
+                console.log(this.person)
+                console.log(va)
                 this.PersonEdit_refreshKey()
             },
             age(birth_iso_string) {
