@@ -53,43 +53,43 @@
                 <v-tabs-items v-model="tab">
                     <v-tab-item key="Alias">
                         <v-card flat>
-                            <TableCrudAlias :person="this.person" :key="refreshKey"></TableCrudAlias>
+                            <TableCrudAlias :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     
                     <v-tab-item key="Mails">
                         <v-card flat>
-                            <TableCrudMail :person="this.person" :key="refreshKey" />
+                            <TableCrudMail :person="this.person" :key="refreshKey"  @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Phones">
                         <v-card flat>
-                            <TableCrudPhone :person="this.person" :key="refreshKey" />
+                            <TableCrudPhone :person="this.person" :key="refreshKey"  @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Address">
                         <v-card flat>
-                            <TableCrudAddress :person="this.person" :key="refreshKey"></TableCrudAddress>
+                            <TableCrudAddress :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Jobs">
                         <v-card flat>
-                            <TableCrudJob :person="this.person" :key="refreshKey"></TableCrudJob>
+                            <TableCrudJob :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Relations">
                         <v-card flat>
-                            <TableCrudRelationship :person="this.person" :key="refreshKey"></TableCrudRelationship>
+                            <TableCrudRelationship :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Groups">
                         <v-card flat>
-                            <TableCrudGroup :person="this.person" :key="refreshKey"></TableCrudGroup>
+                            <TableCrudGroup :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Logs">
                         <v-card flat>
-                            <TableCrudLog :person="this.person" :key="refreshKey" />
+                            <TableCrudLog :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
                 </v-tabs-items>
@@ -161,6 +161,10 @@
         },
         methods: {
             logout,
+            after_crud: function(va) {
+                va //No hace falta pasarlo porque se pasa el objeto por referencia, es el mismo
+                this.PersonEdit_refreshKey()
+            },
             age(birth_iso_string) {
                 //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
                 // ~~ Math.floor

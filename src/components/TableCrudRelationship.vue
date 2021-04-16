@@ -100,6 +100,7 @@
                     this.TableCrudRelationship_refreshKey();
                     
                     this.updateRelationshipNames()     
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -119,7 +120,8 @@
                     this.$emit("person")
                     this.dialog=false;
                     this.TableCrudRelationship_refreshKey();
-                    this.updateRelationshipNames()     
+                    this.updateRelationshipNames()    
+                    this.$emit('cruded', this.person) 
                 }, (error) => {
                     console.log(error);
                 });
@@ -139,6 +141,7 @@
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
                     this.TableCrudRelationship_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -154,6 +157,7 @@
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudRelationship_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });

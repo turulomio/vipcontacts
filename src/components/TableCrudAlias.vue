@@ -58,7 +58,7 @@
                     console.log(response.data);
                     this.tableData.push(response.data);
                     this.TableCrudAlias_refreshKey();
-                    this.$emit('person')
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -73,6 +73,7 @@
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudAlias_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -91,7 +92,7 @@
                     var i = this.tableData.indexOf( item );
                     this.tableData.splice( i, 1 );
                     this.TableCrudAlias_refreshKey();
-                    this.$emit('person')
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -107,6 +108,7 @@
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudAlias_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });

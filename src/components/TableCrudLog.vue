@@ -95,14 +95,11 @@
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
-                    //this.$emit('input', 'test')//FALTA
                     this.tableData.push(this.selected);
-                    console.log(this.tableData)
-                    console.log(this.person.log)
                     
-                    //this.$emit('input', this.
                     this.dialog=false;
                     this.TableCrudLog_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -122,6 +119,7 @@
                     this.selected=response.data;
                     this.dialog=false;
                     this.TableCrudLog_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
@@ -138,6 +136,7 @@
                     var i = this.person.log.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
                     this.TableCrudLog_refreshKey();
+                    this.$emit('cruded', this.person)
                 }, (error) => {
                     console.log(error);
                 });
