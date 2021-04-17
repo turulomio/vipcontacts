@@ -85,7 +85,7 @@
                     this.tableData.push(this.selected);
                     this.dialog=false;
                     this.TableCrudMail_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });
@@ -105,7 +105,7 @@
                     this.selected=response.data;
                     this.dialog=false;
                     this.TableCrudMail_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });
@@ -125,7 +125,7 @@
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
                     this.TableCrudMail_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });
@@ -141,7 +141,7 @@
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudMail_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });

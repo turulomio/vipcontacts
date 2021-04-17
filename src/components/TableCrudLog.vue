@@ -99,7 +99,7 @@
                     
                     this.dialog=false;
                     this.TableCrudLog_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });
@@ -119,7 +119,7 @@
                     this.selected=response.data;
                     this.dialog=false;
                     this.TableCrudLog_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });
@@ -136,7 +136,7 @@
                     var i = this.person.log.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
                     this.TableCrudLog_refreshKey();
-                    this.$emit('cruded', this.person)
+                    this.$emit('cruded')
                 }, (error) => {
                     console.log(error);
                 });

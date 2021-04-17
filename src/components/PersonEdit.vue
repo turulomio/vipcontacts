@@ -161,12 +161,9 @@
         },
         methods: {
             logout,
-            after_crud: function(va) {
-                va //No hace falta pasarlo porque se pasa el objeto por referencia, es el mismo
+            after_crud: function() {
                 console.log("after_crud")
-                console.log(this.person)
-                console.log(va)
-                this.PersonEdit_refreshKey()
+                this.get_person()
             },
             age(birth_iso_string) {
                 //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
