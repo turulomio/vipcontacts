@@ -13,9 +13,20 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item router to="/person/add/" v-show="this.$store.state.logged"><v-list-item-title>{{ $t('Add contact') }}</v-list-item-title></v-list-item>
+                <v-list-item router to="/person/add/" v-if="this.$store.state.logged"><v-list-item-title>{{ $t('Add contact') }}</v-list-item-title></v-list-item>
             </v-list>
         </v-menu>        
+        
+        <!-- Group -->
+        <v-menu offset-y> 
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" v-bind="attrs" v-on="on" :close-on-content-click="false" >{{ $t('Group') }}</v-btn>
+        </template>
+            <v-list>
+                <v-list-item key="0" router to="/group/members/" v-if="this.$store.state.logged"><v-list-item-title>{{ $t('Members') }}</v-list-item-title></v-list-item>
+            </v-list>
+        </v-menu>    
+        <!-- Help -->
         <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
             <v-btn

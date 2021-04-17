@@ -31,6 +31,7 @@ export const store = new Vuex.Store({
 })
 import About from './components/about';
 import Home from './components/Home';
+import GroupMembers from './components/GroupMembers';
 import PersonAdd from './components/PersonAdd';
 import PersonEdit from './components/PersonEdit';
 
@@ -40,6 +41,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', name: 'home', component: Home },
     { path: '/about', name: 'about', component: About },
+    { path: '/group/members', name: 'group_members', component: GroupMembers },
     { path: '/person/add', name: 'person_add', component: PersonAdd },
     { path: '/person/edit/', name: 'person_edit', component: PersonEdit, props: true },
   ]
