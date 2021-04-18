@@ -14,6 +14,7 @@
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon small class="mr-2" @click="generateEnvelope(item)">mdi-email-open-outline</v-icon>
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add address') }}</v-btn>
@@ -46,7 +47,8 @@
 
 <script>
     import axios from 'axios'
-    import {localtime, AddressTypeName, CountryName} from '../functions.js'
+    import { jsPDF } from "jspdf";
+    import {localtime, AddressTypeName, CountryName, fullName} from '../functions.js'
     export default {
         name: 'TableCrudAddress',
         props: ['person'],
@@ -87,6 +89,7 @@
             localtime,
             AddressTypeName,
             CountryName,
+            fullName,
             addItem(){
                 this.selected={
                     address: "",
@@ -173,6 +176,23 @@
                     console.log(error);
                 });
                 return item;
+            },
+            generateEnvelope(item){
+                var centeredText = function(text, y) {
+                    var textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                    var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+                    doc.text(textOffset, y, text);
+                }
+                const doc = new jsPDF({
+                    orientation: "landscape",
+                    unit: "cm",
+                    format: [11, 22]
+                });
+                centeredText(this.fullName(this.person), 6);
+                centeredText(item.address, 7);
+                centeredText(`${item.code} ${item.city}`, 8)
+                centeredText(this.CountryName(item.country), 9)
+                doc.save(`${this.fullName(this.person)}.pdf`);
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
