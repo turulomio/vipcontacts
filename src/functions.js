@@ -1,6 +1,10 @@
 import moment from 'moment';
 import axios from 'axios'
 
+export function fullName(person){
+    return `${person.name} ${person.surname} ${person.surname2}`
+}
+
 export function localtime(value){
     if (value){
         var dateFormat = 'YYYY-MM-DD HH:mm:ss';

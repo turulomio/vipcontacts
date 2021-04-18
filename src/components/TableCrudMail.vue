@@ -11,6 +11,7 @@
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon small class="mr-2" @click="mail(item)">mdi-mail</v-icon>
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
@@ -42,7 +43,7 @@
 
 <script>
     import axios from 'axios'
-    import {localtime, MailTypeName, CountryName} from '../functions.js'
+    import {localtime, MailTypeName, CountryName, fullName} from '../functions.js'
     export default {
         name: 'TableCrudMail',
         props: ['person'],
@@ -72,6 +73,7 @@
             localtime,
             MailTypeName,
             CountryName,
+            fullName,
             addItem(){
                 this.selected={
                     mail: "",
@@ -98,7 +100,6 @@
                     console.log(error);
                 });
             },
-            
             editItem(item){
                 this.selected=item;
                 this.dialog=true;
@@ -162,6 +163,9 @@
             TableCrudMail_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudMail RefreshKey to ${this.refreshKey}`)
+            },
+            mail(item){
+                window.open(`mailto:${this.fullName(this.person)}<${item.mail}>`)
             },
         },
     }

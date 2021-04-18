@@ -1,6 +1,6 @@
 <template>
     <div v-show="this.$store.state.logged">
-            <h1>{{ this.fullName }}</h1>
+            <h1>{{ this.fullNameWithAge }}</h1>
         <div class="login    ">
             <v-row>
             <v-text-field v-model="person.name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
@@ -116,7 +116,7 @@
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
-    import {logout} from '../functions.js'
+    import {logout, fullName} from '../functions.js'
     export default {
         name: 'PersonEdit',    
         components: {
@@ -140,7 +140,7 @@
             }
         },
         computed: {
-            fullName: function (){
+            fullNameWithAge: function (){
                 var age_string="";
                 if (this.person.birth != null && this.person.death == null){
                     age_string=` ( ${this.age(this.person.birth)} years )`
@@ -148,7 +148,7 @@
                 else if (this.person.birth != null && this.person.death != null){
                     age_string=` ( Lived ${this.years_lived(this.person.birth, this.person.death)} years )`
                 } 
-                return `${this.person.name} ${this.person.surname} ${this.person.surname2}${age_string}`
+                return `${this.fullName(this.person)}${age_string}`
             }
         },        
         watch: {
@@ -161,6 +161,7 @@
         },
         methods: {
             logout,
+            fullName,
             after_crud: function() {
                 console.log("after_crud")
                 this.get_person()
@@ -217,9 +218,11 @@
                 console.log(`Updating PersonEdit RefreshKey to ${this.refreshKey}`)
             },
             badge_number(s){
-                console.log(s)
-                if (this.person.length==0) return 0
-                return this.person[s].length
+                try {
+                    return this.person[s].length
+                } catch (error) {
+                    return 0
+                }
             }
         },
 
