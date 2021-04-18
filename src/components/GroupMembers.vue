@@ -50,8 +50,6 @@
                 axios.get(`${this.$store.state.apiroot}/api/groups/members/?search=${this.group}&members=${this.members}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
                 .then((response) => {
                     this.data= response.data;
-                    //this.PersonEdit_refreshKey();
-                    
                 }, (error) => {
                     console.log(error);
                 });
