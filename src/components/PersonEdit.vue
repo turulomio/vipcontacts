@@ -98,11 +98,15 @@
         <v-row> 
             <v-card-actions style="text-align:right">
                 <v-spacer></v-spacer>
-                <v-btn color="debug" @click.native="person_edit()" >{{ $t("Export to vcs") }}</v-btn>
-                <v-btn color="debug" to="/">{{ $t("Show QR") }}</v-btn>
+                <v-btn color="debug" @click.native="generateVcardFile()" >{{ $t("Export vCard") }}</v-btn>
+                <v-btn color="debug" @click.native="generateQR()" >{{ $t("Show QR") }}</v-btn>
+                <v-btn color="debug" @click.native="showSearchString" >{{ $t("Show search string") }}</v-btn>
             </v-card-actions>            
         </v-row>
-        <p>{{searchString}}</p>
+        
+        <v-dialog v-model="dialog_qr" max-width="800">
+            <VueQRCodeComponent :text="qr" :size="qrsize"/>
+        </v-dialog>
     </div>
 </template>
 
@@ -117,6 +121,8 @@
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
     import {logout, fullName} from '../functions.js'
+    import VueQRCodeComponent from 'vue-qrcode-component'
+    import vCardsJS from 'vcards-js'
     export default {
         name: 'PersonEdit',    
         components: {
@@ -128,6 +134,7 @@
             TableCrudLog,
             TableCrudRelationship,
             TableCrudGroup,
+            VueQRCodeComponent,
         },
         data () {
             return {
@@ -136,7 +143,9 @@
                 menu_birth: false,
                 menu_death: false,
                 refreshKey:0,
-                searchString:"",
+                qr:"",
+                qrsize: 800,
+                dialog_qr: false,
             }
         },
         computed: {
@@ -151,14 +160,6 @@
                 return `${this.fullName(this.person)}${age_string}`
             }
         },        
-        watch: {
-//             person() {
-//                 console.log("Person changed")
-//                 console.log(this.person)
-//                 this.PersonEdit_refreshKey()
-//                 
-//             },
-        },
         methods: {
             logout,
             fullName,
@@ -202,11 +203,6 @@
                     console.log("FULL PERSON");
                     console.log(this.person);
                     this.PersonEdit_refreshKey();
-                    if (this.person.search.length==1){
-                        this.searchString=this.person.search[0].string;
-                    }else{
-                        console.log("Problems with search string")
-                    }
                     return response.data;//To make syncronous
                     
                 }, (error) => {
@@ -223,6 +219,55 @@
                 } catch (error) {
                     return 0
                 }
+            },
+            generateVcardObject(){
+                //create a new vCard
+                var vCard = vCardsJS();
+
+                //set properties
+                vCard.firstName = this.person.name;
+                vCard.middleName = this.person.surname;
+                vCard.lastName = this.person.surname2;
+                vCard.birthday = new Date(this.person.birth)
+                vCard.cellPhone=this.person.phone.filter(function(o) {
+                    if (o.dt_obsolete==null) {
+                        return true; // skip
+                    }
+                    return false;  
+                }).map(function(o) {
+                    return o.phone
+                });
+                vCard.email=this.person.mail.filter(function(o) {
+                    if (o.dt_obsolete==null) {
+                        return true; // skip
+                    }
+                    return false;  
+                }).map(function(o) {
+                    return o.mail
+                });
+                return vCard
+            },
+            generateVcardFile(){
+                var blob = new Blob([this.generateVcardObject().getFormattedString()], { type: 'text/vcard' });
+                var link = window.document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `${this.fullName(this.person)}.vcf`
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            generateQR(){
+                const vCard=this.generateVcardObject()
+                console.log(vCard.getFormattedString())
+                this.qr=vCard.getFormattedString()
+                this.dialog_qr=true
+            },
+            showSearchString(){
+                let searchString=this.$t("Problems with search string")
+                if (this.person.search.length==1){
+                    searchString=this.person.search[0].string;
+                }
+                alert(searchString)
             }
         },
 
