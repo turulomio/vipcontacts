@@ -23,13 +23,15 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit phone") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add phone") }}</v-card-title>
             
-            <v-select :items="this.$store.state.catalogs.phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-            <v-text-field v-model="selected.phone" type="text" :counter="75"  v-bind:label="$t('Phone')" required v-bind:placeholder="$t('Enter a phone')" ></v-text-field>
+            <v-form ref="form" v-model="form_valid" lazy-validation>
+                <v-select :items="this.$store.state.catalogs.phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
+                <v-text-field v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesTextRequired50"/>
+            </v-form>
                         
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -59,6 +61,12 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
+                
+                form_valid:false,
+                RulesTextRequired50: [
+                    v => !!v || this.$t('Text is required'),
+                    v => (v && v.length <50) || this.$t('Text must be less than 50 characters'),
+                ],
             }
         },
         methods:{
@@ -77,6 +85,7 @@
                 this.isEdition=false;
             },
             acceptAddition(){
+                if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 axios.post(`${this.$store.state.apiroot}/api/phone/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
@@ -97,6 +106,7 @@
                 this.isEdition=true;
             },
             acceptEdition(){
+                if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 console.log(this.selected)
                 axios.put(this.selected.url, this.selected,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})

@@ -7,11 +7,13 @@
     <v-dialog v-model="dialog" max-width="450">
         <v-card  class="login">
             <v-card-title class="headline">{{ $t("Login in Vip Contacts") }}</v-card-title>
-            <v-text-field v-model="user" type="text" :counter="75"  v-bind:label="$t('User')" required v-bind:placeholder="$t('Enter user')" autofocus ></v-text-field>
-            <v-text-field v-model="password" type="password" v-bind:label="$t('Password')" :counter="75" v-bind:placeholder="$t('Enter password')" ></v-text-field>
+            <v-form ref="form" v-model="form_valid" lazy-validation>
+                <v-text-field v-model="user" type="text" :counter="75" :label="$t('User')" required :placeholder="$t('Enter user')" autofocus :rules="RulesTextRequired75"/>
+                <v-text-field v-model="password" type="password" :label="$t('Password')" :counter="75" :placeholder="$t('Enter password')" :rules="RulesTextRequired75"/>
+            </v-form>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="login()" >{{ $t("Log in") }}</v-btn>
+                <v-btn color="primary" @click.native="login()" :disabled="!form_valid">{{ $t("Log in") }}</v-btn>
                 <v-btn color="error" @click.native="dialog = false">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -23,17 +25,23 @@
     import {myheaders,vuex_update_catalogs} from '../functions.js'
     import axios from 'axios'
     export default {
-        name: 'btnSignIn',
+        name: 'btnLogIn',
         data () {
             return {
                 user: null,
                 password: null,
-                dialog: false,
-                valid: false,
+                dialog: false,                
+                
+                form_valid:false,
+                RulesTextRequired75: [
+                    v => !!v || this.$t('Text is required'),
+                    v => (v && v.length <75) || this.$t('Text must be less than 75 characters'),
+                ],
             }
         },
         methods: {
             login(){            
+                if (this.$refs.form.validate()==false) return
                 const formData = new FormData();
                 formData.append('username', this.user);
                 formData.append('password', this.password);

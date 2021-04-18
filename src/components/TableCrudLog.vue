@@ -22,13 +22,15 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit log") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add log") }}</v-card-title>
             
-            <v-select :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-            <v-text-field v-model="selected.text" type="text" :counter="1000"  v-bind:label="$t('Log')" required v-bind:placeholder="$t('Enter a log')" ></v-text-field>
+            <v-form ref="form" v-model="form_valid" lazy-validation>
+                <v-select :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
+                <v-textarea v-model="selected.text" type="text" :counter="1000" :label="$t('Log')" required :placeholder="$t('Enter a log')" :rules="RulesTextRequired1000" />
+            </v-form>
                         
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click.native="
                 dialog = false">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
@@ -73,6 +75,12 @@
                 dialog: false,
                 selected: {},
                 nonAutomaticTypes: this.$store.state.catalogs.logtype.filter( x=> x.value>=100),
+                
+                form_valid:false,
+                RulesTextRequired1000: [
+                    v => !!v || this.$t('Text is required'),
+                    v => (v && v.length <1000) || this.$t('Text must be less than 1000 characters'),
+                ],
             }
         },
         methods:{
@@ -84,12 +92,13 @@
                     text: "",
                     datetime: new Date(),
                     person: `http://192.168.1.100:8001/api/persons/${this.person.id}/`,
-                    retypes: 0,
+                    retypes: 100,
                 };
                 this.dialog=true;
                 this.isEdition=false;
             },
             acceptAddition(){
+                if (this.$refs.form.validate()==false) return
                 this.selected.datetime=new Date();
                 axios.post(`${this.$store.state.apiroot}/api/log/`, this.selected, {'headers': this.myheaders()})
                 .then((response) => {
@@ -111,6 +120,7 @@
                 this.isEdition=true;
             },
             acceptEdition(){
+                if (this.$refs.form.validate()==false) return
                 this.selected.datetime=new Date();
                 console.log(this.selected)
                 axios.put(this.selected.url, this.selected, {'headers': this.myheaders()})

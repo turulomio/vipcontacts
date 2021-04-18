@@ -7,8 +7,8 @@
             <Menu/>
             <v-spacer />
             <SwitchLanguages />
-            <btnSignIn v-show="!this.$store.state.logged"></btnSignIn>
-            <btnLogOut v-show="this.$store.state.logged"></btnLogOut>
+            <btnLogIn v-show="!this.$store.state.logged"/>
+            <btnLogOut v-show="this.$store.state.logged"/>
 
         </v-app-bar>
         <v-main>   
@@ -20,14 +20,14 @@
 <script>
 
 import Menu from './components/Menu';
-import btnSignIn from './components/btnSignIn';
+import btnLogIn from './components/btnLogIn';
 import btnLogOut from './components/btnLogOut';
 import SwitchLanguages from './components/SwitchLanguages.vue';
 export default {
     name: 'App',
 
     components: {
-        btnSignIn,
+        btnLogIn,
         btnLogOut,
         Menu,
         SwitchLanguages,
