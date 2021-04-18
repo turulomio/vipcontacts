@@ -14,6 +14,7 @@
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon small class="mr-2" @click="googleMaps(item)">mdi-google-maps</v-icon>
                 <v-icon small class="mr-2" @click="generateEnvelope(item)">mdi-email-open-outline</v-icon>
             </template>
         </v-data-table>            
@@ -31,7 +32,7 @@
                     <v-text-field v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesTextRequired300"  />
                     <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesText10" />
                     <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesTextRequired100"/>
-                    <v-select :items="this.$store.state.catalogs.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value" required/>
+                    <v-autocomplete :items="this.$store.state.catalogs.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value" required/>
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -193,6 +194,9 @@
                 centeredText(`${item.code} ${item.city}`, 8)
                 centeredText(this.CountryName(item.country), 9)
                 doc.save(`${this.fullName(this.person)}.pdf`);
+            },
+            googleMaps(item){
+                window.open(`https://maps.google.com/?q=${item.address} ${item.city}`)
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
