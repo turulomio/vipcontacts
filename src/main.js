@@ -18,7 +18,7 @@ export const store = new Vuex.Store({
     logged:false,
     version: "0.2.0",
     versiondate: new Date(2021,4,18,11,24),                                
-    apiroot: process.env.VUE_DJANGO_VIPCONTACTS_URL,
+    apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
     catalogs: {
         addresstype: [],
         countries: [],

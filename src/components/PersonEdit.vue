@@ -40,14 +40,14 @@
         <div class="tabs login">
             <v-card>
                 <v-tabs  background-color="primary" dark v-model="tab" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
-                    <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}</v-tab>
-                    <v-tab key="Mails"><v-icon small style="margin:6px">mdi-mail</v-icon>{{ $t("Mails")}}</v-tab>
-                    <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}</v-tab>
-                    <v-tab key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}</v-tab>
-                    <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}</v-tab>
-                    <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}</v-tab>
-                    <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}</v-tab>
-                    <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}</v-tab>
+                    <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}<v-badge v-show="badge_number('alias')>0" color="grey" class="ml-2" :content="badge_number('alias')"/></v-tab>
+                    <v-tab key="Mails"><v-icon small class="mr-2">mdi-mail</v-icon>{{ $t("Mails")}}<v-badge v-show="badge_number('mail')>0" color="grey" class="ml-2" :content="badge_number('mail')"/></v-tab>
+                    <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}<v-badge v-show="badge_number('phone')>0" color="grey" class="ml-2" :content="badge_number('phone')"/></v-tab>
+                    <v-tab key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}<v-badge v-show="badge_number('address')>0" color="grey" class="ml-2" :content="badge_number('address')"/></v-tab>
+                    <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}<v-badge v-show="badge_number('job')>0" color="grey" class="ml-2" :content="badge_number('job')"/></v-tab>
+                    <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}<v-badge v-show="badge_number('relationship')>0" color="grey" class="ml-2" :content="badge_number('relationship')"/></v-tab>
+                    <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}<v-badge v-show="badge_number('group')>0" color="grey" class="ml-2" :content="badge_number('group')"/></v-tab>
+                    <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}<v-badge v-show="badge_number('log')>0"  color="grey" class="ml-2" :content="badge_number('log')"/></v-tab>
                     <v-tabs-slider color="yellow"></v-tabs-slider>
                 </v-tabs>
                 <v-tabs-items v-model="tab">
@@ -136,7 +136,7 @@
                 menu_birth: false,
                 menu_death: false,
                 refreshKey:0,
-                searchString:""
+                searchString:"",
             }
         },
         computed: {
@@ -215,6 +215,11 @@
             PersonEdit_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating PersonEdit RefreshKey to ${this.refreshKey}`)
+            },
+            badge_number(s){
+                console.log(s)
+                if (this.person.length==0) return 0
+                return this.person[s].length
             }
         },
 
