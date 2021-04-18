@@ -23,13 +23,15 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit mail") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add mail") }}</v-card-title>
             
-            <v-select :items="this.$store.state.catalogs.mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-            <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" ></v-text-field>
+            <v-form ref="form" v-model="form_valid" lazy-validation>
+                <v-select :items="this.$store.state.catalogs.mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+                <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail" />
+            </v-form>
                         
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -59,6 +61,11 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
+                
+                form_valid:false,
+                RulesEmail: [
+                    v => /.+@.+/.test(v) || this.$t('Invalid Email address') 
+                ]
             }
         },
         methods:{
@@ -77,6 +84,7 @@
                 this.isEdition=false;
             },
             acceptAddition(){
+                if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 axios.post(`${this.$store.state.apiroot}/api/mail/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
                 .then((response) => {
@@ -97,6 +105,7 @@
                 this.isEdition=true;
             },
             acceptEdition(){
+                if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 console.log(this.selected)
                 axios.put(this.selected.url, this.selected,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})

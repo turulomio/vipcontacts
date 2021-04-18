@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
-// import Vuelidate from 'vuelidate'
 import i18n from './i18n'
 
 Vue.config.productionTip = false
@@ -11,7 +10,6 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
-// Vue.use(Vuelidate)
 
 
 export const store = new Vuex.Store({
