@@ -11,6 +11,7 @@
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon small class="mr-2" @click="phone(item)">mdi-phone</v-icon>
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add phone') }}</v-btn>
@@ -164,6 +165,9 @@
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudPhone RefreshKey to ${this.refreshKey}`)
             },
+            phone(item){
+                window.open(`tel:${item.phone}`)
+            }
         },
     }
 </script>
