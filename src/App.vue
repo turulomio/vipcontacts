@@ -1,26 +1,19 @@
 <template>
     <v-app>    
-<!--        <v-app-bar app color="primary" dark fixed  fill-height >   
-
-        </v-app-bar>-->
-        <v-app-bar color="primary" dark fill-height app  >
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-img alt="Vuetify Logo" class="shrink mr-2" contain src="./assets/vip.svg" transition="scale-transition" width="50" height="50" />
-            <h1>Vip Contacts</h1>
-            <v-spacer />
-            <v-btn color="primary" to="/"><v-icon dark>mdi-home</v-icon></v-btn>
-            <SwitchLanguages />
-            <btnLogIn v-show="!this.$store.state.logged"/>
-            <btnLogOut v-show="this.$store.state.logged"/>
-
-        </v-app-bar>
-        <v-navigation-drawer class="primary" v-model="drawer" absolute clipped>
+        <v-navigation-drawer class="primary" v-model="drawer" absolute temporary>
             <v-card class="mx-auto" width="300">
                 <v-list>
-                    <v-list-item link router to="/">
-                        <v-list-item-icon><v-icon>mdi-home</v-icon></v-list-item-icon>
-                        <v-list-item-title>Home</v-list-item-title>
+                
+                    <v-list-item class="center">
+                        <v-list-item-content>
+                            <v-list-item-title class="title">Vip Contacts</v-list-item-title>
+                            <v-list-item-subtitle>{{ $store.state.version }}</v-list-item-subtitle>
+                        </v-list-item-content>
                     </v-list-item>
+
+                    <v-divider></v-divider>
+                
+                
                     <v-list-item link router to="/">
                         <v-list-item-icon><v-icon>mdi-home</v-icon></v-list-item-icon>
                         <v-list-item-title>Home</v-list-item-title>
@@ -62,6 +55,20 @@
                 </v-list>
             </v-card>
         </v-navigation-drawer>
+        
+        <v-app-bar color="primary" dark  fixed fill-height app>
+            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-btn color="primary" to="/"><v-icon dark>mdi-home</v-icon></v-btn>
+            <v-spacer />
+            <v-img alt="Vuetify Logo" class="shrink ml-15 mr-10" contain src="./assets/vip.svg" transition="scale-transition" width="45" height="40" />
+            <v-app-bar-title class="font-weight-bold h1" >Vip Contacts</v-app-bar-title>
+            <v-img alt="Vuetify Logo" class="shrink ml-10" contain src="./assets/vip.svg" transition="scale-transition" width="45" height="40" />
+            <v-spacer />
+            <SwitchLanguages />
+            <btnLogIn v-show="!this.$store.state.logged"/>
+            <btnLogOut v-show="this.$store.state.logged"/>
+
+        </v-app-bar>
         <v-main>   
             <router-view></router-view>
         </v-main>
