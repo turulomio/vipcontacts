@@ -221,14 +221,11 @@
                 }
             },
             generateVcardObject(){
-                //create a new vCard
                 var vCard = vCardsJS();
-
-                //set properties
                 vCard.firstName = this.person.name;
                 vCard.middleName = this.person.surname;
                 vCard.lastName = this.person.surname2;
-                vCard.birthday = new Date(this.person.birth)
+                if (this.person.birth) vCard.birthday = new Date(this.person.birth)
                 vCard.cellPhone=this.person.phone.filter(function(o) {
                     if (o.dt_obsolete==null) {
                         return true; // skip
