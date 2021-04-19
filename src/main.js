@@ -11,13 +11,12 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-
 export const store = new Vuex.Store({
   state: {
     token:null,
     logged:false,
     version: "0.2.0",
-    versiondate: new Date(2021,4,18,11,24),                                
+    versiondate: new Date(2021, 4, 19, 8, 13),
     apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
     catalogs: {
         addresstype: [],
