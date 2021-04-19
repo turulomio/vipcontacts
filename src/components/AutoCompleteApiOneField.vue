@@ -73,11 +73,11 @@
             },
             select (newValue) {
                 this.$emit('input', newValue)
-                //console.log(`LocalValue changed and emited input to ${newValue}`)
+//                 console.log(`LocalValue changed and emited input to ${newValue}`)
             },
             value (newValue) {
                 this.select = newValue
-                //console.log(`value changed to ${newValue}`)
+//                 console.log(`value changed to ${newValue}`)
             }
         },
         methods:{
@@ -100,6 +100,9 @@
                 })
                 .finally(() => {this.isLoading = false});
             }
+        },
+        created(){
+            this.select=this.value
         }
     }
 </script>

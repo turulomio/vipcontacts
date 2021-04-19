@@ -107,6 +107,7 @@
             },
             
             editItem(item){
+                console.log(item)
                 this.selected=item;
                 this.dialog=true;
                 this.isEdition=true;

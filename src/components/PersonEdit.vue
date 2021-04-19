@@ -3,18 +3,18 @@
             <h1>{{ this.fullNameWithAge }}</h1>
         <div class="login    ">
             <v-row>
-            <v-text-field v-model="person.name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
+            <v-text-field v-model="person.name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" @input="person_fields_have_changed()"></v-text-field>
             <v-spacer></v-spacer>
-            <v-text-field v-model="person.surname" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
+            <v-text-field v-model="person.surname" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" @input="person_fields_have_changed()"></v-text-field>
             <v-spacer></v-spacer>
-            <v-text-field v-model="person.surname2" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
+            <v-text-field v-model="person.surname2" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" @input="person_fields_have_changed()"></v-text-field>
             </v-row>
             <v-row>
                 <v-menu v-model="menu_birth" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field v-model="person.birth" :label="$t('Birth date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                     </template>
-                    <v-date-picker v-model="person.birth" @input="menu_birth = false" ></v-date-picker>
+                    <v-date-picker v-model="person.birth" @input="menu_birth = false ;person_fields_have_changed()" ></v-date-picker>
                 </v-menu>         
                 <v-icon x-small  @click="person.birth=null">mdi-backspace</v-icon>  
                 <v-spacer></v-spacer>
@@ -22,17 +22,17 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field v-model="person.death" :label="$t('Death date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                     </template>
-                    <v-date-picker v-model="person.death" @input="menu_death = false" ></v-date-picker>
+                    <v-date-picker v-model="person.death" @input="menu_death = false;person_fields_have_changed()"></v-date-picker>
                 </v-menu>
                 <v-icon x-small @click="person.death=null">mdi-backspace</v-icon>
                 <v-spacer></v-spacer>
                 
-                <v-select :items="this.$store.state.catalogs.persongender" v-model="person.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value"  ></v-select>  
+                <v-select :items="this.$store.state.catalogs.persongender" v-model="person.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" @input="person_fields_have_changed()"></v-select>  
 
             
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click.native="person_edit()" >{{ $t("Update") }}</v-btn>
+                    <v-btn color="primary" @click.native="person_edit()" :disabled="!person_changed" >{{ $t("Update") }}</v-btn>
                     <v-btn color="error" to="/">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>            
             </v-row>
@@ -146,6 +146,8 @@
                 qr:"",
                 qrsize: 800,
                 dialog_qr: false,
+                original: {},
+                person_changed: false,
             }
         },
         computed: {
@@ -203,6 +205,15 @@
                     console.log("FULL PERSON");
                     console.log(this.person);
                     this.PersonEdit_refreshKey();
+                    this.original={
+                        name: this.person.name,
+                        surname: this.person.surname,
+                        surname2: this.person.surname2,
+                        gender: this.person.gender,
+                        birth: this.person.birth,
+                        death: this.person.death,
+                    }
+                    console.log(this.original)
                     return response.data;//To make syncronous
                     
                 }, (error) => {
@@ -265,11 +276,27 @@
                     searchString=this.person.search[0].string;
                 }
                 alert(searchString)
+            },
+            person_fields_have_changed(){
+                console.log("AHORA CHANGED")
+                if (this.person.name!=this.original.name ||
+                    this.person.surname!=this.original.surname ||
+                    this.person.surname2!=this.original.surname2 ||
+                    this.person.birth!=this.original.birth ||
+                    this.person.death!=this.original.death ||
+                    this.person.gender!=this.original.gender 
+                ) {
+                    this.person_changed= true
+                } else {
+                    this.person_changed=false
+                }
             }
         },
 
         mounted: function() {
             this.get_person()
+
+            
 
         }
     }
