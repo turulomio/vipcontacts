@@ -29,6 +29,9 @@
                             <v-spacer></v-spacer>
                         </v-toolbar>
                     </template>
+                    <template v-slot:[`item.information`]="{ item }">
+                         <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2">{{ chip }}</v-chip>
+                    </template>
                     <template v-slot:[`item.actions`]="{ item }">
                         <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -52,6 +55,7 @@
                     { text: this.$t('Surname'), value: 'surname' },
                     { text: this.$t('Second surname'), value: 'surname2' },
                     { text: this.$t('Birth date'), value: 'birth' },
+                    { text: this.$t('Information'), value: 'information', sortable: false },
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                     ],
                 canclick:true,
@@ -105,6 +109,9 @@
                     console.log(error);
                 });
             },
+            chips(item){
+                return eval(item.search[0].chips)
+            }
         },
         created(){
             if (this.search!="" ){
