@@ -213,6 +213,10 @@
                     console.log(error);
                 });
             },
+            // Used to manually clear the form
+            //
+            // @arg The first parameter is a Boolean value that represents...
+            //
             set_original(){
                 this.original={
                     name: this.person.name,
