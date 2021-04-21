@@ -10,7 +10,6 @@
         hide-selected
         outlined
         persistent-hint
-        chips
         :label="$t('Select a contact')"
         placeholder="Start typing to Search"
         prepend-icon="mdi-database-search"

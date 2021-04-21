@@ -1,6 +1,15 @@
 import moment from 'moment';
 import axios from 'axios'
 
+
+export function age(birth_iso_string) {
+    //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
+    // ~~ Math.floor
+    var birth = +new Date(birth_iso_string);
+    return ~~((new Date() - birth ) / (31557600000));
+}
+
+
 export function fullName(person){
     return `${person.name} ${person.surname} ${person.surname2}`
 }
@@ -14,7 +23,18 @@ export function localtime(value){
     }
     console.log("REALLY");
     return null;
-}      
+}   
+
+export function moment_day_start(isostring){
+    if (isostring){
+        var testDateUtc = moment.utc(isostring);
+        var localDate = testDateUtc.local();
+        return localDate
+    }
+    console.log("REALLY");
+    return null;
+}   
+
 
 export function AddressTypeName(value){
     var retypes=this.$store.state.catalogs.addresstype.find(t => t.value==value);

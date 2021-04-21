@@ -1,7 +1,7 @@
 <template>
     <div v-show="this.$store.state.logged">
-            <h1>{{ this.fullNameWithAge }}</h1>
-        <div class="login    ">
+        <h1>{{ this.fullNameWithAge }}</h1>
+        <div class="login">
             <v-row>
             <v-text-field v-model="person.name" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" @input="person_fields_have_changed()"></v-text-field>
             <v-spacer></v-spacer>
@@ -120,7 +120,7 @@
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
-    import {logout, fullName} from '../functions.js'
+    import {logout, fullName, age} from '../functions.js'
     import VueQRCodeComponent from 'vue-qrcode-component'
     import vCardsJS from 'vcards-js'
     export default {
@@ -168,15 +168,10 @@
         methods: {
             logout,
             fullName,
+            age,
             after_crud: function() {
                 console.log("after_crud")
                 this.get_person()
-            },
-            age(birth_iso_string) {
-                //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
-                // ~~ Math.floor
-                var birth = +new Date(birth_iso_string);
-                return ~~((new Date() - birth ) / (31557600000));
             },
             years_lived(birth_iso_string,death_iso_string) {
                 var birth = +new Date(birth_iso_string);
