@@ -1,10 +1,10 @@
 <template>
     <v-app>    
-        <v-navigation-drawer class="primary" v-model="drawer" absolute temporary>
+        <v-navigation-drawer v-model="drawer" absolute temporary>
             <v-card class="mx-auto" width="300">
                 <v-list>
                 
-                    <v-list-item class="center">
+                    <v-list-item>
                         <v-list-item-content>
                             <v-list-item-title class="title">Vip Contacts</v-list-item-title>
                             <v-list-item-subtitle>{{ $store.state.version }}</v-list-item-subtitle>
@@ -56,13 +56,11 @@
             </v-card>
         </v-navigation-drawer>
         
-        <v-app-bar color="primary" dark  fixed fill-height app>
+        <v-app-bar color="primary" dark  fixed fill-height app >
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-btn color="primary" to="/"><v-icon dark>mdi-home</v-icon></v-btn>
             <v-spacer />
-            <v-img alt="Vuetify Logo" class="shrink ml-15 mr-10" contain src="./assets/vip.svg" transition="scale-transition" width="45" height="40" />
-            <v-app-bar-title class="font-weight-bold h1" >Vip Contacts</v-app-bar-title>
-            <v-img alt="Vuetify Logo" class="shrink ml-10" contain src="./assets/vip.svg" transition="scale-transition" width="45" height="40" />
+            <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
             <v-spacer />
             <SwitchLanguages />
             <btnLogIn v-show="!this.$store.state.logged"/>

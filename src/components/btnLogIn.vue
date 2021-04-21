@@ -2,7 +2,7 @@
     <div>
     <v-btn @click.native.stop="dialog = true" color="primary">
         <v-icon>mdi-account</v-icon>
-        <span class="mr-2">{{ $t("Log in") }}</span>
+        <span class="mr-2 text-no-wrap text-truncate">{{ $t("Log in") }}</span>
     </v-btn>    
     <v-dialog v-model="dialog" max-width="450">
         <v-card  class="login">

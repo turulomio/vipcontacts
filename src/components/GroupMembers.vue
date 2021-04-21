@@ -68,6 +68,7 @@
         },          
         methods: {
             age,
+            fullName,
             refresh_members: function() {
                 this.loaded=false
                 console.log("refresh_members")
@@ -80,7 +81,7 @@
                 });
             },  
             deleteItem(item){
-                var r = confirm("Do you want to delete this group?");
+                var r = confirm(`Do you want to remove '${this.fullName(item)}' from this group?`);
                 if(r == false) {
                     return;
                 }  
