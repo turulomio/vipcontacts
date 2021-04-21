@@ -156,6 +156,9 @@
                 if (this.person.birth != null && this.person.death == null){
                     age_string=` ( ${this.age(this.person.birth)} years )`
                 } 
+                else if (this.person.birth == null && this.person.death != null){
+                    age_string=this.$t(` ( Deceased )`)
+                } 
                 else if (this.person.birth != null && this.person.death != null){
                     age_string=` ( Lived ${this.years_lived(this.person.birth, this.person.death)} years )`
                 } 
@@ -182,13 +185,11 @@
                 return ~~((death- birth) / (31557600000));
             },
             person_edit(){             
-
                 axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
                 .then((response) => {
                     console.log(response.data);
-                    this.name=null;
-                    this.surname=null;
-                    this.$router.push('/');
+                    this.set_original()
+                    this.person_fields_have_changed()
                 }, (error) => {
                     console.log(error);
                 });
@@ -205,20 +206,23 @@
                     console.log("FULL PERSON");
                     console.log(this.person);
                     this.PersonEdit_refreshKey();
-                    this.original={
-                        name: this.person.name,
-                        surname: this.person.surname,
-                        surname2: this.person.surname2,
-                        gender: this.person.gender,
-                        birth: this.person.birth,
-                        death: this.person.death,
-                    }
-                    console.log(this.original)
+                    this.set_original()
                     return response.data;//To make syncronous
                     
                 }, (error) => {
                     console.log(error);
                 });
+            },
+            set_original(){
+                this.original={
+                    name: this.person.name,
+                    surname: this.person.surname,
+                    surname2: this.person.surname2,
+                    gender: this.person.gender,
+                    birth: this.person.birth,
+                    death: this.person.death,
+                }
+                console.log(this.original)
             },
             PersonEdit_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
