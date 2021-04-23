@@ -77,13 +77,14 @@ export function myheaders(){
 export function vuex_update_catalogs(){   
     axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: this.myheaders() })
     .then((response) => {
-        this.$store.state.catalogs.persongender= response.data.actions.POST.gender.choices;
-        this.$store.state.catalogs.countries= response.data.actions.POST.address.child.children.country.choices;
-        this.$store.state.catalogs.addresstype= response.data.actions.POST.address.child.children.retypes.choices;
-        this.$store.state.catalogs.mailtype= response.data.actions.POST.mail.child.children.retypes.choices;
-        this.$store.state.catalogs.phonetype= response.data.actions.POST.phone.child.children.retypes.choices;
-        this.$store.state.catalogs.logtype= response.data.actions.POST.log.child.children.retypes.choices;
-        this.$store.state.catalogs.relationshiptype= response.data.actions.POST.relationship.child.children.retypes.choices;
+        this.$store.state.catalogs.persongender= sortObjectsArray(response.data.actions.POST.gender.choices, "display_name")
+        this.$store.state.catalogs.countries= sortObjectsArray(response.data.actions.POST.address.child.children.country.choices, "display_name")
+        this.$store.state.catalogs.addresstype= sortObjectsArray(response.data.actions.POST.address.child.children.retypes.choices, "display_name")
+        this.$store.state.catalogs.mailtype= sortObjectsArray(response.data.actions.POST.mail.child.children.retypes.choices, "display_name")
+        this.$store.state.catalogs.phonetype= sortObjectsArray(response.data.actions.POST.phone.child.children.retypes.choices, "display_name")
+        this.$store.state.catalogs.logtype= sortObjectsArray(response.data.actions.POST.log.child.children.retypes.choices, "display_name")
+        this.$store.state.catalogs.relationshiptype=sortObjectsArray(response.data.actions.POST.relationship.child.children.retypes.choices, "display_name")
+        console.log(this.$store.state.catalogs.relationshiptype)
         console.log("Updated catalogs")
         console.log(this.$store.state)
         return
@@ -124,3 +125,32 @@ export function person_search_string(person){
     return s
     
 }*/
+
+export function sortObjectsArray(objectsArray, sortKey)
+{
+    // Quick Sort:
+    var retVal;
+
+    if (1 < objectsArray.length)
+    {
+        var pivotIndex = Math.floor((objectsArray.length - 1) / 2);  // middle index
+        var pivotItem = objectsArray[pivotIndex];                    // value in the middle index
+        var less = [], more = [];
+
+        objectsArray.splice(pivotIndex, 1);                          // remove the item in the pivot position
+        objectsArray.forEach(function(value)
+        {
+            value[sortKey] <= pivotItem[sortKey] ?                   // compare the 'sortKey' proiperty
+                less.push(value) :
+                more.push(value) ;
+        });
+
+        retVal = sortObjectsArray(less, sortKey).concat([pivotItem], sortObjectsArray(more, sortKey));
+    }
+    else
+    {
+        retVal = objectsArray;
+    }
+    
+    return retVal;
+}

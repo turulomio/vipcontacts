@@ -57,8 +57,7 @@
                         this.$store.state.logged=true;
                         this.vuex_update_catalogs();
                         this.dialog=false;
-                        this.user=null;
-                        this.password=null;
+                        this.$refs.form.reset()
                     }
                 }, (error) => {
                     console.log(error);
