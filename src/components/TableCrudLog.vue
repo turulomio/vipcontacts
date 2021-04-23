@@ -110,7 +110,7 @@
                     this.TableCrudLog_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             
@@ -131,7 +131,7 @@
                     this.TableCrudLog_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 
             },
@@ -148,7 +148,7 @@
                     this.TableCrudLog_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },

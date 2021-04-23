@@ -53,14 +53,14 @@
                     person:`${this.$store.state.apiroot}/api/persons/${this.person.id}/`,                    
                 }
                 alias.name=prompt(this.$t("Add a alias"), "")
-                axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.tableData.push(response.data);
                     this.TableCrudAlias_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return alias;
             },
@@ -69,13 +69,13 @@
                 console.log(item)
                 item.name=prompt(this.$t("Edit this alias"),item.name)
                 item.dt_update=new Date()                
-                axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudAlias_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
                 
@@ -86,7 +86,7 @@
                     return;
                 }              
                 console.log(item)
-                axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                axios.delete(item.url , this.myheaders())
                 .then((response) => {
                     console.log(response);
                     var i = this.tableData.indexOf( item );
@@ -94,7 +94,7 @@
                     this.TableCrudAlias_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },
@@ -104,13 +104,13 @@
                 }else{
                     item.dt_obsolete=null;
                 }
-                axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudAlias_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },

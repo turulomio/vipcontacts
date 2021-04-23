@@ -180,13 +180,13 @@
                 return ~~((death- birth) / (31557600000));
             },
             person_edit(){             
-                axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person,{ headers: this.headers()})
+                axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.set_original()
                     this.person_fields_have_changed()
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             get_person(){
@@ -195,7 +195,7 @@
                     this.$router.push({ name: 'home'})
                     return
                 }
-                axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, { headers: this.headers()})
+                axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, this.myheaders())
                 .then((response) => {
                     this.person= response.data;
                     console.log("FULL PERSON");
@@ -205,7 +205,7 @@
                     return response.data;//To make syncronous
                     
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             // Used to manually clear the form

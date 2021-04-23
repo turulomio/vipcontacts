@@ -54,12 +54,12 @@
 
         this.isLoading = true
 
-        axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, { headers: this.myheaders()})
+        axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, this.myheaders())
         .then((response) => {
             this.entries=response.data 
             this.canclick=true;
         }, (error) => {
-            console.log(error);
+            this.parseResponseError(error)
             this.canclick=true;
         })
           .finally(() => (this.isLoading = false));

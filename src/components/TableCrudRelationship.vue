@@ -91,7 +91,7 @@
                 console.log(this.selected.destiny)
                 console.log("ADDTITON")
                 console.log(this.selected)
-                axios.post(`${this.$store.state.apiroot}/api/relationship/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/relationship/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.selected=response.data; //To get id
                     this.tableData.push(this.selected);
@@ -102,7 +102,7 @@
                     this.updateRelationshipNames()     
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             
@@ -114,7 +114,7 @@
             },
             acceptEdition(){
                 this.selected.dt_update=new Date();
-                axios.put(this.selected.url, this.selected,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data;
@@ -124,7 +124,7 @@
                     this.updateRelationshipNames()    
                     this.$emit('cruded') 
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 
             },
@@ -136,7 +136,7 @@
                 if(r == false) {
                     return;
                 }  
-                axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                axios.delete(item.ur, this.myheaders())
                 .then((response) => {
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
@@ -144,7 +144,7 @@
                     this.TableCrudRelationship_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },
@@ -154,13 +154,13 @@
                 }else{
                     item.dt_obsolete=null;
                 }
-                axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudRelationship_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },
@@ -182,13 +182,13 @@
             
             },
             updateRelationshipNames(){
-                axios.get(`${this.$store.state.apiroot}/api/find/relationship/${this.$route.params.id}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.$store.state.apiroot}/api/find/relationship/${this.$route.params.id}`, this.myheaders())
                 .then((response) => {
                     this.relationship_names= response.data;         
                     console.log(this.relationship_names)
                     this.TableCrudRelationship_refreshKey();
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
         },

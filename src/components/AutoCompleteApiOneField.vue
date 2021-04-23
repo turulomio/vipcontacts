@@ -86,7 +86,7 @@
                 
                 if (this.isLoading) return
                 this.isLoading = true
-                axios.get(`${this.apiurl}?search=${this.search}`, { headers: this.headers()})
+                axios.get(`${this.apiurl}?search=${this.search}`, this.myheaders())
                 .then((response) => {
                     if (this.parseResponse(response)== true){
                         this.entries=response.data 

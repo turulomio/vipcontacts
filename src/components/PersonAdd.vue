@@ -53,14 +53,14 @@
         },
         methods: {
             person_add(){             
-                axios.post(`${this.$store.state.apiroot}/api/persons/`, this.person,{ headers: this.headers()})
+                axios.post(`${this.$store.state.apiroot}/api/persons/`, this.person, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.name=null;
                     this.surname=null;
                     this.$router.push('/');
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
         },

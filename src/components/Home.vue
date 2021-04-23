@@ -76,7 +76,7 @@
                     parsedsearch="__none__";
                 }
                 
-                axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, { headers: this.headers})
+                axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     this.data= response.data;
@@ -99,12 +99,12 @@
                if(r == false) {
                   return
                } 
-                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, { headers: this.headers})
+                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, this.myheaders())
                 .then((response) => {
                     console.log(response);
                     this.on_search_change()
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             chips(item){
