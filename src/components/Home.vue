@@ -43,7 +43,6 @@
 </template>
 <script>
     import axios from 'axios'
-    import {myheaders} from '../functions.js'
     export default {
         name: 'home',
         data(){ 
@@ -63,7 +62,6 @@
             }
         },
         methods: {
-            myheaders,
             forceCmdSearchClick(){
                 this.$refs.cmdSearch.click();
             },
@@ -78,13 +76,13 @@
                     parsedsearch="__none__";
                 }
                 
-                axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, { headers: this.headers})
                 .then((response) => {
+                    this.parseResponse(response)
                     this.data= response.data;
-                    console.log(this.data)
                     this.canclick=true;
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                     this.canclick=true;
                 });
             },
@@ -101,7 +99,7 @@
                if(r == false) {
                   return
                } 
-                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, {headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, { headers: this.headers})
                 .then((response) => {
                     console.log(response);
                     this.on_search_change()

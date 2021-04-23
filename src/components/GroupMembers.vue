@@ -72,9 +72,9 @@
             refresh_members: function() {
                 this.loaded=false
                 console.log("refresh_members")
-                axios.get(`${this.$store.state.apiroot}/api/groups/members/?search=${this.group}&members=${this.members_switch}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.$store.state.apiroot}/api/groups/members/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
                 .then((response) => {
-                    this.data= response.data;
+                    this.data= response.data
                     this.loaded=true
                 }, (error) => {
                     console.log(error);
@@ -86,14 +86,13 @@
                     return;
                 }  
                 console.log(item)
-                axios.delete(`${this.$store.state.apiroot}/api/groups/deletebyname/?url=${item.url}&name=${this.group}` ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                axios.delete(`${this.$store.state.apiroot}/api/groups/deletebyname/?url=${item.url}&name=${this.group}`, this.myheaders())
                 .then((response) => {
                     console.log(response)
                     this.refresh_members()
                 }, (error) => {
                     console.log(error)
                 });
-                return item;
             },
             add_member(){
                 if (this.group == "" || this.newmember == ""){
@@ -107,7 +106,7 @@
                     dt_update: new Date(),
                     person: this.newmember,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected,  this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.dlgAddMembers=false;
@@ -125,8 +124,7 @@
                     dt_update: new Date(),
                     person: item.url,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
-                .then((response) => {
+                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected,  this.myheaders())
                     console.log(response.data);
                     this.refresh_members()
                 }, (error) => {

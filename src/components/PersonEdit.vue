@@ -180,7 +180,7 @@
                 return ~~((death- birth) / (31557600000));
             },
             person_edit(){             
-                axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person,{ headers: this.headers()})
                 .then((response) => {
                     console.log(response.data);
                     this.set_original()
@@ -195,7 +195,7 @@
                     this.$router.push({ name: 'home'})
                     return
                 }
-                axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, { headers: this.headers()})
                 .then((response) => {
                     this.person= response.data;
                     console.log("FULL PERSON");

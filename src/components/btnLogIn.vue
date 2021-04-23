@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import {myheaders,vuex_update_catalogs} from '../functions.js'
+    import {vuex_update_catalogs} from '../functions.js'
     import axios from 'axios'
     export default {
         name: 'btnLogIn',
@@ -48,10 +48,7 @@
               
                 axios.post(`${this.$store.state.apiroot}/login/`, formData)
                 .then((response) => {
-                    if (response.data.includes(" ")){
-                        console.log("Error authenticating")
-                        alert(response.data)
-                    } else {
+                    if (this.parseResponse(response)==true){
                         console.log("Authenticated");
                         this.$store.state.token=response.data;
                         this.$store.state.logged=true;
@@ -60,11 +57,9 @@
                         this.$refs.form.reset()
                     }
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 })
             },
-
-            myheaders,
             vuex_update_catalogs,
         },
     }

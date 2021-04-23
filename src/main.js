@@ -47,6 +47,17 @@ const router = new VueRouter({
   ]
 });
 
+// MIXIN GLOBAL
+import {myheaders,parseResponse,parseResponseError} from './functions.js'
+
+Vue.mixin({
+  methods: {
+    myheaders,
+    parseResponse,
+    parseResponseError,
+  }
+})
+
 
 new Vue({
     i18n,

@@ -86,17 +86,19 @@
                 
                 if (this.isLoading) return
                 this.isLoading = true
-                axios.get(`${this.apiurl}?search=${this.search}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+                axios.get(`${this.apiurl}?search=${this.search}`, { headers: this.headers()})
                 .then((response) => {
-                    this.entries=response.data 
-                    this.items=[]
-                    this.entries.forEach(entry => this.items.push(entry[this.field]))
-                    console.log(`Loaded ${this.entries.length} data with ${this.search}`)
-                    this.items.sort()
-                    if (this.canadd==true) {this.items.unshift(this.search)}
+                    if (this.parseResponse(response)== true){
+                        this.entries=response.data 
+                        this.items=[]
+                        this.entries.forEach(entry => this.items.push(entry[this.field]))
+                        console.log(`Loaded ${this.entries.length} data with ${this.search}`)
+                        this.items.sort()
+                        if (this.canadd==true) {this.items.unshift(this.search)}
+                    }
                     
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 })
                 .finally(() => {this.isLoading = false});
             }

@@ -68,14 +68,16 @@ export function RelationshipTypeName(value){
 
 export function myheaders(){
     return {
-        'Authorization': `Token ${this.$store.state.token}`,
-        'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
-        'Content-Type':'application/json'
+        headers:{
+            'Authorization': `Token ${this.$store.state.token}`,
+            'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
+            'Content-Type':'application/json'
+        }
     }
 }
 
 export function vuex_update_catalogs(){   
-    axios.options(`${this.$store.state.apiroot}/api/persons/`, { headers: this.myheaders() })
+    axios.options(`${this.$store.state.apiroot}/api/persons/`, this.myheaders())
     .then((response) => {
         this.$store.state.catalogs.persongender= sortObjectsArray(response.data.actions.POST.gender.choices, "display_name")
         this.$store.state.catalogs.countries= sortObjectsArray(response.data.actions.POST.address.child.children.country.choices, "display_name")
@@ -154,3 +156,66 @@ export function sortObjectsArray(objectsArray, sortKey)
     
     return retVal;
 }
+
+// returns true if everything is ok
+// return false if there is something wrong
+export function parseResponse(response){
+    console.dir(response)
+    if (response.status==200){ //Good connection
+        if (response.data == "Invalid user" || response.data == "Wrong password"){
+            this.$store.state.token=null;
+            this.$store.state.logged=false;
+            if (this.$router.currentRoute.name != "home") this.$router.push("home")
+            alert(response.data)
+            console.log(response.data)
+            return false
+        }
+        return true
+    } else {
+        alert (`${response.status}: ${response.data}`)
+        return false
+    }
+}
+
+
+export function parseResponseError(error){
+    if (error.response) {
+      // Request made and server responded
+        console.log("made and responded")
+//       console.log(error.response.data);
+//       console.log(error.response.status);
+//       console.log(error.response.headers);
+        if (error.response.status == 401){
+            alert (this.$t("You aren't authorized to do this request"))
+            this.$store.state.token=null;
+            this.$store.state.logged=false;
+            if (this.$router.currentRoute.name != "home") this.$router.push("home")
+            console.log(error.response)
+        }
+    } else if (error.request) {
+        console.log("The request was made but no response was received")
+        alert (this.$t("Server couldn't answer this request"))
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+        console.log("OTROS")
+        console.log('Error', error.message);
+    }
+}
+
+
+// export function myaxios (type, url){
+//     if (type=="get"){
+//         axios.get(url, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+//         .then((response) => {
+//             if (this.parseResponse(response)==true)
+//             {
+//                 return response
+//             }
+//         }, (error) => {
+//             this.parseResponseError(error)
+//             this.canclick=true;
+//         });
+//     }
+// }

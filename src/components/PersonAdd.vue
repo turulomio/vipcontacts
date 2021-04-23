@@ -53,7 +53,7 @@
         },
         methods: {
             person_add(){             
-                axios.post(`${this.$store.state.apiroot}/api/persons/`, this.person,{ headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/persons/`, this.person,{ headers: this.headers()})
                 .then((response) => {
                     console.log(response.data);
                     this.name=null;

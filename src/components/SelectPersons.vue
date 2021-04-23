@@ -54,7 +54,7 @@
 
         this.isLoading = true
 
-        axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
+        axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, { headers: this.myheaders()})
         .then((response) => {
             this.entries=response.data 
             this.canclick=true;
