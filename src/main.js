@@ -3,9 +3,6 @@ import Vuex from 'vuex'
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import i18n from './i18n'
-
-Vue.config.productionTip = false
-
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
@@ -18,6 +15,7 @@ export const store = new Vuex.Store({
     version: "0.2.0",
     versiondate: new Date(2021, 4, 19, 8, 13),
     apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
+    publicPath: process.env.VUE_APP_PUBLIC_PATH,
     catalogs: {
         addresstype: [],
         countries: [],
@@ -35,15 +33,16 @@ import GroupMembers from './components/GroupMembers';
 import PersonAdd from './components/PersonAdd';
 import PersonEdit from './components/PersonEdit';
 
+
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
   routes: [
-    { path: '/', name: 'home', component: Home },
-    { path: '/about', name: 'about', component: About },
-    { path: '/group/members', name: 'group_members', component: GroupMembers },
-    { path: '/person/add', name: 'person_add', component: PersonAdd },
-    { path: '/person/edit/', name: 'person_edit', component: PersonEdit, props: true },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/`, name: 'home', component: Home },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/about/`, name: 'about', component: About },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/group/members`, name: 'group_members', component: GroupMembers },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/add`, name: 'person_add', component: PersonAdd },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonEdit, props: true },
   ]
 });
 
@@ -66,7 +65,6 @@ new Vue({
     vuetify,
     render: h => h(App)
 }).$mount('#app')
-
 
 
 
