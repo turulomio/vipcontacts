@@ -43,7 +43,7 @@
                     name: "",
                     surname: "",
                     surname2: "",      
-                    birth: new Date().toISOString().substr(0, 10),
+                    birth: null,
                     death: null,
                     gender: 0,
                 },
@@ -53,7 +53,7 @@
         },
         methods: {
             person_add(){             
-                axios.post(`${this.$store.state.apiroot}/api/persons/`, this.person,{ headers: this.headers()})
+                axios.post(`${this.$store.state.apiroot}/api/persons/`, this.person, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.name=null;
