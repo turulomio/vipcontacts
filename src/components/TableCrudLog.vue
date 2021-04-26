@@ -100,7 +100,7 @@
             acceptAddition(){
                 if (this.$refs.form.validate()==false) return
                 this.selected.datetime=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/log/`, this.selected, {'headers': this.myheaders()})
+                axios.post(`${this.$store.state.apiroot}/api/log/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
@@ -123,7 +123,7 @@
                 if (this.$refs.form.validate()==false) return
                 this.selected.datetime=new Date();
                 console.log(this.selected)
-                axios.put(this.selected.url, this.selected, {'headers': this.myheaders()})
+                axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data;
@@ -140,7 +140,7 @@
                 if(r == false) {
                     return;
                 }  
-                axios.delete(item.url , {'headers': this.myheaders()})
+                axios.delete(item.url, this.myheaders())
                 .then((response) => {
                     console.log(response);
                     var i = this.person.log.indexOf( item ); //Remove item

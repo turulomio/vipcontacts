@@ -33,7 +33,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" @click.native="person_edit()" :disabled="!person_changed" >{{ $t("Update") }}</v-btn>
-                    <v-btn color="error" to="/">{{ $t("Cancel") }}</v-btn>
+                    <v-btn color="error" :to="{name: 'home'}">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>            
             </v-row>
         </div>

@@ -27,7 +27,7 @@
             </v-row>
             <v-card-actions> 
                 <v-btn color="primary" @click.native="person_add()" >{{ $t("Add") }}</v-btn>
-                <v-btn color="error" to="/">{{ $t("Cancel") }}</v-btn>
+                <v-btn color="error" :to="{name: 'home'}">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </div>
     </div>
@@ -58,7 +58,7 @@
                     console.log(response.data);
                     this.name=null;
                     this.surname=null;
-                    this.$router.push('/');
+                    this.$router.push({ name: 'home'})
                 }, (error) => {
                     this.parseResponseError(error)
                 });
