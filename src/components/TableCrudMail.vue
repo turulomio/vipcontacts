@@ -88,7 +88,7 @@
             acceptAddition(){
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/mail/`, this.selected, { headers: {'Authorization': `Token ${this.$store.state.token}`,"Content-Type": "application/json"}})
+                axios.post(`${this.$store.state.apiroot}/api/mail/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
@@ -97,7 +97,7 @@
                     this.TableCrudMail_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             editItem(item){
@@ -109,7 +109,7 @@
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 console.log(this.selected)
-                axios.put(this.selected.url, this.selected,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data;
@@ -117,7 +117,7 @@
                     this.TableCrudMail_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 
             },
@@ -129,7 +129,7 @@
                 if(r == false) {
                     return;
                 }  
-                axios.delete(item.url ,{headers: {"Authorization": `Token ${this.$store.state.token}`}})
+                axios.delete(item.url, this.myheaders())
                 .then((response) => {
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
@@ -137,7 +137,7 @@
                     this.TableCrudMail_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },
@@ -147,13 +147,13 @@
                 }else{
                     item.dt_obsolete=null;
                 }
-                axios.put(item.url, item,{ headers: {'Authorization': `Token ${this.$store.state.token}`, 'Content-Type': 'application/json'}})
+                axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.TableCrudMail_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
                 return item;
             },

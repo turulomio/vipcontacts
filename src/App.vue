@@ -14,7 +14,7 @@
                     <v-divider></v-divider>
                 
                 
-                    <v-list-item link router to="/">
+                    <v-list-item link router :to="{ name: 'home'}">
                         <v-list-item-icon><v-icon>mdi-home</v-icon></v-list-item-icon>
                         <v-list-item-title>Home</v-list-item-title>
                     </v-list-item>
@@ -24,7 +24,7 @@
                             <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
                         </template>
 
-                        <v-list-item link  router to="/person/add">
+                        <v-list-item link  router :to="{ name: 'person_add'}">
                             <v-list-item-title>{{ $t("Add contact") }}</v-list-item-title>
                             <v-list-item-icon><v-icon>mdi-add</v-icon></v-list-item-icon>
                         </v-list-item>
@@ -35,7 +35,7 @@
                             <v-list-item-title>{{ $t("Groups") }}</v-list-item-title>
                         </template>
 
-                        <v-list-item link  router to="/group/members">
+                        <v-list-item link  router :to="{ name: 'group_members'}">
                             <v-list-item-title class="mr-7">{{ $t("Members") }}</v-list-item-title>
                             <v-list-item-icon><v-icon></v-icon></v-list-item-icon>
                         </v-list-item>
@@ -46,7 +46,7 @@
                             <v-list-item-title>{{ $t("Help") }}</v-list-item-title>
                         </template>
 
-                        <v-list-item link  router to="/about">
+                        <v-list-item link  router :to="{ name: 'about'}">
                             <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
                         </v-list-item>
                         <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Vip Contacts Github') }}</v-list-item-title></v-list-item>
@@ -58,7 +58,7 @@
         
         <v-app-bar color="primary" dark  fixed fill-height app >
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-btn color="primary" to="/"><v-icon dark>mdi-home</v-icon></v-btn>
+            <v-btn color="primary" :to="{ name: 'home'}"><v-icon dark>mdi-home</v-icon></v-btn>
             <v-spacer />
             <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
             <v-spacer />

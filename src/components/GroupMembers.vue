@@ -77,7 +77,7 @@
                     this.data= response.data
                     this.loaded=true
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },  
             deleteItem(item){
@@ -113,7 +113,7 @@
                     this.refresh_members()
                     this.newmember=""
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },     
             //Adds a member to group using + accion
@@ -124,11 +124,12 @@
                     dt_update: new Date(),
                     person: item.url,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected,  this.myheaders())
-                    console.log(response.data);
+                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, this.myheaders())
+                .then((response) => {
+                    console.log(response.data)
                     this.refresh_members()
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
             generateVcardFile(){

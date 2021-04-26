@@ -18,15 +18,9 @@ module.exports = {
         host: '0.0.0.0',
         port: 8080, 
         hotOnly: false,    
-    // //     https: {
-    // //       key: fs.readFileSync("./certs/192.168.1.100_8080.pem"),
-    // //       cert: fs.readFileSync("./certs/192.168.1.100_8080.pem")
-    // //     }
     },
-  
-    publicPath: process.env.NODE_ENV === 'production'
-    ? '/vipcontacts/'
-    : '/',
+
+    publicPath: process.env.VUE_APP_PUBLIC_PATH
 
 }
 

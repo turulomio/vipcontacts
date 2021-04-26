@@ -91,7 +91,7 @@ export function vuex_update_catalogs(){
         console.log(this.$store.state)
         return
     }, (error) => {
-        console.log(error);
+        this.parseResponseError(error)
     });
 }
 
@@ -104,7 +104,7 @@ export function logout(){
         this.$store.state.token=null;
         this.$store.state.logged=false;
     }, (error) => {
-        console.log(error);
+        this.parseResponseError(error)
         });
 }
 

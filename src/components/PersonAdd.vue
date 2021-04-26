@@ -60,7 +60,7 @@
                     this.surname=null;
                     this.$router.push('/');
                 }, (error) => {
-                    console.log(error);
+                    this.parseResponseError(error)
                 });
             },
         },
