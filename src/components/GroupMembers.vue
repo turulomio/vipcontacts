@@ -42,7 +42,7 @@
     import SelectPersons from './SelectPersons.vue'
     import axios from 'axios'
     import {createEvents} from 'ics'
-    import {fullName, age} from '../functions.js'
+    import {fullName, age, generateVcardObject} from '../functions.js'
     export default {
         name: 'GroupMembers',
         components: {
@@ -69,10 +69,11 @@
         methods: {
             age,
             fullName,
+            generateVcardObject,
             refresh_members: function() {
                 this.loaded=false
                 console.log("refresh_members")
-                axios.get(`${this.$store.state.apiroot}/api/groups/members/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
+                axios.get(`${this.$store.state.apiroot}/api/groups/members/full/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
                 .then((response) => {
                     this.data= response.data
                     this.loaded=true
@@ -133,7 +134,20 @@
                 });
             },
             generateVcardFile(){
-                alert("Missing");
+                var s=""
+                var this_=this
+                this.data.forEach(function(o) {
+                    s=s.concat(this_.generateVcardObject(o).getFormattedString())
+                })
+                console.log(s)
+                
+                var blob = new Blob([s], { type: 'text/vcard' });
+                var link = window.document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `${this.group}.vcard`
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             },
             generateBirthdayCalendar(){
                 var events=[

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import axios from 'axios'
+import vCardsJS from 'vcards-js'
 
 
 export function age(birth_iso_string) {
@@ -219,19 +220,27 @@ export function parseResponseError(error){
     }
 }
 
-
-
-// export function myaxios (type, url){
-//     if (type=="get"){
-//         axios.get(url, { headers: {'Authorization': `Token ${this.$store.state.token}`   }})
-//         .then((response) => {
-//             if (this.parseResponse(response)==true)
-//             {
-//                 return response
-//             }
-//         }, (error) => {
-//             this.parseResponseError(error)
-//             this.canclick=true;
-//         });
-//     }
-// }
+export function generateVcardObject(person){
+    var vCard = vCardsJS();
+    vCard.firstName = person.name;
+    vCard.middleName = person.surname;
+    vCard.lastName = person.surname2;
+    if (person.birth) vCard.birthday = new Date(person.birth)
+    vCard.cellPhone=person.phone.filter(function(o) {
+        if (o.dt_obsolete==null) {
+            return true; // skip
+        }
+        return false;  
+    }).map(function(o) {
+        return o.phone
+    });
+    vCard.email=person.mail.filter(function(o) {
+        if (o.dt_obsolete==null) {
+            return true; // skip
+        }
+        return false;  
+    }).map(function(o) {
+        return o.mail
+    });
+    return vCard
+}

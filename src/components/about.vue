@@ -10,8 +10,12 @@
             <p class="paragraph">{{ $t("Main features:") }}</p>
             
             <ul class="paragraph">
+                <li>{{ $t("You can make phone calls or send mails to your contacts.") }}</li>
+                <li>{{ $t("You can mark contacts data as obsolete.") }}</li>
+                <li>{{ $t("You log every contact change in historical records.") }}</li>
                 <li>{{ $t("Address suport where you can print your envelopes.") }}</li>
                 <li>{{ $t("Address links to Google Maps position.") }}</li>
+                <li>{{ $t("You can create Groups, add list members included or excluded of them. You can export their birthdays to ics files or export their members to your phone to vcard files.") }}</li>
         </ul>
         </v-container>
     </div>

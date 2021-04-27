@@ -120,9 +120,8 @@
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
-    import {logout, fullName, age} from '../functions.js'
+    import {logout, fullName, age, generateVcardObject} from '../functions.js'
     import VueQRCodeComponent from 'vue-qrcode-component'
-    import vCardsJS from 'vcards-js'
     export default {
         name: 'PersonEdit',    
         components: {
@@ -169,6 +168,7 @@
             logout,
             fullName,
             age,
+            generateVcardObject,
             after_crud: function() {
                 console.log("after_crud")
                 this.get_person()
@@ -234,30 +234,7 @@
                     return 0
                 }
             },
-            generateVcardObject(){
-                var vCard = vCardsJS();
-                vCard.firstName = this.person.name;
-                vCard.middleName = this.person.surname;
-                vCard.lastName = this.person.surname2;
-                if (this.person.birth) vCard.birthday = new Date(this.person.birth)
-                vCard.cellPhone=this.person.phone.filter(function(o) {
-                    if (o.dt_obsolete==null) {
-                        return true; // skip
-                    }
-                    return false;  
-                }).map(function(o) {
-                    return o.phone
-                });
-                vCard.email=this.person.mail.filter(function(o) {
-                    if (o.dt_obsolete==null) {
-                        return true; // skip
-                    }
-                    return false;  
-                }).map(function(o) {
-                    return o.mail
-                });
-                return vCard
-            },
+
             generateVcardFile(){
                 var blob = new Blob([this.generateVcardObject().getFormattedString()], { type: 'text/vcard' });
                 var link = window.document.createElement('a');
