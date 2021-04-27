@@ -1,27 +1,26 @@
 # vipcontacts
 
-## Project setup
-```
-npm install
-```
+Vip Contacts Vue frontend Web project, that uses an API  (https://github.com/turulomio/django_vipcontacts) to manage your contacts in a different way
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Links
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Github web page:
+    https://github.com/turulomio/vipcontacts/
+    
+## Dependencies
 
-### Lints and fixes files
-```
-npm run lint
-```
+You need a nodejs installation to use npm command
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Installation
+### Using npm
+
+1) Intall Vipcontacts API using README of https://github.com/turulomio/django_vipcontacts
+2) Clone this project and enter main directory
+3) npm install to update your node_modules directory
+4) npm run serve
+5) Open http://localhost:8003/vipcontacts/ in your browser and log with to start with your django superuser
+
+NOW YOU HAVE TO INSTALL VIPCONTACTS FROM (https://github.com/turulomio/vipcontacts)
 
 
 ## Changelog
