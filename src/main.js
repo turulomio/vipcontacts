@@ -5,6 +5,10 @@ import vuetify from './plugins/vuetify';
 import i18n from './i18n'
 import VueRouter from 'vue-router';
 
+import "echarts";
+import ECharts from 'vue-echarts'
+Vue.component('v-chart', ECharts)
+
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
@@ -33,6 +37,9 @@ import GroupMembers from './components/GroupMembers';
 import PersonAdd from './components/PersonAdd';
 import PersonEdit from './components/PersonEdit';
 import Settings from './components/Settings';
+import Statistics from './components/Statistics';
+
+
 
 
 const router = new VueRouter({
@@ -42,6 +49,7 @@ const router = new VueRouter({
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/home/`, name: 'home', component: Home },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/about/`, name: 'about', component: About },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/settings/`, name: 'settings', component: Settings },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/statistics/`, name: 'statistics', component: Statistics },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/group/members/`, name: 'group_members', component: GroupMembers },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/add/`, name: 'person_add', component: PersonAdd },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonEdit, props: true },

@@ -47,6 +47,7 @@
                             <v-list-item-title>{{ $t("Settings") }}</v-list-item-title>
                         </v-list-item>
                         
+                        <!--HELP -->
                         <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
                             <template v-slot:activator>
                                 <v-list-item-title>{{ $t("Help") }}</v-list-item-title>
@@ -55,8 +56,18 @@
                             <v-list-item link  router :to="{ name: 'about'}">
                                 <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
                             </v-list-item>
-                            <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Vip Contacts Github') }}</v-list-item-title></v-list-item>
-                            <v-list-item key="2" href="https://github.com/turulomio/django_vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Django Vip Contacts Github') }}</v-list-item-title></v-list-item>
+                            
+                            <v-list-item link  router :to="{ name: 'statistics'}">
+                                <v-list-item-title class="mr-7">{{ $t("Statistics") }}</v-list-item-title>
+                            </v-list-item>
+                            
+                            <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank">
+                                <v-list-item-title>{{ $t('Vip Contacts Github') }}</v-list-item-title>
+                            </v-list-item>
+                            
+                            <v-list-item key="2" href="https://github.com/turulomio/django_vipcontacts/" target="_blank">
+                                <v-list-item-title>{{ $t('Django Vip Contacts Github') }}</v-list-item-title>
+                            </v-list-item>
                         </v-list-group>
                     </div>
                 </v-list>

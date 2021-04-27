@@ -199,7 +199,14 @@ export function parseResponseError(error){
             this.$store.state.logged=false;
             if (this.$router.currentRoute.name != "home") this.$router.push("home")
             console.log(error.response)
+        } else if (error.response.status == 500){
+            alert (this.$t("There is a server error"))
+            console.log(error.response)
+        } else {
+            alert (this.$t("Unknown error"))
+            
         }
+        
     } else if (error.request) {
         console.log("The request was made but no response was received")
         alert (this.$t("Server couldn't answer this request"))
