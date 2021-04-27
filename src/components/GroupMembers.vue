@@ -1,22 +1,31 @@
 <template>
     <div>
-        <h1>{{ $t("GroupMembers") }}</h1>
-        <v-card 
-    class="mx-auto" max-width="40%">
-    <v-card-title>{{ $t("Select your group members")}}</v-card-title>
-        <v-col class="padding">
+        <h1>{{ $t("Group members") }}</h1>
+        <v-card class="mx-auto padding" max-width="40%">
+        <v-card-title>{{ $t("Select your group members")}}</v-card-title>
             <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" @input="refresh_members" />
             <v-switch v-model="members_switch" :label="$t('Show group members')" @change="refresh_members"/>
-        </v-col>
         </v-card> 
         <br>
-
-        <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1 padding" enabled="i">
+<v-card>
+    <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        :label="$t('Filter')"
+        single-line
+        hide-details
+        :placeholder="$t('Add a string to filter table')"
+      ></v-text-field>
+    </v-card-title>
+        <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1 padding" enabled="i" 
+      :search="search">
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="deleteItem(item)" v-show="members_switch && loaded" >mdi-minus</v-icon>
                 <v-icon small @click="addItem(item)" v-show="!members_switch && loaded" >mdi-plus</v-icon>
             </template>
         </v-data-table>
+        </v-card>
         <br>
         <v-row class="padding"> 
             <v-card-actions >
@@ -56,6 +65,7 @@
         },
         data(){
             return {
+                search:"",
                 group: '',
                 data: [],
                 headers: [
