@@ -19,7 +19,7 @@
       ></v-text-field>
     </v-card-title>
         <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1 padding" enabled="i" 
-      :search="search">
+      :search="search" :no-data-text="$t('No records found')">
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="deleteItem(item)" v-show="members_switch && loaded" >mdi-minus</v-icon>
                 <v-icon small @click="addItem(item)" v-show="!members_switch && loaded" >mdi-plus</v-icon>
@@ -86,6 +86,7 @@
             fullName,
             generateVcardObject,
             refresh_members: function() {
+                if (this.group=="") return
                 this.loaded=false
                 console.log("refresh_members")
                 axios.get(`${this.$store.state.apiroot}/api/groups/members/full/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
