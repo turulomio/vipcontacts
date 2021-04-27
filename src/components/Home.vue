@@ -1,11 +1,11 @@
 <template>
     <div>
         <h1>{{ $t('Wellcome to Vip Contacts') }}</h1>
-        <div v-show="this.$store.state.logged">
-            <v-container>
-                <v-row>
+        <br>
+        <div v-show="this.$store.state.logged" class="padding">
+            
+                    <v-row class="padding">
                     <v-text-field 
-                        class="w-50"
                         v-model="search" 
                         type="text" 
                         :counter="100"  
@@ -19,15 +19,15 @@
                         <v-icon>mdi-search</v-icon>
                         <span class="mr-2">{{ $t("Search") }}</span>
                     </v-btn>    
-                </v-row>
+                    </v-row>
+                <br>
 
                 <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1" enabled="i">
-                    <template v-slot:top>
-                        <v-toolbar flat>
-                            <v-toolbar-title>Search results</v-toolbar-title>
-                            <v-divider class="mx-4" inset vertical></v-divider>
-                            <v-spacer></v-spacer>
-                        </v-toolbar>
+                    <template v-slot:[`item.name`]="{ item }">
+                         
+                        <v-icon small class="mr-2" v-if="item.gender==1" >{{mdiFaceWoman}}</v-icon>
+                        <v-icon small class="mr-2" v-if="item.gender==0" >{{mdiFaceMan}}</v-icon>
+                        {{item.name}}
                     </template>
                     <template v-slot:[`item.information`]="{ item }">
                          <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2">{{ chip }}</v-chip>
@@ -37,25 +37,28 @@
                         <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
-                </v-container>
         </div>
     </div>
 </template>
 <script>
-    import axios from 'axios'
+    import axios from 'axios'  
+    import {mdiGenderMale, mdiGenderFemale} from '@mdi/js'
     export default {
         name: 'home',
         data(){ 
             return{
+                mdiFaceMan:mdiGenderMale,
+                mdiFaceWoman:mdiGenderFemale,
                 data: [],
                 dialog:false,
                 headers: [
                     { text: this.$t('Name'), align: 'start', sortable: true, value: 'name'},
                     { text: this.$t('Surname'), value: 'surname' },
                     { text: this.$t('Second surname'), value: 'surname2' },
-                    { text: this.$t('Birth date'), value: 'birth' },
-                    { text: this.$t('Information'), value: 'information', sortable: false },
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { text: this.$t('Birth date'), value: 'birth' ,width:"10%"},
+                    { text: this.$t('Information'), value: 'information', sortable: false,
+  width: "30%"  },
+                    { text: this.$t('Actions'), value: 'actions', sortable: false , width: "7%"},
                     ],
                 canclick:true,
                 search:this.$store.state.lastsearch,
@@ -79,6 +82,7 @@
                 axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
+                    console.log(response.data)
                     this.data= response.data;
                     this.canclick=true;
                 }, (error) => {
