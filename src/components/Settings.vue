@@ -7,7 +7,7 @@
                 <v-card class="mx-auto padding" max-width="40%">
                     <v-card-title>{{ $t("Select your envelope size")}}</v-card-title>
                     <v-text-field v-model="envelope_width" type="number" :label="$t('Envelope width')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
-                    <v-text-field v-model="envelope_height" type="number" :label="$t('Envelope height   ')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
+                    <v-text-field v-model="envelope_height" type="number" :label="$t('Envelope height')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="primary" @click="save_settings()" :disabled="!form_valid">{{ $t("Save settings")}}</v-btn>
@@ -29,7 +29,7 @@
                 envelope_width: 22,
                 RulesNumberRequired5: [
                     v => !!v || this.$t('Number is required'),
-                    v => (v && v<100) || this.$t("It's a number to big"),
+                    v => (v && v<100) || this.$t("It's a number too big"),
                     v => (v && !isNaN(parseFloat(v))) || this.$t('Must be a number'),
                 ],
             }

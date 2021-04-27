@@ -30,7 +30,7 @@
         <v-row class="padding"> 
             <v-card-actions >
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members ") }}</v-btn>
+                <v-btn color="primary" @click.native="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members") }}</v-btn>
                 <v-btn color="primary" @click.native="generateBirthdayCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate birthday calendar") }}</v-btn>
                 <v-btn color="primary" @click.native="dlgAddMembers = true" :disabled="group=='' || !loaded">{{ $t("Add members to group") }}</v-btn>
             </v-card-actions>            
