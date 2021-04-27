@@ -55,6 +55,7 @@
                         this.vuex_update_catalogs();
                         this.dialog=false;
                         this.$refs.form.reset()
+                        this.$router.push({name:'home'})
                     }
                 }, (error) => {
                     this.parseResponseError(error)

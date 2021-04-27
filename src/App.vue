@@ -13,45 +13,52 @@
 
                     <v-divider></v-divider>
                 
-                
                     <v-list-item link router :to="{ name: 'home'}">
-                        <v-list-item-icon><v-icon>mdi-home</v-icon></v-list-item-icon>
+                        <v-list-item-icon><v-icon color="#757575;">mdi-home</v-icon></v-list-item-icon>
                         <v-list-item-title>Home</v-list-item-title>
                     </v-list-item>
 
-                    <v-list-group :value="false" prepend-icon="mdi-account-circle">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
-                        </template>
+                    <div v-if="this.$store.state.logged">
+                        <v-list-group :value="false" prepend-icon="mdi-account-circle">
+                            <template v-slot:activator>
+                                <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
+                            </template>
 
-                        <v-list-item link  router :to="{ name: 'person_add'}">
-                            <v-list-item-title>{{ $t("Add contact") }}</v-list-item-title>
-                            <v-list-item-icon><v-icon>mdi-add</v-icon></v-list-item-icon>
+                            <v-list-item link  router :to="{ name: 'person_add'}">
+                                <v-list-item-title>{{ $t("Add contact") }}</v-list-item-title>
+                                <v-list-item-icon><v-icon>mdi-add</v-icon></v-list-item-icon>
+                            </v-list-item>
+                        </v-list-group>
+
+                        <v-list-group :value="false" prepend-icon="mdi-account-supervisor-circle">
+                            <template v-slot:activator>
+                                <v-list-item-title>{{ $t("Groups") }}</v-list-item-title>
+                            </template>
+
+                            <v-list-item link  router :to="{ name: 'group_members'}">
+                                <v-list-item-title class="mr-7">{{ $t("Members") }}</v-list-item-title>
+                                <v-list-item-icon><v-icon></v-icon></v-list-item-icon>
+                            </v-list-item>
+                        </v-list-group>
+                        
+                        
+                        <v-list-item link router :to="{ name: 'settings'}">
+                            <v-list-item-icon><v-icon color="#757575;">mdi-cog</v-icon></v-list-item-icon>
+                            <v-list-item-title>{{ $t("Settings") }}</v-list-item-title>
                         </v-list-item>
-                    </v-list-group>
+                        
+                        <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
+                            <template v-slot:activator>
+                                <v-list-item-title>{{ $t("Help") }}</v-list-item-title>
+                            </template>
 
-                    <v-list-group :value="false" prepend-icon="mdi-account-supervisor-circle">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Groups") }}</v-list-item-title>
-                        </template>
-
-                        <v-list-item link  router :to="{ name: 'group_members'}">
-                            <v-list-item-title class="mr-7">{{ $t("Members") }}</v-list-item-title>
-                            <v-list-item-icon><v-icon></v-icon></v-list-item-icon>
-                        </v-list-item>
-                    </v-list-group>
-                    
-                    <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Help") }}</v-list-item-title>
-                        </template>
-
-                        <v-list-item link  router :to="{ name: 'about'}">
-                            <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Vip Contacts Github') }}</v-list-item-title></v-list-item>
-                        <v-list-item key="2" href="https://github.com/turulomio/django_vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Django Vip Contacts Github') }}</v-list-item-title></v-list-item>
-                    </v-list-group>
+                            <v-list-item link  router :to="{ name: 'about'}">
+                                <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item key="1" href="https://github.com/turulomio/vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Vip Contacts Github') }}</v-list-item-title></v-list-item>
+                            <v-list-item key="2" href="https://github.com/turulomio/django_vipcontacts/" target="_blank"><v-list-item-title>{{ $t('Django Vip Contacts Github') }}</v-list-item-title></v-list-item>
+                        </v-list-group>
+                    </div>
                 </v-list>
             </v-card>
         </v-navigation-drawer>

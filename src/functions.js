@@ -177,6 +177,14 @@ export function parseResponse(response){
     }
 }
 
+export function getLocalStorage(key, default_){
+    if (localStorage.getItem(key)){
+        return localStorage.getItem(key)
+    } else {
+        return default_
+    }
+    
+}
 
 export function parseResponseError(error){
     if (error.response) {
@@ -203,6 +211,7 @@ export function parseResponseError(error){
         console.log('Error', error.message);
     }
 }
+
 
 
 // export function myaxios (type, url){

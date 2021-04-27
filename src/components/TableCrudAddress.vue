@@ -184,15 +184,18 @@
                     var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
                     doc.text(textOffset, y, text);
                 }
+
+                var height=this.getLocalStorage("envelope_height", 11)
+                var width=this.getLocalStorage("envelope_width", 22)
                 const doc = new jsPDF({
                     orientation: "landscape",
                     unit: "cm",
-                    format: [11, 22]
+                    format: [height, width]
                 });
-                centeredText(this.fullName(this.person), 6);
-                centeredText(item.address, 7);
-                centeredText(`${item.code} ${item.city}`, 8)
-                centeredText(this.CountryName(item.country), 9)
+                centeredText(this.fullName(this.person), height*6/11);
+                centeredText(item.address, height*7/11);
+                centeredText(`${item.code} ${item.city}`, height*8/11)
+                centeredText(this.CountryName(item.country), height*9/11)
                 doc.save(`${this.fullName(this.person)}.pdf`);
             },
             googleMaps(item){

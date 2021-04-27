@@ -32,31 +32,33 @@ import Home from './components/Home';
 import GroupMembers from './components/GroupMembers';
 import PersonAdd from './components/PersonAdd';
 import PersonEdit from './components/PersonEdit';
+import Settings from './components/Settings';
 
 
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
   routes: [
-    { path: `${process.env.VUE_APP_PUBLIC_PATH}/`, name: 'home', component: Home },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/home/`, name: 'home', component: Home },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/about/`, name: 'about', component: About },
-    { path: `${process.env.VUE_APP_PUBLIC_PATH}/group/members`, name: 'group_members', component: GroupMembers },
-    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/add`, name: 'person_add', component: PersonAdd },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/settings/`, name: 'settings', component: Settings },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/group/members/`, name: 'group_members', component: GroupMembers },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/add/`, name: 'person_add', component: PersonAdd },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonEdit, props: true },
   ]
 });
 
 // MIXIN GLOBAL
-import {myheaders,parseResponse,parseResponseError} from './functions.js'
+import {myheaders,parseResponse,parseResponseError,getLocalStorage} from './functions.js'
 
 Vue.mixin({
   methods: {
     myheaders,
     parseResponse,
     parseResponseError,
+    getLocalStorage,
   }
 })
-
 
 new Vue({
     i18n,
