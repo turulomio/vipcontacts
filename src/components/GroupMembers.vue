@@ -2,7 +2,7 @@
     <div>
         <h1>{{ $t("Group members") }}</h1>
         <v-card class="mx-auto padding" max-width="40%">
-        <v-card-title>{{ $t("Select your group members")}}</v-card-title>
+            <v-card-title>{{ $t("Select your group members")}}</v-card-title>
             <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" @input="refresh_members" />
             <v-switch v-model="members_switch" :label="$t('Show group members')" @change="refresh_members"/>
         </v-card> 
@@ -202,9 +202,3 @@
         }
     }
 </script>
-<style scoped>
-.padding{
-    padding-left:30px;
-    padding-right:30px;
-}
-</style>

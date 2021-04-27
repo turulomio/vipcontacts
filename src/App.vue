@@ -122,5 +122,11 @@ h1 {
 SwitchLanguages{
     vertical-align:center;
 }
+
+
+.padding{
+    padding-left:30px;
+    padding-right:30px;
+}
 </style>
 

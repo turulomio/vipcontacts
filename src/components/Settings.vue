@@ -4,17 +4,16 @@
             <h1>{{ $t("Settings") }}</h1>
             
             <v-form ref="form" v-model="form_valid" lazy-validation >
-                <v-container style="width:20%">
-                    <v-card>
-                        <v-text-field v-model="envelope_width" type="number" :label="$t('Envelope width')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
-                        <v-text-field v-model="envelope_height" type="number" :label="$t('Envelope height   ')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
-                        <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="primary" @click="save_settings()" :disabled="!form_valid">{{ $t("Save settings")}}</v-btn>
-                            <v-btn color="error" @click="$router.push({name: 'home'})">{{ $t("Cancel")}}</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-container>
+                <v-card class="mx-auto padding" max-width="40%">
+                    <v-card-title>{{ $t("Select your envelope size")}}</v-card-title>
+                    <v-text-field v-model="envelope_width" type="number" :label="$t('Envelope width')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
+                    <v-text-field v-model="envelope_height" type="number" :label="$t('Envelope height   ')" :placeholder="$t('Enter a number')" :suffix="$t('cm')" :rules="RulesNumberRequired5"></v-text-field>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" @click="save_settings()" :disabled="!form_valid">{{ $t("Save settings")}}</v-btn>
+                        <v-btn color="error" @click="$router.push({name: 'home'})">{{ $t("Cancel")}}</v-btn>
+                    </v-card-actions>
+                </v-card>
             </v-form>
         </div>
     </div>
