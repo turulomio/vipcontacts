@@ -1,41 +1,45 @@
 <template>
-    <div>
-        <h1>{{ $t("About") }}</h1>
-        <h2>{{ this.$store.state.version }}</h2>
-        <p class="text-justify">{{ $t("This project is in _link_", link="<a href="https://github.com/turulomio/vipcontacts">Github</a>") }}</p>
+    <div class="paragraph">
+        <h1>{{ $t(`About Vip Contacts`) }}</h1>
+        <h2>{{ `${$store.state.version} (${$store.state.versiondate.toISOString().slice(0,10)})` }}</h2>
         
-        <p class="text-justify">{{ $t("Language flags are from country-flags project (https://github.com/hampusborgos/country-flags)")}}
-        <p>{{ $t('message') }}</p>
-        <p>{{ $t('hola') }}</p>
-        <p>{{ $t('hola inside') }}</p>
-        <p>{{ $t('This is a text') }}</p>
-        <p>{{ $t('company', {company: "Google"}) }}</p>
-        <p>{{ $tc('number messages', 0) }}</p>
-        <p>{{ $tc('number messages', 1) }}</p>
-        <p>{{ $tc('number messages', 22) }}</p>
+        <v-container  class="paragraph">
+            <p>{{ $t("Vip Contacts is a contact management application") }}<p>
+            
+            <p class="paragraph" ref="github"></p>
+            <p class="paragraph">{{ $t("Main features:") }}</p>
+            
+            <ul class="paragraph">
+                <li>{{ $t("Address suport where you can print your envelopes.") }}</li>
+                <li>{{ $t("Address links to Google Maps position.") }}</li>
+        </ul>
+        </v-container>
     </div>
 </template>
 
 <script>
     export default {
         name: 'About',
-/*        data(){
+        data(){
             return {
-                version: this.$store.state.version,
             }
-        },  */
-//         created(){
-//             this.version=
-//         }
+        },
+        mounted(){
+            console.log(this.$refs)
+            console.log(this.$refs.github)
+            console.log(this.$refs.github.innerHTML)
+            this.$refs.github.innerHTML=this.$t("Project main page is located in Github , where you can help me coding or translating to different languages.").replace("Github",'<a href="https://github.com/turulomio/vipcontacts">Github</a>')
+        }
     }
 </script>
-<i18n>
-{
-  "en": {
-    "hola inside": "Hello i18n in SFC!"
-  },
-  "es": {
-    "hola inside": "Hola i18n desde dentro SFC!"
-  }
+<style>
+h2 {
+    text-align: center;
+    font-weight: normal;
 }
-</i18n>
+
+paragraph{
+    text-align:justify;
+    padding: 30px;
+}
+</style>

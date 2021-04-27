@@ -13,23 +13,23 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-  state: {
-    token:null,
-    logged:false,
-    version: "0.3.0",
-    versiondate: new Date(2021, 4, 23, 9, 22),
-    apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
-    publicPath: process.env.VUE_APP_PUBLIC_PATH,
-    catalogs: {
-        addresstype: [],
-        countries: [],
-        persongender: [],
-        mailtype: [],
-        phonetype: [],
-        logtype: [],
+    state: {
+        token:null,
+        logged:false,
+        version: "0.3.0",
+        versiondate: new Date(2021, 3, 23, 9, 22),
+        apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
+        publicPath: process.env.VUE_APP_PUBLIC_PATH,
+        catalogs: {
+            addresstype: [],
+            countries: [],
+            persongender: [],
+            mailtype: [],
+            phonetype: [],
+            logtype: [],
+        },
+        lastsearch: "",
     },
-    lastsearch: "",
-  },
 })
 import About from './components/about';
 import Home from './components/Home';
