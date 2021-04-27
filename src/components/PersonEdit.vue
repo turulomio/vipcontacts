@@ -221,7 +221,6 @@
                     birth: this.person.birth,
                     death: this.person.death,
                 }
-                console.log(this.original)
             },
             PersonEdit_refreshKey(){
                 this.refreshKey=this.refreshKey+1;

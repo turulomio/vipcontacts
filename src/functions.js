@@ -87,9 +87,7 @@ export function vuex_update_catalogs(){
         this.$store.state.catalogs.phonetype= sortObjectsArray(response.data.actions.POST.phone.child.children.retypes.choices, "display_name")
         this.$store.state.catalogs.logtype= sortObjectsArray(response.data.actions.POST.log.child.children.retypes.choices, "display_name")
         this.$store.state.catalogs.relationshiptype=sortObjectsArray(response.data.actions.POST.relationship.child.children.retypes.choices, "display_name")
-        console.log(this.$store.state.catalogs.relationshiptype)
         console.log("Updated catalogs")
-        console.log(this.$store.state)
         return
     }, (error) => {
         this.parseResponseError(error)
@@ -161,14 +159,12 @@ export function sortObjectsArray(objectsArray, sortKey)
 // returns true if everything is ok
 // return false if there is something wrong
 export function parseResponse(response){
-    console.dir(response)
     if (response.status==200){ //Good connection
         if (response.data == "Invalid user" || response.data == "Wrong password"){
             this.$store.state.token=null;
             this.$store.state.logged=false;
             if (this.$router.currentRoute.name != "home") this.$router.push("home")
             alert(response.data)
-            console.log(response.data)
             return false
         }
         return true

@@ -29,9 +29,6 @@
             }
         },
         mounted(){
-            console.log(this.$refs)
-            console.log(this.$refs.github)
-            console.log(this.$refs.github.innerHTML)
             this.$refs.github.innerHTML=this.$t("Project main page is located in Github , where you can help me coding or translating to different languages.").replace("Github",'<a href="https://github.com/turulomio/vipcontacts">Github</a>')
         }
     }
