@@ -27,6 +27,7 @@ export const store = new Vuex.Store({
             mailtype: [],
             phonetype: [],
             logtype: [],
+            mimetype:[],
         },
         lastsearch: "",
     },

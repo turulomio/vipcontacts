@@ -47,6 +47,7 @@
                     <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}<v-badge v-show="badge_number('job')>0" color="grey" class="ml-2" :content="badge_number('job')"/></v-tab>
                     <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}<v-badge v-show="badge_number('relationship')>0" color="grey" class="ml-2" :content="badge_number('relationship')"/></v-tab>
                     <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}<v-badge v-show="badge_number('group')>0" color="grey" class="ml-2" :content="badge_number('group')"/></v-tab>
+                    <v-tab key="Media"><v-icon small style="margin:6px">mdi-folder-multiple-image</v-icon>{{ $t("Media")}}<v-badge v-show="badge_number('media')>0"  color="grey" class="ml-2" :content="badge_number('media')"/></v-tab>
                     <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}<v-badge v-show="badge_number('log')>0"  color="grey" class="ml-2" :content="badge_number('log')"/></v-tab>
                     <v-tabs-slider color="yellow"></v-tabs-slider>
                 </v-tabs>
@@ -87,6 +88,11 @@
                             <TableCrudGroup :person="this.person" :key="refreshKey" @cruded="after_crud"/>
                         </v-card>
                     </v-tab-item>
+                    <v-tab-item key="Media">
+                        <v-card flat>
+                            <TableCrudBlob :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                        </v-card>
+                    </v-tab-item>
                     <v-tab-item key="Logs">
                         <v-card flat>
                             <TableCrudLog :person="this.person" :key="refreshKey" @cruded="after_crud"/>
@@ -114,6 +120,7 @@
     import axios from 'axios'
     import TableCrudAlias from './TableCrudAlias';
     import TableCrudAddress from './TableCrudAddress';
+    import TableCrudBlob from './TableCrudBlob';
     import TableCrudGroup from './TableCrudGroup';
     import TableCrudJob from './TableCrudJob';
     import TableCrudLog from './TableCrudLog';
@@ -127,6 +134,7 @@
         components: {
             TableCrudAlias,
             TableCrudAddress,
+            TableCrudBlob,
             TableCrudMail,
             TableCrudPhone,
             TableCrudJob,

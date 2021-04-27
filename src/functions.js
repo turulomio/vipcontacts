@@ -87,6 +87,7 @@ export function vuex_update_catalogs(){
         this.$store.state.catalogs.phonetype= sortObjectsArray(response.data.actions.POST.phone.child.children.retypes.choices, "display_name")
         this.$store.state.catalogs.logtype= sortObjectsArray(response.data.actions.POST.log.child.children.retypes.choices, "display_name")
         this.$store.state.catalogs.relationshiptype=sortObjectsArray(response.data.actions.POST.relationship.child.children.retypes.choices, "display_name")
+        this.$store.state.catalogs.mimetype= sortObjectsArray(response.data.actions.POST.blob.child.children.mime.choices, "display_name")
         console.log("Updated catalogs")
         return
     }, (error) => {
