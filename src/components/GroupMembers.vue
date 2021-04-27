@@ -1,10 +1,15 @@
 <template>
     <div>
         <h1>{{ $t("GroupMembers") }}</h1>
-        <v-row class="padding">
+        <v-card 
+    class="mx-auto" max-width="40%">
+    <v-card-title>{{ $t("Select your group members")}}</v-card-title>
+        <v-col class="padding">
             <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" @input="refresh_members" />
             <v-switch v-model="members_switch" :label="$t('Show group members')" @change="refresh_members"/>
-        </v-row>
+        </v-col>
+        </v-card> 
+        <br>
 
         <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1 padding" enabled="i">
             <template v-slot:[`item.actions`]="{ item }">
