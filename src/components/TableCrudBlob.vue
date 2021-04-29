@@ -5,7 +5,7 @@
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.blob`]="{ item }">
-                {{ showImage(item)}}
+                <img :src="`data:image/png;base64,${item.blob}`" width="24" height="24" />
             </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -23,7 +23,7 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
             
-            <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')" @change="onFilePicked" />
+            <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')"/>
             <v-select :items="this.$store.state.catalogs.mimetype" v-model="selected.mime" :label="$t('Select a mime')"  item-text="display_name" item-value="value"  ></v-select>  
 
             <AutoCompleteApiOneField v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
@@ -79,7 +79,7 @@
             addItem(){
                 this.selected={
                     dt_update: new Date(),
-                    dt_obsolete: null,
+                    dt_obsolete: '',
                     person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
                     name: null,
                     mime: null,
@@ -91,20 +91,20 @@
             },
             acceptAddition(){
                 let data = new FormData(); // creates a new FormData object
-                data.append('dt_update', "2021-04-17T06:22:30.348856Z"); // add your file to form data
-                data.append('dt_obsolete', "2021-04-17T06:22:30.348856Z"); // add your file to form data
+                data.append('dt_update', this.selected.dt_update.toISOString()); // add your file to form data
+                data.append('dt_obsolete', this.selected.dt_obsolete); // add your file to form data
                 data.append('person', this.selected.person); // add your file to form data
                 data.append('name', this.selected.name); // add your file to form data
                 data.append('mime', this.selected.mime); // add your file to form data
                 data.append('blob', this.selected.blob); // add your file to form data
                 data.append('photocontact', this.selected.photocontact); // add your file to form data
                 console.log(this.selected)
-                axios.post(`${this.$store.state.apiroot}/api/blobpost/`, data, this.myheaders_formdata())
+                axios.post(`${this.$store.state.apiroot}/api/blob/`, data, this.myheaders_formdata())
                 .then((response) => {
                     this.parseResponse(response)
 //                     this.selected=response.data; //To get id
                     console.log(response.data)
-                    this.tableData.push(this.selected);
+//                     this.tableData.push(this.selected);
                     this.$emit('person')
                     this.dialog=false;
                     this.TableCrudBlob_refreshKey();
@@ -144,7 +144,7 @@
                 if(r == false) {
                     return;
                 }  
-                axios.delete(item.ur, this.myheaders())
+                axios.delete(item.url, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     console.log(response);
@@ -181,20 +181,11 @@
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudBlob RefreshKey to ${this.refreshKey}`)
             },    
-//             onFilePicked(e) {
-//                 console.log(e)
-//                 console.dir(e)
-//                 const fr = new FileReader()
-//                 fr.readAsDataURL(e)
-//                 fr.addEventListener('load', () => {
-//                     this.blob_string=fr.result
-//                     console.log(this.blob_string)
-//                     }
-//                 )
-//             },
-            showImage(item){
-                console.log(item)
-            }
+//             showImage(item){
+//                 console.log(item)
+//                 
+//                 return item.
+//             }
         },
         
         created() {           
