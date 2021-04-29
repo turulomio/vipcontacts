@@ -58,11 +58,12 @@ const router = new VueRouter({
 });
 
 // MIXIN GLOBAL
-import {myheaders,parseResponse,parseResponseError,getLocalStorage} from './functions.js'
+import {myheaders,parseResponse,parseResponseError,getLocalStorage,myheaders_formdata} from './functions.js'
 
 Vue.mixin({
   methods: {
     myheaders,
+    myheaders_formdata,
     parseResponse,
     parseResponseError,
     getLocalStorage,

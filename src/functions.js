@@ -76,6 +76,15 @@ export function myheaders(){
         }
     }
 }
+export function myheaders_formdata(){
+    return {
+        headers:{
+            'Authorization': `Token ${this.$store.state.token}`,
+            'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+}
 
 export function vuex_update_catalogs(){   
     axios.options(`${this.$store.state.apiroot}/api/persons/`, this.myheaders())

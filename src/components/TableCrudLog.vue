@@ -91,7 +91,7 @@
                 this.selected={
                     text: "",
                     datetime: new Date(),
-                    person: `http://192.168.1.100:8001/api/persons/${this.person.id}/`,
+                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
                     retypes: 100,
                 };
                 this.dialog=true;

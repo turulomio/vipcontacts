@@ -1,9 +1,12 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
-              <template v-slot:[`item.dt_update`]="{ item }">
+            <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
-                </template>
+            </template>
+            <template v-slot:[`item.blob`]="{ item }">
+                {{ showImage(item)}}
+            </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -20,7 +23,7 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
             
-            <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')" />
+            <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')" @change="onFilePicked" />
             <v-select :items="this.$store.state.catalogs.mimetype" v-model="selected.mime" :label="$t('Select a mime')"  item-text="display_name" item-value="value"  ></v-select>  
 
             <AutoCompleteApiOneField v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
@@ -55,6 +58,7 @@
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
                     { text: this.$t('Name'),  sortable: true, value: 'name'},
                     { text: this.$t('Type'),  sortable: true, value: 'mime'},
+                    { text: this.$t('Media'),  sortable: true, value: 'blob'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.blob,
@@ -62,6 +66,7 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
+                blob_string: null,
                 blob_names:[],
                 RulesTextRequired100: [
                     v => !!v || this.$t('Text is required'),
@@ -73,30 +78,36 @@
             localtime,
             addItem(){
                 this.selected={
-                    name: null,
-                    dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `http://192.168.1.100:8001/api/blob/${this.person.id}/`,
-                    mime: 0,
+                    dt_obsolete: null,
+                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
+                    name: null,
+                    mime: null,
+                    blob: null,
+                    photocontact: false,
                 };
                 this.dialog=true;
                 this.isEdition=false;
             },
             acceptAddition(){
-                this.selected.dt_update=new Date();
-                console.log("DESTINTY")
-                console.log(this.selected.destiny)
-                console.log("ADDTITON")
+                let data = new FormData(); // creates a new FormData object
+                data.append('dt_update', "2021-04-17T06:22:30.348856Z"); // add your file to form data
+                data.append('dt_obsolete', "2021-04-17T06:22:30.348856Z"); // add your file to form data
+                data.append('person', this.selected.person); // add your file to form data
+                data.append('name', this.selected.name); // add your file to form data
+                data.append('mime', this.selected.mime); // add your file to form data
+                data.append('blob', this.selected.blob); // add your file to form data
+                data.append('photocontact', this.selected.photocontact); // add your file to form data
                 console.log(this.selected)
-                axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
+                axios.post(`${this.$store.state.apiroot}/api/blobpost/`, data, this.myheaders_formdata())
                 .then((response) => {
-                    this.selected=response.data; //To get id
+                    this.parseResponse(response)
+//                     this.selected=response.data; //To get id
+                    console.log(response.data)
                     this.tableData.push(this.selected);
                     this.$emit('person')
                     this.dialog=false;
-                    this.TableCrudRelationship_refreshKey();
-                    
-                    this.updateRelationshipNames()     
+                    this.TableCrudBlob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -113,12 +124,12 @@
                 this.selected.dt_update=new Date();
                 axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
+                    this.parseResponse(response)
                     console.log(response.data);
                     this.selected=response.data;
                     this.$emit("person")
                     this.dialog=false;
-                    this.TableCrudRelationship_refreshKey();
-                    this.updateRelationshipNames()    
+                    this.TableCrudBlob_refreshKey(); 
                     this.$emit('cruded') 
                 }, (error) => {
                     this.parseResponseError(error)
@@ -135,10 +146,11 @@
                 }  
                 axios.delete(item.ur, this.myheaders())
                 .then((response) => {
+                    this.parseResponse(response)
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableCrudRelationship_refreshKey();
+                    this.TableCrudBlob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -153,8 +165,9 @@
                 }
                 axios.put(item.url, item, this.myheaders())
                 .then((response) => {
+                    this.parseResponse(response)
                     console.log(response.data);
-                    this.TableCrudRelationship_refreshKey();
+                    this.TableCrudBlob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -164,25 +177,27 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            TableCrudRelationship_refreshKey(){
+            TableCrudBlob_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudRelationship RefreshKey to ${this.refreshKey}`)
-            },
-            showBlobName(item){
-                const o = this.blob_names.filter(x => `${this.$store.state.apiroot}/api/persons/${x.id}/`==item.destiny)
-                if (o.length>0){
-                    return o[0].name
-                }
-                else {
-                    return ""
-                }
-            
-            },
+                console.log(`Updating TableCrudBlob RefreshKey to ${this.refreshKey}`)
+            },    
+//             onFilePicked(e) {
+//                 console.log(e)
+//                 console.dir(e)
+//                 const fr = new FileReader()
+//                 fr.readAsDataURL(e)
+//                 fr.addEventListener('load', () => {
+//                     this.blob_string=fr.result
+//                     console.log(this.blob_string)
+//                     }
+//                 )
+//             },
+            showImage(item){
+                console.log(item)
+            }
         },
         
         created() {           
         }
     }
 </script>
-<style scoped>
-</style>

@@ -75,7 +75,7 @@
                     title: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `http://192.168.1.100:8001/api/persons/${this.person.id}/`,
+                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
                 };
                 this.dialog=true;
                 this.isEdition=false;
