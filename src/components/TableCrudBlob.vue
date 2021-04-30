@@ -5,37 +5,52 @@
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.blob`]="{ item }">
-                <img :src="`data:image/png;base64,${item.blob}`" width="24" height="24" />
+                <img :src="`data:${item.mime};base64,${item.blob}`" width="24" height="24" v-if="canBeViewed(item)" @click="showCarrusel" />
             </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon small class="mr-2" @click="downloadItem(item)">mdi-cloud-download</v-icon>
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}</v-btn>
+        <v-btn color="primary" @click="showCarrusel()" >{{ $t('Carrusel') }}</v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
-        <v-card  class="login">
-            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
-            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
-            
-            <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')"/>
-            <v-select :items="this.$store.state.catalogs.mimetype" v-model="selected.mime" :label="$t('Select a mime')"  item-text="display_name" item-value="value"  ></v-select>  
+            <v-card  class="login">
+                <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
+                <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
+                
+                <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')" v-if ="isEdition==false"/>
+                <v-select :items="this.$store.state.catalogs.mimetype" v-model="selected.mime" :label="$t('Select a mime')"  item-text="display_name" item-value="value"  ></v-select>  
 
-            <AutoCompleteApiOneField v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
-            
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
-                <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+                <AutoCompleteApiOneField v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
+                
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                    <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                    <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        
+<!--         DIALOG CARRUSEL -->
+        <v-dialog v-model="dialog_carrusel" max-width="800">
+            <v-carousel height="auto">
+                <v-carousel-item
+                v-for="(item,i) in carrusel"
+                :key="i"
+                :src="item.src"
+                reverse-transition="fade-transition"
+                transition="fade-transition"
+                ></v-carousel-item>
+            </v-carousel>
+        </v-dialog>
     </div>
 
 </template>
@@ -65,6 +80,8 @@
                 vShowObsolete:false,
                 isEdition: true,
                 dialog: false,
+                dialog_carrusel: false,
+                carrusel:[],
                 selected: {},
                 blob_string: null,
                 blob_names:[],
@@ -98,13 +115,10 @@
                 data.append('mime', this.selected.mime); // add your file to form data
                 data.append('blob', this.selected.blob); // add your file to form data
                 data.append('photocontact', this.selected.photocontact); // add your file to form data
-                console.log(this.selected)
                 axios.post(`${this.$store.state.apiroot}/api/blob/`, data, this.myheaders_formdata())
                 .then((response) => {
                     this.parseResponse(response)
-//                     this.selected=response.data; //To get id
                     console.log(response.data)
-//                     this.tableData.push(this.selected);
                     this.$emit('person')
                     this.dialog=false;
                     this.TableCrudBlob_refreshKey();
@@ -121,12 +135,18 @@
                 this.isEdition=true;
             },
             acceptEdition(){
-                this.selected.dt_update=new Date();
-                axios.put(this.selected.url, this.selected, this.myheaders())
+                //Doesn't change blob only update metadata
+                let data = new FormData(); // creates a new FormData object
+                data.append('dt_update', new Date().toISOString()); // add your file to form data
+                data.append('dt_obsolete', this.selected.dt_obsolete||""); // add your file to form data
+                data.append('person', this.selected.person); // add your file to form data
+                data.append('name', this.selected.name); // add your file to form data
+                data.append('mime', this.selected.mime); // add your file to form data
+                data.append('photocontact', this.selected.photocontact); // add your file to form data
+                axios.put(this.selected.url, data, this.myheaders_formdata())
                 .then((response) => {
                     this.parseResponse(response)
                     console.log(response.data);
-                    this.selected=response.data;
                     this.$emit("person")
                     this.dialog=false;
                     this.TableCrudBlob_refreshKey(); 
@@ -181,11 +201,23 @@
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudBlob RefreshKey to ${this.refreshKey}`)
             },    
-//             showImage(item){
-//                 console.log(item)
-//                 
-//                 return item.
-//             }
+            canBeViewed(item){
+                if (item.mime=="image/png" || item.mime=="image/jpeg") return true
+                return false
+            },
+            downloadItem(item){
+                const linkSource = `data:${item.mime};base64,${item.blob}`
+                const downloadLink = document.createElement("a");
+                downloadLink.href = linkSource;
+                downloadLink.download = item.name;
+                downloadLink.click();
+            },
+            showCarrusel(){
+                this.carrusel=this.person.blob.filter(o => o.mime.includes("image")).map(function(o){
+                    return {src:`data:${o.mime};base64,${o.blob}`}
+                })
+                this.dialog_carrusel=true
+            }
         },
         
         created() {           

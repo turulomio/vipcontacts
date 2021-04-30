@@ -178,6 +178,10 @@ export function parseResponse(response){
             return false
         }
         return true
+    } else if (response.status==201){// Created
+        
+    } else if (response.status==204){// Deleted
+        
     } else {
         alert (`${response.status}: ${response.data}`)
         return false
