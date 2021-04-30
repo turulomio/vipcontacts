@@ -22,12 +22,17 @@
                     </v-row>
                 <br>
 
-                <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1" enabled="i">
+                <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1">
                     <template v-slot:[`item.name`]="{ item }">
-                         
                         <v-icon small class="mr-2" v-if="item.gender==1" >{{mdiFaceWoman}}</v-icon>
                         <v-icon small class="mr-2" v-if="item.gender==0" >{{mdiFaceMan}}</v-icon>
                         {{item.name}}
+                    </template>
+                    <template v-slot:[`item.birth`]="{ item }">
+                        <div class="text-no-wrap">
+                            <v-icon small v-if="item.death!=null" >{{mdiCross}}</v-icon>
+                            {{item.birth}}
+                        </div>
                     </template>
                     <template v-slot:[`item.information`]="{ item }">
                          <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2">{{ chip }}</v-chip>
@@ -42,13 +47,14 @@
 </template>
 <script>
     import axios from 'axios'  
-    import {mdiGenderMale, mdiGenderFemale} from '@mdi/js'
+    import {mdiGenderMale, mdiGenderFemale, mdiChristianity} from '@mdi/js'
     export default {
         name: 'home',
         data(){ 
             return{
                 mdiFaceMan:mdiGenderMale,
                 mdiFaceWoman:mdiGenderFemale,
+                mdiCross: mdiChristianity,
                 data: [],
                 dialog:false,
                 headers: [
