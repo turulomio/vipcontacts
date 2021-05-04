@@ -11,8 +11,8 @@
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addAlias()" >{{ $t('Add alias') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
     </div>
 
 </template>
@@ -22,13 +22,13 @@
     import {localtime} from '../functions.js'
     export default {
         name: 'TableCrudAlias',
-        props: ['person'],
+        props: ['person','obsolete'],
         data () {
             return {
                 refreshKey:0,
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true,            filter: value => {
+                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {
                         if (value==null){
                             return true;
                         } else if ( this.vShowObsolete==true) {

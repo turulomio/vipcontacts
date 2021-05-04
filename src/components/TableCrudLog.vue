@@ -13,8 +13,8 @@
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add log') }}</v-btn>
-        <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==false">{{ $t('Show automatic logs') }}</v-btn>
-        <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==true">{{ $t('Hide automatic logs') }}</v-btn>
+        <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==false">{{ $t('Show automatic logs') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==true">{{ $t('Hide automatic logs') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
@@ -46,7 +46,7 @@
     import {localtime, LogTypeName} from '../functions.js'
     export default {
         name: 'TableCrudLog',
-        props: ['person'],
+        props: ['person','obsolete'],
         data () {
             return {
                 refreshKey:0,

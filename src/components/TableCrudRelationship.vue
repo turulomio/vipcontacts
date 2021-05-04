@@ -17,8 +17,8 @@
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add relationship') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
@@ -51,7 +51,7 @@
         components: {
             SelectPersons,
         },
-        props: ['person'],
+        props: ['person','obsolete'],
         data () {
             return {
                 refreshKey:0,

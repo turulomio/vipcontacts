@@ -40,62 +40,62 @@
         <div class="tabs login">
             <v-card>
                 <v-tabs  background-color="primary" dark v-model="tab" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
-                    <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}<v-badge v-show="badge_number('alias')>0" color="grey" class="ml-2" :content="badge_number('alias')"/></v-tab>
-                    <v-tab key="Mails"><v-icon small class="mr-2">mdi-mail</v-icon>{{ $t("Mails")}}<v-badge v-show="badge_number('mail')>0" color="grey" class="ml-2" :content="badge_number('mail')"/></v-tab>
-                    <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}<v-badge v-show="badge_number('phone')>0" color="grey" class="ml-2" :content="badge_number('phone')"/></v-tab>
-                    <v-tab key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}<v-badge v-show="badge_number('address')>0" color="grey" class="ml-2" :content="badge_number('address')"/></v-tab>
-                    <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}<v-badge v-show="badge_number('job')>0" color="grey" class="ml-2" :content="badge_number('job')"/></v-tab>
-                    <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}<v-badge v-show="badge_number('relationship')>0" color="grey" class="ml-2" :content="badge_number('relationship')"/></v-tab>
-                    <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}<v-badge v-show="badge_number('group')>0" color="grey" class="ml-2" :content="badge_number('group')"/></v-tab>
-                    <v-tab key="Media"><v-icon small style="margin:6px">mdi-folder-multiple-image</v-icon>{{ $t("Media")}}<v-badge v-show="badge_number('blob')>0"  color="grey" class="ml-2" :content="badge_number('blob')"/></v-tab>
-                    <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}<v-badge v-show="badge_number('log')>0"  color="grey" class="ml-2" :content="badge_number('log')"/></v-tab>
+                    <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}<v-badge v-show="badge_number('alias')>0" color="error" class="ml-2" :content="badge_number('alias')"/></v-tab>
+                    <v-tab key="Mails"><v-icon small class="mr-2">mdi-mail</v-icon>{{ $t("Mails")}}<v-badge v-show="badge_number('mail')>0" color="error" class="ml-2" :content="badge_number('mail')"/></v-tab>
+                    <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}<v-badge v-show="badge_number('phone')>0" color="error" class="ml-2" :content="badge_number('phone')"/></v-tab>
+                    <v-tab key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}<v-badge v-show="badge_number('address')>0" color="error" class="ml-2" :content="badge_number('address')"/></v-tab>
+                    <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}<v-badge v-show="badge_number('job')>0" color="error" class="ml-2" :content="badge_number('job')"/></v-tab>
+                    <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}<v-badge v-show="badge_number('relationship')>0" color="error" class="ml-2" :content="badge_number('relationship')"/></v-tab>
+                    <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}<v-badge v-show="badge_number('group')>0" color="error" class="ml-2" :content="badge_number('group')"/></v-tab>
+                    <v-tab key="Media"><v-icon small style="margin:6px">mdi-folder-multiple-image</v-icon>{{ $t("Media")}}<v-badge v-show="badge_number('blob')>0"  color="error" class="ml-2" :content="badge_number('blob')"/></v-tab>
+                    <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}<v-badge v-show="badge_number('log')>0"  color="error" class="ml-2" :content="badge_number('log')"/></v-tab>
                     <v-tabs-slider color="yellow"></v-tabs-slider>
                 </v-tabs>
                 <v-tabs-items v-model="tab">
                     <v-tab-item key="Alias">
                         <v-card flat>
-                            <TableCrudAlias :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudAlias :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
                         </v-card>
                     </v-tab-item>
                     
                     <v-tab-item key="Mails">
                         <v-card flat>
-                            <TableCrudMail :person="this.person" :key="refreshKey"  @cruded="after_crud"/>
+                            <TableCrudMail :person="this.person" :key="refreshKey"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Phones">
                         <v-card flat>
-                            <TableCrudPhone :person="this.person" :key="refreshKey"  @cruded="after_crud"/>
+                            <TableCrudPhone :person="this.person" :key="refreshKey"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Address">
                         <v-card flat>
-                            <TableCrudAddress :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudAddress :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Jobs">
                         <v-card flat>
-                            <TableCrudJob :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudJob :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Relations">
                         <v-card flat>
-                            <TableCrudRelationship :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudRelationship :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Groups">
                         <v-card flat>
-                            <TableCrudGroup :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudGroup :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Media">
                         <v-card flat>
-                            <TableCrudBlob :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudBlob :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Logs">
                         <v-card flat>
-                            <TableCrudLog :person="this.person" :key="refreshKey" @cruded="after_crud"/>
+                            <TableCrudLog :person="this.person" :key="refreshKey" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
                         </v-card>
                     </v-tab-item>
                 </v-tabs-items>
@@ -235,13 +235,27 @@
                 console.log(`Updating PersonEdit RefreshKey to ${this.refreshKey}`)
             },
             badge_number(s){
-                try {
-                    return this.person[s].length
+                try{
+                    if (s=='log'){
+                        return this.person[s].filter(p => p.retypes>=100).reduce((accum) => accum + 1, 0)
+                    } else {
+                        return this.person[s].filter(p => p.dt_obsolete==null).reduce((accum) => accum + 1, 0)
+                    }
                 } catch (error) {
                     return 0
                 }
             },
-
+            obsolete_number(s){
+                try{
+                    if (s=='log'){
+                        return this.person[s].filter(p => p.retypes<100).reduce((accum) => accum + 1, 0)
+                    } else {
+                        return this.person[s].filter(p => p.dt_obsolete!=null).reduce((accum) => accum + 1, 0)
+                    }
+                } catch (error) {
+                    return 0
+                }
+            },
             generateVcardFile(){
                 var blob = new Blob([this.generateVcardObject().getFormattedString()], { type: 'text/vcard' });
                 var link = window.document.createElement('a');
