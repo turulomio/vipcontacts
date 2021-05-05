@@ -1,8 +1,10 @@
 <template>
     <div v-show="this.$store.state.logged">
-        <div  class="login">
+        <div class="login">
             <h1>{{ $t("Statistics") }}</h1>
-            <chart-pie name="Investments by product" :items="items" height="600px"></chart-pie>
+            <v-card>
+            <chart-pie :name="$t('Vip Contacts registers')" :items="items" height="600px" :key="key"></chart-pie>
+            </v-card>
         </div>
     </div>
 </template>
@@ -17,8 +19,8 @@
         },
         data () {
             return {
-                key:0,
                 items:[],
+                key:0,
             }
         },
         methods: {
