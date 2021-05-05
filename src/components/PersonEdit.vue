@@ -210,6 +210,7 @@
                     console.log(this.person);
                     this.PersonEdit_refreshKey();
                     this.set_original()
+                    this.person_fields_have_changed()
                     return response.data;//To make syncronous
                     
                 }, (error) => {
