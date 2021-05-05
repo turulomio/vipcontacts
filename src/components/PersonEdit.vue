@@ -188,11 +188,11 @@
                 return ~~((death- birth) / (31557600000));
             },
             person_edit(){             
+                this.person.dt_update=new Date()
                 axios.put(`${this.$store.state.apiroot}/api/persons/${this.person.id}/`, this.person, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
-                    this.set_original()
-                    this.person_fields_have_changed()
+                    this.get_person()
                 }, (error) => {
                     this.parseResponseError(error)
                 });

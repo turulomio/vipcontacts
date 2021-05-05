@@ -27,6 +27,10 @@
                             <v-list-item-title>{{ $t("Add contact") }}</v-list-item-title>
                             <v-list-item-icon><v-icon>mdi-add</v-icon></v-list-item-icon>
                         </v-list-item>
+
+                        <v-list-item link  router :to="{ name: 'person_last_edited'}">
+                            <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
+                        </v-list-item>
                     </v-list-group>
 
 <!--                     GROUP -->

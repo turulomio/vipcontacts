@@ -4,68 +4,38 @@
         <br>
         <div v-show="this.$store.state.logged" class="padding">
             
-                    <v-row class="padding">
-                    <v-text-field 
-                        v-model="search" 
-                        type="text" 
-                        :counter="100"  
-                        v-bind:label="$t('String to search in contacts')" 
-                        required 
-                        autofocus
-                        v-bind:placeholder="$t('Enter search')" 
-                        v-on:keyup.enter="on_search_change()"
-                    ></v-text-field>
-                    <v-btn ref="cmdSearch" @click="on_search_change()" :disabled="!canclick" color="primary">
-                        <v-icon>mdi-search</v-icon>
-                        <span class="mr-2">{{ $t("Search") }}</span>
-                    </v-btn>    
-                    </v-row>
-                <br>
-
-                <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1">
-                    <template v-slot:[`item.name`]="{ item }">
-                        <v-icon small class="mr-2" v-if="item.gender==1" >{{mdiFaceWoman}}</v-icon>
-                        <v-icon small class="mr-2" v-if="item.gender==0" >{{mdiFaceMan}}</v-icon>
-                        {{item.name}}
-                    </template>
-                    <template v-slot:[`item.birth`]="{ item }">
-                        <div class="text-no-wrap">
-                            <v-icon small v-if="item.death!=null" >{{mdiCross}}</v-icon>
-                            {{item.birth}}
-                        </div>
-                    </template>
-                    <template v-slot:[`item.information`]="{ item }">
-                         <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2">{{ chip }}</v-chip>
-                    </template>
-                    <template v-slot:[`item.actions`]="{ item }">
-                        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-                    </template>
-                </v-data-table>
+            <v-row class="padding">
+                <v-text-field 
+                    v-model="search" 
+                    type="text" 
+                    :counter="100"  
+                    v-bind:label="$t('String to search in contacts')" 
+                    required 
+                    autofocus
+                    v-bind:placeholder="$t('Enter search')" 
+                    v-on:keyup.enter="on_search_change()"
+                ></v-text-field>
+                <v-btn ref="cmdSearch" @click="on_search_change()" :disabled="!canclick" color="primary">
+                    <v-icon>mdi-search</v-icon>
+                    <span class="mr-2">{{ $t("Search") }}</span>
+                </v-btn>    
+            </v-row>
+            <br>
+            <TablePersons :data="data"></TablePersons>
         </div>
     </div>
 </template>
 <script>
     import axios from 'axios'  
-    import {mdiGenderMale, mdiGenderFemale, mdiChristianity} from '@mdi/js'
+    import TablePersons from './TablePersons.vue'
     export default {
         name: 'home',
+        components: {
+            TablePersons
+        },
         data(){ 
             return{
-                mdiFaceMan:mdiGenderMale,
-                mdiFaceWoman:mdiGenderFemale,
-                mdiCross: mdiChristianity,
                 data: [],
-                dialog:false,
-                headers: [
-                    { text: this.$t('Name'), align: 'start', sortable: true, value: 'name'},
-                    { text: this.$t('Surname'), value: 'surname' },
-                    { text: this.$t('Second surname'), value: 'surname2' },
-                    { text: this.$t('Birth date'), value: 'birth' ,width:"10%"},
-                    { text: this.$t('Information'), value: 'information', sortable: false,
-  width: "30%"  },
-                    { text: this.$t('Actions'), value: 'actions', sortable: false , width: "7%"},
-                    ],
                 canclick:true,
                 search:this.$store.state.lastsearch,
             }
@@ -96,30 +66,6 @@
                     this.canclick=true;
                 });
             },
-            editItem (item) {
-                this.$router.replace({ name: 'person_edit', params: { "id": item.id }})
-            },
-
-            deleteItem (item) {
-               var r = confirm("Do you want to delete this item?");
-               if(r == false) {
-                  return
-               } 
-               r = confirm("The contact and all it's dependent data will be deleted. Do you want to continue?");
-               if(r == false) {
-                  return
-               } 
-                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, this.myheaders())
-                .then((response) => {
-                    console.log(response);
-                    this.on_search_change()
-                }, (error) => {
-                    this.parseResponseError(error)
-                });
-            },
-            chips(item){
-                return eval(item.search[0].chips)
-            }
         },
         created(){
             if (this.search!="" ){
