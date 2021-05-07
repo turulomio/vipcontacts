@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import AutoCompleteApiOneField from './AutoCompleteApiOneField.vue'
+    import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     import SelectPersons from './SelectPersons.vue'
     import axios from 'axios'
     import {createEvents} from 'ics'

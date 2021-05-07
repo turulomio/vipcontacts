@@ -16,4 +16,5 @@ args=parser.parse_args()
 
 if args.local==False:
     download_from_github("turulomio", "reusingcode", "vue/components/ChartPie.vue", "src/components/reusing")
+    download_from_github("turulomio", "reusingcode", "vue/components/AutoCompleteApiOneField.vue", "src/components/reusing")
 

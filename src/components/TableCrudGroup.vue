@@ -36,7 +36,7 @@
 <script>
     import axios from 'axios'
     import {localtime,} from '../functions.js'
-    import AutoCompleteApiOneField from './AutoCompleteApiOneField.vue'
+    import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudGroup',
         components: {
