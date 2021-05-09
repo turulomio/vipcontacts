@@ -6,23 +6,10 @@
             <v-text-field v-model="person.surname" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
             <v-text-field v-model="person.surname2" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
             <v-row>
-                <v-menu v-model="menu_birth" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="person.birth" :label="$t('Birth date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-                    </template>
-                    <v-date-picker v-model="person.birth" @input="menu_birth = false" ></v-date-picker>
-                </v-menu>            
-                <v-icon x-small @click="person.birth=null">mdi-backspace</v-icon>
+                <MyDatePicker v-model="person.birth" :label="$t('Birth date')"></MyDatePicker>
                 <v-spacer></v-spacer>
-                <v-menu v-model="menu_death" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="person.death" :label="$t('Death date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>                    
-                    </template>
-                    <v-date-picker v-model="person.death" @input="menu_death = false" ></v-date-picker>
-                </v-menu>
-                <v-icon x-small @click="person.death=null">mdi-backspace</v-icon>
-                <v-spacer></v-spacer>
-            
+                <MyDatePicker v-model="person.death" :label="$t('Death date')"></MyDatePicker>
+                <v-spacer></v-spacer>           
                 <v-select :items="this.$store.state.catalogs.persongender" v-model="person.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
             </v-row>
             <v-card-actions> 
@@ -35,8 +22,12 @@
 
 <script>
     import axios from 'axios'
+    import MyDatePicker from './reusing/MyDatePicker.vue'
     export default {
-        name: 'PersonAdd',
+        name: 'PersonAdd',        
+        components: {
+            MyDatePicker,
+        },
         data () {
             return {
                 person: {

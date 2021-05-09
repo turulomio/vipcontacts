@@ -10,21 +10,9 @@
             <v-text-field v-model="person.surname2" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" @input="person_fields_have_changed()"></v-text-field>
             </v-row>
             <v-row>
-                <v-menu v-model="menu_birth" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="person.birth" :label="$t('Birth date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-                    </template>
-                    <v-date-picker v-model="person.birth" @input="menu_birth = false ;person_fields_have_changed()" ></v-date-picker>
-                </v-menu>         
-                <v-icon x-small  @click="person.birth=null">mdi-backspace</v-icon>  
+                <MyDatePicker v-model="person.birth" :label="$t('Birth date')" @input="person_fields_have_changed()"></MyDatePicker>
                 <v-spacer></v-spacer>
-                <v-menu v-model="menu_death" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" offset-y min-width="auto">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="person.death" :label="$t('Death date')" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
-                    </template>
-                    <v-date-picker v-model="person.death" @input="menu_death = false;person_fields_have_changed()"></v-date-picker>
-                </v-menu>
-                <v-icon x-small @click="person.death=null">mdi-backspace</v-icon>
+                <MyDatePicker v-model="person.death" :label="$t('Death date')" @input="person_fields_have_changed()"></MyDatePicker>
                 <v-spacer></v-spacer>
                 
                 <v-select :items="this.$store.state.catalogs.persongender" v-model="person.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" @input="person_fields_have_changed()"></v-select>  
@@ -127,6 +115,7 @@
     import TableCrudMail from './TableCrudMail';
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
+    import MyDatePicker from './reusing/MyDatePicker.vue'
     import {logout, fullName, age, generateVcardObject} from '../functions.js'
     import VueQRCodeComponent from 'vue-qrcode-component'
     export default {
@@ -142,6 +131,7 @@
             TableCrudRelationship,
             TableCrudGroup,
             VueQRCodeComponent,
+            MyDatePicker,
         },
         data () {
             return {
