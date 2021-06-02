@@ -92,9 +92,9 @@
         <v-row> 
             <v-card-actions style="text-align:right">
                 <v-spacer></v-spacer>
-                <v-btn color="debug" @click.native="generateVcardFile()" >{{ $t("Export vCard") }}</v-btn>
-                <v-btn color="debug" @click.native="generateQR()" >{{ $t("Show QR") }}</v-btn>
-                <v-btn color="debug" @click.native="showSearchString" >{{ $t("Show search string") }}</v-btn>
+                <v-btn color="debug" @click="generateVcardFile()" >{{ $t("Export vCard") }}</v-btn>
+                <v-btn color="debug" @click="generateQR()" >{{ $t("Show QR") }}</v-btn>
+                <v-btn color="debug" @click="showSearchString" >{{ $t("Show search string") }}</v-btn>
             </v-card-actions>            
         </v-row>
         
@@ -248,7 +248,7 @@
                 }
             },
             generateVcardFile(){
-                var blob = new Blob([this.generateVcardObject().getFormattedString()], { type: 'text/vcard' });
+                var blob = new Blob([this.generateVcardObject(this.person).getFormattedString()], { type: 'text/vcard' });
                 var link = window.document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
                 link.download = `${this.fullName(this.person)}.vcf`
@@ -257,7 +257,7 @@
                 document.body.removeChild(link);
             },
             generateQR(){
-                const vCard=this.generateVcardObject()
+                const vCard=this.generateVcardObject(this.person)
                 console.log(vCard.getFormattedString())
                 this.qr=vCard.getFormattedString()
                 this.dialog_qr=true
