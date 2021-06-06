@@ -3,13 +3,12 @@
     <div>
         <v-data-table :headers="headers" :items="data" :sort-by="orderby" class="elevation-1">
             <template v-slot:[`item.name`]="{ item }">
-                <v-icon small class="mr-2" v-if="item.gender==1" >{{mdiFaceWoman}}</v-icon>
-                <v-icon small class="mr-2" v-if="item.gender==0" >{{mdiFaceMan}}</v-icon>
+                <v-icon small class="mr-2" >{{person_icon(item)}}</v-icon>
                 {{item.name}}
             </template>
             <template v-slot:[`item.birth`]="{ item }">
                 <div class="text-no-wrap">
-                    <v-icon small v-if="item.death!=null" >{{mdiCross}}</v-icon>
+                    <v-icon small v-if="item.death!=null" >{{mdiChristianity}}</v-icon>
                     {{item.birth}}
                 </div>
             </template>
@@ -37,9 +36,9 @@
         },
         data(){ 
             return{
-                mdiFaceMan:mdiGenderMale,
-                mdiFaceWoman:mdiGenderFemale,
-                mdiCross: mdiChristianity,
+                mdiGenderMale,
+                mdiGenderFemale,
+                mdiChristianity,
                 dialog:false,
                 headers: [
                     { text: this.$t('Name'), align: 'start', sortable: true, value: 'name'},
@@ -72,6 +71,13 @@
                 }, (error) => {
                     this.parseResponseError(error)
                 });
+            },
+            person_icon(item){
+                if (item.gender==0){
+                    return mdiGenderMale
+                } else {
+                    return mdiGenderFemale
+                }
             },
             chips(item){
                 return eval(item.search[0].chips)
