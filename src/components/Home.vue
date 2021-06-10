@@ -21,7 +21,7 @@
                 </v-btn>    
             </v-row>
             <br>
-            <TablePersons :data="data"></TablePersons>
+            <TablePersons :data="data" @chipClicked="on_chip_clicked"></TablePersons>
         </div>
     </div>
 </template>
@@ -66,6 +66,10 @@
                     this.canclick=true;
                 });
             },
+            on_chip_clicked(chip){
+                this.search=chip
+                this.on_search_change()
+            }
         },
         created(){
             if (this.search!="" ){

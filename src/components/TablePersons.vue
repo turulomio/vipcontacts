@@ -13,7 +13,7 @@
                 </div>
             </template>
             <template v-slot:[`item.information`]="{ item }">
-                    <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2">{{ chip }}</v-chip>
+                    <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -82,6 +82,9 @@
             chips(item){
                 return eval(item.search[0].chips)
             },
+            chipClicked(chip){
+                this.$emit('chipClicked', chip)
+            }
         },
     }
 </script>
