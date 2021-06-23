@@ -259,3 +259,9 @@ export function generateVcardObject(person){
     });
     return vCard
 }
+
+export function arrayobjects_to_stringofstrings(l, key){
+    var s=""
+    l.forEach(o => s=s+o[key].toString() + ", ")
+    return s.slice(0,-2)
+}

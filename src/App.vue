@@ -46,11 +46,19 @@
                     </v-list-group>
                     
 <!--                     SETTINGS -->
-                    <v-list-item link router :to="{ name: 'settings'}" v-if="this.$store.state.logged">
-                        <v-list-item-icon><v-icon color="#757575;">mdi-cog</v-icon></v-list-item-icon>
-                        <v-list-item-title>{{ $t("Settings") }}</v-list-item-title>
-                    </v-list-item>
-                    
+<!--                     ADMINISTRACION -->
+                    <v-list-group :value="false" prepend-icon="mdi-cog" v-if="this.$store.state.logged">
+                        <template v-slot:activator>
+                            <v-list-item-title>{{ $t("Settings") }}</v-list-item-title>
+                        </template>
+
+                        <v-list-item link router :to="{ name: 'settings'}" v-if="this.$store.state.logged">
+                            <v-list-item-title>{{ $t("Your settings") }}</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item link  router :to="{ name: 'administration_types'}">
+                            <v-list-item-title>{{ $t("Types") }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list-group>
 <!--                     HELP -->
                     <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
                         <template v-slot:activator>

@@ -40,6 +40,7 @@ import PersonEdit from './components/PersonEdit';
 import PersonLastEditions from './components/PersonLastEditions';
 import Settings from './components/Settings';
 import Statistics from './components/Statistics';
+import TableTypes from './components/TableTypes.vue';
 
 
 
@@ -56,6 +57,7 @@ const router = new VueRouter({
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/add/`, name: 'person_add', component: PersonAdd },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonEdit, props: true },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/lasteditions/`, name: 'person_last_edited', component: PersonLastEditions },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/administration/types/`, name: 'administration_types', component: TableTypes},
   ]
 });
 
