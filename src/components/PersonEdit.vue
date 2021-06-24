@@ -116,7 +116,7 @@
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
     import MyDatePicker from './reusing/MyDatePicker.vue'
-    import {logout, fullName, age, generateVcardObject} from '../functions.js'
+    import {logout, fullName, age_today, generateVcardObject} from '../functions.js'
     import VueQRCodeComponent from 'vue-qrcode-component'
     export default {
         name: 'PersonEdit',    
@@ -151,7 +151,7 @@
             fullNameWithAge: function (){
                 var age_string="";
                 if (this.person.birth != null && this.person.death == null){
-                    age_string=` ( ${this.age(this.person.birth)} years )`
+                    age_string=` ( ${this.age_today(this.person.birth)} years )`
                 } 
                 else if (this.person.birth == null && this.person.death != null){
                     age_string=this.$t(` ( Deceased )`)
@@ -165,7 +165,7 @@
         methods: {
             logout,
             fullName,
-            age,
+            age_today,
             generateVcardObject,
             after_crud: function() {
                 console.log("after_crud")

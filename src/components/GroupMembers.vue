@@ -32,6 +32,7 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click.native="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members") }}</v-btn>
                 <v-btn color="primary" @click.native="generateBirthdayCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate birthday calendar") }}</v-btn>
+                <v-btn color="primary" @click.native="generateDeathCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate death day calendar") }}</v-btn>
                 <v-btn color="primary" @click.native="dlgAddMembers = true" :disabled="group=='' || !loaded">{{ $t("Add members to group") }}</v-btn>
             </v-card-actions>            
         </v-row>    
@@ -56,7 +57,7 @@
     import SelectPersons from './SelectPersons.vue'
     import axios from 'axios'
     import {createEvents} from 'ics'
-    import {fullName, age, generateVcardObject} from '../functions.js'
+    import {fullName, age_in_a_date, generateVcardObject} from '../functions.js'
     export default {
         name: 'GroupMembers',
         components: {
@@ -73,6 +74,7 @@
                     { text: this.$t('Surname'), value: 'surname' },
                     { text: this.$t('Second surname'), value: 'surname2' },
                     { text: this.$t('Birth date'), value: 'birth' },
+                    { text: this.$t('Death date'), value: 'death' },
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],
                 members_switch: true,
@@ -82,7 +84,7 @@
             }
         },          
         methods: {
-            age,
+            age_in_a_date,
             fullName,
             generateVcardObject,
             refresh_members: function() {
@@ -166,28 +168,96 @@
                 document.body.removeChild(link);
             },
             generateBirthdayCalendar(){
-                var events=[
-                ]
+                var events=[]
                 var this_= this
+                
+                // ADD BIRTHDAYS FOR 5 YEARS
                 this.data.filter(o => o.birth != null).filter(o=> o.death == null).forEach(function(o) {
-                    var b=new Date(o.birth)
-                    
-                    var start =new Array (b.getFullYear(), b.getMonth()+1, b.getDate())
-                    events.push({
-                        title:this_.$t(`Birthday of ${fullName(o)} (${age(o.birth)} years)`),
-                        start: start ,
-                        end: start ,
-                        //duration: {days: 1},
-                        recurrenceRule: `FREQ=YEARLY;BYMONTH=${b.getMonth()+1};BYMONTHDAY=${b.getDate()}`
-                    })
+                    for (let i =0; i < 5; i++) {
+                        var year=new Date().getFullYear()+i
+                        var birth=new Date(o.birth)
+                        var this_year_birth= new Date(year,  birth.getMonth()+1, birth.getDate())
+                        var str_this_year_birth= this_year_birth.toISOString()
+                        var arr_this_year_birth=new Array(year,  birth.getMonth()+1, birth.getDate())
+                        events.push({
+                            title:this_.$t(`Birthday of ${fullName(o)} (${age_in_a_date(o.birth, str_this_year_birth)} years)`),
+                            start: arr_this_year_birth ,
+                            end: arr_this_year_birth ,
+                            //duration: {days: 1},
+                            //recurrenceRule: `FREQ=YEARLY;BYMONTH=${b.getMonth()+1};BYMONTHDAY=${b.getDate()}`
+                        })
+                    }
                 })
+                
+                
+                // ADD MEMORIES OF BIRTHDAYS FOR 5 YEARS OF DEATH PEOPLE
+                this.data.filter(o => o.birth != null).filter(o=> o.death != null).forEach(function(o) {
+                    for (let i =0; i < 5; i++) {
+                        var year=new Date().getFullYear()+i
+                        var birth=new Date(o.birth)
+                        var this_year_birth= new Date(year,  birth.getMonth()+1, birth.getDate())
+                        var str_this_year_birth= this_year_birth.toISOString()
+                        var arr_this_year_birth=new Array(year,  birth.getMonth()+1, birth.getDate())
+                        events.push({
+                            title:this_.$t(`Memory of ${fullName(o)}, who died at the age of ${age_in_a_date(o.birth, o.death)} and today would be ${age_in_a_date(o.birth, str_this_year_birth)}  years old.`),
+                            start: arr_this_year_birth ,
+                            end: arr_this_year_birth ,
+                            //duration: {days: 1},
+                            //recurrenceRule: `FREQ=YEARLY;BYMONTH=${b.getMonth()+1};BYMONTHDAY=${b.getDate()}`
+                        })
+                    }
+                })
+                
+
+
                 console.log(events)
                 const { error, value } = createEvents(events)
 
                 if (error) {
-                console.log(error)
+                    console.log(error)
+                    console.log(value)
+                    return
+                }
+
                 console.log(value)
-                return
+                
+                var blob = new Blob([value], { type: 'text/calendar' });
+                var link = window.document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = `birthdays.ics`
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },            
+            generateDeathCalendar(){
+                var events=[]
+                var this_= this
+                
+                // ADD DEATH REMEMBER FOR 5 YEARS
+                this.data.filter(o => o.death != null).forEach(function(o) {
+                    for (let i =0; i < 5; i++) {
+                        var year=new Date().getFullYear()+i
+                        var death=new Date(o.death)
+                        var arr_this_year_death=new Array(year,  death.getMonth()+1, death.getDate())
+                        events.push({
+                            title:this_.$t(`${fullName(o)} died ${year-death.getFullYear()} years ago.`),
+                            start: arr_this_year_death ,
+                            end: arr_this_year_death ,
+                        })
+                    }
+                })
+                
+
+
+
+
+                console.log(events)
+                const { error, value } = createEvents(events)
+
+                if (error) {
+                    console.log(error)
+                    console.log(value)
+                    return
                 }
 
                 console.log(value)

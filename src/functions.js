@@ -3,18 +3,21 @@ import axios from 'axios'
 import vCardsJS from 'vcards-js'
 
 
-export function age(birth_iso_string) {
-    //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
-    // ~~ Math.floor    
-    var now=new Date()
-    var birth = new Date(birth_iso_string)
-    if (birth.getDate()==now.getDate() && birth.getMonth()==now.getMonth()){ // To avoid decimal errors in birthday
-        return now.getFullYear()-birth.getFullYear()
-    }else  {
-        return ~~((now - birth ) / (31557600000));
-    }
+export function age_today(birth_iso_string) {
+    age_in_a_date(birth_iso_string, new Date().toISOString())
 }
 
+export function age_in_a_date(birth_iso_string, date_iso_string) {
+    //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
+    // ~~ Math.floor  
+    var birth = new Date(birth_iso_string)
+    var date = new Date(date_iso_string)
+    if (birth.getDate()==date.getDate() && birth.getMonth()==date.getMonth()){ // To avoid decimal errors in birthday
+        return date.getFullYear()-birth.getFullYear()
+    } else {
+        return ~~((date - birth ) / (31557600000));
+    }
+}
 
 export function fullName(person){
     return `${person.name} ${person.surname} ${person.surname2}`
