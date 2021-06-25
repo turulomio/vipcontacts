@@ -116,7 +116,7 @@
     import TableCrudPhone from './TableCrudPhone';
     import TableCrudRelationship from './TableCrudRelationship';
     import MyDatePicker from './reusing/MyDatePicker.vue'
-    import {logout, fullName, age_today, generateVcardObject} from '../functions.js'
+    import {logout, fullName, age_today, age_in_a_date, generateVcardObject} from '../functions.js'
     import VueQRCodeComponent from 'vue-qrcode-component'
     export default {
         name: 'PersonEdit',    
@@ -157,7 +157,7 @@
                     age_string=this.$t(` ( Deceased )`)
                 } 
                 else if (this.person.birth != null && this.person.death != null){
-                    age_string=` ( Lived ${this.years_lived(this.person.birth, this.person.death)} years )`
+                    age_string=` ( Lived ${this.age_in_a_date(this.person.birth, this.person.death)} years )`
                 } 
                 return `${this.fullName(this.person)}${age_string}`
             }
@@ -166,16 +166,11 @@
             logout,
             fullName,
             age_today,
+            age_in_a_date,
             generateVcardObject,
             after_crud: function() {
                 console.log("after_crud")
                 this.get_person()
-            },
-            years_lived(birth_iso_string,death_iso_string) {
-                var birth = +new Date(birth_iso_string);
-                var death = +new Date(death_iso_string);
-                //The magic number: 31557600000 is 24 * 3600 * 365.25 * 1000 
-                return ~~((death- birth) / (31557600000));
             },
             person_edit(){             
                 this.person.dt_update=new Date()
