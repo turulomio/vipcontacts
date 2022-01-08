@@ -8,7 +8,7 @@
             </template>
             <template v-slot:[`item.birth`]="{ item }">
                 <div class="text-no-wrap">
-                    <v-icon small v-if="item.death!=null" >{{mdiChristianity}}</v-icon>
+                    <v-icon small v-if="item.death!=null" >mdi-cross</v-icon>
                     {{item.birth}}
                 </div>
             </template>
@@ -24,7 +24,7 @@
 </template>
 <script>
     import axios from 'axios'  
-    import {mdiGenderMale, mdiGenderFemale, mdiChristianity} from '@mdi/js'
+    import {mdiGenderMale, mdiGenderFemale } from '@mdi/js'
     export default {
         name: 'home',
         props: {
@@ -38,7 +38,6 @@
             return{
                 mdiGenderMale,
                 mdiGenderFemale,
-                mdiChristianity,
                 dialog:false,
                 headers: [
                     { text: this.$t('Name'), align: 'start', sortable: true, value: 'name'},

@@ -11,7 +11,7 @@
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
-                <v-icon small class="mr-2" @click="phone(item)">mdi-phone</v-icon>
+                <v-icon small class="mr-2" @click="call_phone(item)">mdi-phone</v-icon>
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add phone') }}</v-btn>
@@ -26,7 +26,8 @@
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
                 <v-select :items="this.$store.state.catalogs.phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
-                <v-text-field v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesTextRequired50"/>
+                <v-text-field v-if="[7,8].includes(selected.retypes)" v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesTextRequired50"/>
+                <vue-tel-input defaultCountry="es" @validate="on_phone_validate" v-if="![7,8].includes(selected.retypes)" v-model="selected.phone" showDialCode mode="international"></vue-tel-input>
             </v-form>
                         
             <v-card-actions>
@@ -62,6 +63,8 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
+
+                phone:null,
                 
                 form_valid:false,
                 RulesTextRequired50: [
@@ -86,6 +89,10 @@
                 this.isEdition=false;
             },
             acceptAddition(){
+                if (![7,8].includes(this.selected.retypes) && this.phone.valid==false) {
+                    alert(this.$t("Phone is not valid"))
+                    return
+                }
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 axios.post(`${this.$store.state.apiroot}/api/phone/`, this.selected, this.myheaders())
@@ -100,19 +107,28 @@
                     this.parseResponseError(error)
                 });
             },
-            
+            on_phone_validate(phone){
+                console.log(phone)
+                this.phone=phone
+                if (phone.valid==true){
+                    this.selected.phone=phone.formatted
+                }
+            },
             editItem(item){
                 this.selected=item;
+                this.tmp_phone=item.phone
                 this.dialog=true;
                 this.isEdition=true;
             },
             acceptEdition(){
+                if (![7,8].includes(this.selected.retypes) && this.phone.valid==false) {
+                    alert(this.$t("Phone is not valid"))
+                    return
+                }
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
-                console.log(this.selected)
                 axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
-                    console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
                     this.TableCrudPhone_refreshKey();
@@ -123,7 +139,8 @@
                 
             },
             cancelDialog(){
-                this.dialog = false;                
+                this.dialog = false;   
+                this.$emit('cruded')             
             },
             deleteItem(item){
                 var r = confirm("Do you want to delete this phone?");
@@ -165,7 +182,7 @@
                 this.refreshKey=this.refreshKey+1;
                 console.log(`Updating TableCrudPhone RefreshKey to ${this.refreshKey}`)
             },
-            phone(item){
+            call_phone(item){
                 window.open(`tel:${item.phone}`)
             }
         },

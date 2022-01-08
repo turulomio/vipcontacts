@@ -9,6 +9,12 @@ import "echarts";
 import ECharts from 'vue-echarts'
 Vue.component('v-chart', ECharts)
 
+
+
+import VueTelInput from 'vue-tel-input';
+import 'vue-tel-input/dist/vue-tel-input.css';
+Vue.use(VueTelInput);
+
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
