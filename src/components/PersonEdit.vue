@@ -99,7 +99,7 @@
         </v-row>
         
         <v-dialog v-model="dialog_qr" max-width="800">
-            <VueQRCodeComponent :text="qr" :size="qrsize"/>
+             <QrcodeVue :value="qr" :size="800" ></QrcodeVue>
         </v-dialog>
     </div>
 </template>
@@ -117,7 +117,7 @@
     import TableCrudRelationship from './TableCrudRelationship';
     import MyDatePicker from './reusing/MyDatePicker.vue'
     import {logout, fullName, age_today, age_in_a_date, generateVcardObject} from '../functions.js'
-    import VueQRCodeComponent from 'vue-qrcode-component'
+    import QrcodeVue from 'qrcode.vue'
     export default {
         name: 'PersonEdit',    
         components: {
@@ -130,7 +130,7 @@
             TableCrudLog,
             TableCrudRelationship,
             TableCrudGroup,
-            VueQRCodeComponent,
+            QrcodeVue,
             MyDatePicker,
         },
         data () {
