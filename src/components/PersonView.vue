@@ -119,7 +119,7 @@
     import {logout, fullName, age_today, age_in_a_date, generateVcardObject} from '../functions.js'
     import QrcodeVue from 'qrcode.vue'
     export default {
-        name: 'PersonEdit',    
+        name: 'PersonView',    
         components: {
             TableCrudAlias,
             TableCrudAddress,
@@ -193,7 +193,7 @@
                     this.person= response.data;
                     console.log("FULL PERSON");
                     console.log(this.person);
-                    this.PersonEdit_refreshKey();
+                    this.PersonView_refreshKey();
                     this.set_original()
                     this.person_fields_have_changed()
                     return response.data;//To make syncronous
@@ -216,9 +216,9 @@
                     death: this.person.death,
                 }
             },
-            PersonEdit_refreshKey(){
+            PersonView_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating PersonEdit RefreshKey to ${this.refreshKey}`)
+                console.log(`Updating PersonView RefreshKey to ${this.refreshKey}`)
             },
             badge_number(s){
                 try{

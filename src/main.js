@@ -41,8 +41,7 @@ export const store = new Vuex.Store({
 import About from './components/about';
 import Home from './components/Home';
 import GroupMembers from './components/GroupMembers';
-import PersonAdd from './components/PersonAdd';
-import PersonEdit from './components/PersonEdit';
+import PersonView from './components/PersonView';
 import PersonLastEditions from './components/PersonLastEditions';
 import Settings from './components/Settings';
 import Statistics from './components/Statistics';
@@ -60,8 +59,7 @@ const router = new VueRouter({
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/settings/`, name: 'settings', component: Settings },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/statistics/`, name: 'statistics', component: Statistics },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/group/members/`, name: 'group_members', component: GroupMembers },
-    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/add/`, name: 'person_add', component: PersonAdd },
-    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonEdit, props: true },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonView, props: true },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/lasteditions/`, name: 'person_last_edited', component: PersonLastEditions },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/administration/types/`, name: 'administration_types', component: TableTypes},
   ]
