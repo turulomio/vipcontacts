@@ -16,14 +16,12 @@
                     <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon small class="mr-2" @click="viewItem(item)">mdi-eye</v-icon>
             </template>
         </v-data-table>
     </div>
 </template>
 <script>
-    import axios from 'axios'  
     import {mdiGenderMale, mdiGenderFemale } from '@mdi/js'
     export default {
         name: 'home',
@@ -50,27 +48,10 @@
             }
         },
         methods: {
-            editItem (item) {
+            viewItem (item) {
                 this.$router.replace({ name: 'person_edit', params: { "id": item.id }})
             },
 
-            deleteItem (item) {
-               var r = confirm(this.$t("Do you want to delete this item?"))
-               if(r == false) {
-                  return
-               } 
-               r = confirm(this.$t("The contact and all it's dependent data will be deleted. Do you want to continue?"))
-               if(r == false) {
-                  return
-               } 
-                axios.delete(`${this.$store.state.apiroot}/api/persons/${item.id}`, this.myheaders())
-                .then((response) => {
-                    console.log(response);
-                    this.on_search_change()
-                }, (error) => {
-                    this.parseResponseError(error)
-                });
-            },
             person_icon(item){
                 if (item.gender==0){
                     return mdiGenderMale

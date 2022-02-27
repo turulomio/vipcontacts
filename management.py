@@ -19,6 +19,7 @@ if args.reusing==True:
     download_from_github("turulomio", "reusingcode", "python/github.py", "management/reusing")
     download_from_github("turulomio", "reusingcode", "python/file_functions.py", "management/reusing")
     download_from_github("turulomio", "reusingcode", "vue/components/ChartPie.vue", "src/components/reusing")
-    download_from_github("turulomio", "reusingcode", "vue/components/MyDatePicker.vue", "src/components/reusing")
+    download_from_github("turulomio", "moneymoney", "src/components/MyDatePicker.vue", "src/components/reusing")
     download_from_github("turulomio", "reusingcode", "vue/components/AutoCompleteApiOneField.vue", "src/components/reusing")
+    download_from_github("turulomio", "moneymoney", "src/components/DisplayValues.vue", "src/components/reusing")
     download_from_github("turulomio", "moneymoney", "src/components/MyMenuInline.vue", "src/components/reusing")

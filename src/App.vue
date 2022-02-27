@@ -23,11 +23,6 @@
                             <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
                         </template>
 
-                        <v-list-item link  router :to="{ name: 'person_add'}">
-                            <v-list-item-title>{{ $t("Add contact") }}</v-list-item-title>
-                            <v-list-item-icon><v-icon>mdi-add</v-icon></v-list-item-icon>
-                        </v-list-item>
-
                         <v-list-item link  router :to="{ name: 'person_last_edited'}">
                             <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
                         </v-list-item>
@@ -133,6 +128,13 @@ h1 {
 
 SwitchLanguages{
     vertical-align:center;
+}
+
+.tabicon{
+    margin: 40px;
+}
+.login{
+    padding:30px;
 }
 
 
