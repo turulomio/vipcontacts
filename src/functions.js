@@ -1,6 +1,6 @@
 import moment from 'moment';
 import axios from 'axios'
-// import vCardsJS from 'vcards-js'
+import vCardsJS from 'vcards-js'
 
 
 export function age_today(birth_iso_string) {
@@ -219,7 +219,7 @@ export function parseResponseError(error){
 }
 
 export function generateVcardObject(person){
-    var vCard = {}//vCardsJS();
+    var vCard = vCardsJS();
     vCard.firstName = person.name;
     vCard.middleName = person.surname;
     vCard.lastName = person.surname2;

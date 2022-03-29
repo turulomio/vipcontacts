@@ -3,8 +3,8 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --port 8003 --config webpack.dev.js",
-    "build": "vue-cli-service build --config webpack.prod.js",
+    "serve": "vue-cli-service serve --port 8003",
+    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
@@ -38,7 +38,7 @@
     "npm-check-updates": "^12.5.4",
     "sass": "^1.49.9",
     "sass-loader": "^10.2.0",
-    "vue-cli-plugin-i18n": "~2.3.1",
+    "vue-cli-plugin-i18n": "^2.3.1",
     "vue-template-compiler": "^2.6.14"
   },
   "browserslist": [

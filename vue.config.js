@@ -1,6 +1,19 @@
 const fs = require('fs');
 
 module.exports = {
+    configureWebpack: {
+      // It will be merged into the final Webpack config
+      plugins: [
+        // Your plugins here...
+      ],
+      resolve: {
+        fallback: {
+            path: false,
+            fs:false,
+        },
+      },
+    },
+
     transpileDependencies: [
         'vuetify'
     ],
