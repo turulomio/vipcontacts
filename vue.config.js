@@ -1,18 +1,35 @@
 const fs = require('fs');
+console.log(process.env)
+var wp
+if (process.env.NODE_ENV==="production"){
+  wp={
+    mode: 'production',
+    performance: {
+        hints: false,
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+    }
+  }
+} else { //Development
+  wp={
+    mode: 'development',
+    devtool: 'inline-source-map',
+  }
+}
+var common={
+  resolve: {
+    fallback: {
+        path: false,
+        fs:false,
+    },
+  },
+}
+console.log({...wp,...common})
+
+
 
 module.exports = {
-    configureWebpack: {
-      // It will be merged into the final Webpack config
-      plugins: [
-        // Your plugins here...
-      ],
-      resolve: {
-        fallback: {
-            path: false,
-            fs:false,
-        },
-      },
-    },
+    configureWebpack: {...wp,...common},
 
     transpileDependencies: [
         'vuetify'
