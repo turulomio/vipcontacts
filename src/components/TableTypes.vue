@@ -5,7 +5,7 @@
         <br>
         <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Selecciona una tabla de la base de datos')" item-text="name"  return-object ></v-select>
         <v-card class="padding">
-            <v-text-field v-model="search" :append-icon="mdiMagnify" label="Bucar en tabla" single-line></v-text-field>
+            <v-text-field v-model="search" append-icon="mdi-magnify" label="Bucar en tabla" single-line></v-text-field>
             <v-data-table dense v-model="items_selected" :headers="headers" :items="items" sort-by="count" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
         </v-card>
         <v-btn color="error"  @click="mergeItems()" :disabled="items_selected.length<1">{{ $t("Merge / Rename types") }}</v-btn>
@@ -26,13 +26,10 @@
 </template>
 <script>
     import axios from 'axios'  
-    import {mdiPencil, mdiMagnify} from '@mdi/js'
     import {arrayobjects_to_stringofstrings} from '../functions.js'
     export default {
         data(){ 
             return{
-                mdiPencil:mdiPencil,
-                mdiMagnify:mdiMagnify,
                 tables:[
                     { name: this.$t("Organizations"), table: "jobs", field:"organization"},
                     { name: this.$t("Professions"), table: "jobs", field:"profession"},

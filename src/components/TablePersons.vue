@@ -22,7 +22,6 @@
     </div>
 </template>
 <script>
-    import {mdiGenderMale, mdiGenderFemale } from '@mdi/js'
     export default {
         name: 'home',
         props: {
@@ -34,8 +33,6 @@
         },
         data(){ 
             return{
-                mdiGenderMale,
-                mdiGenderFemale,
                 dialog:false,
                 headers: [
                     { text: this.$t('Name'), align: 'start', sortable: true, value: 'name', width:"15%"},
@@ -54,9 +51,9 @@
 
             person_icon(item){
                 if (item.gender==0){
-                    return mdiGenderMale
+                    return "mdi-gender-male"
                 } else {
-                    return mdiGenderFemale
+                    return "mdi-gender-female"
                 }
             },
             chips(item){
