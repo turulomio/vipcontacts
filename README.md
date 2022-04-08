@@ -1,4 +1,4 @@
-# vipcontacts
+# VipContacts [![Github - Downloads](https://shields.io/github/downloads/turulomio/vipcontacts/total?label=Github%20downloads )](https://github.com/turulomio/vipcontacts/)
 
 Vip Contacts Vue frontend Web project, that uses an API  (https://github.com/turulomio/django_vipcontacts) to manage your contacts in a different way
 
