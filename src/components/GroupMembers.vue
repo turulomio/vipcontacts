@@ -57,7 +57,7 @@
     import SelectPersons from './SelectPersons.vue'
     import axios from 'axios'
     import {createEvents} from 'ics'
-    import {fullName, age_in_a_date, generateVcardObject} from '../functions.js'
+    import {age_in_a_date, generateVcardObject} from '../functions.js'
     export default {
         name: 'GroupMembers',
         components: {
@@ -85,7 +85,6 @@
         },          
         methods: {
             age_in_a_date,
-            fullName,
             generateVcardObject,
             refresh_members: function() {
                 if (this.group=="") return
@@ -100,7 +99,7 @@
                 });
             },  
             deleteItem(item){
-                var r = confirm(`Do you want to remove '${this.fullName(item)}' from this group?`);
+                var r = confirm(`Do you want to remove '${item.fullname}' from this group?`);
                 if(r == false) {
                     return;
                 }  
@@ -180,7 +179,7 @@
                         var str_this_year_birth= this_year_birth.toISOString()
                         var arr_this_year_birth=new Array(year,  birth.getMonth()+1, birth.getDate())
                         events.push({
-                            title:this_.$t(`Birthday of ${fullName(o)} (${age_in_a_date(o.birth, str_this_year_birth)} years)`),
+                            title:this_.$t(`Birthday of ${o.fullname} (${age_in_a_date(o.birth, str_this_year_birth)} years)`),
                             start: arr_this_year_birth ,
                             end: arr_this_year_birth ,
                             //duration: {days: 1},
@@ -199,7 +198,7 @@
                         var str_this_year_birth= this_year_birth.toISOString()
                         var arr_this_year_birth=new Array(year,  birth.getMonth()+1, birth.getDate())
                         events.push({
-                            title:this_.$t(`Memory of ${fullName(o)}, who died at the age of ${age_in_a_date(o.birth, o.death)} and today would be ${age_in_a_date(o.birth, str_this_year_birth)}  years old.`),
+                            title:this_.$t(`Memory of ${o.fullname}, who died at the age of ${age_in_a_date(o.birth, o.death)} and today would be ${age_in_a_date(o.birth, str_this_year_birth)}  years old.`),
                             start: arr_this_year_birth ,
                             end: arr_this_year_birth ,
                             //duration: {days: 1},
@@ -240,7 +239,7 @@
                         var death=new Date(o.death)
                         var arr_this_year_death=new Array(year,  death.getMonth()+1, death.getDate())
                         events.push({
-                            title:this_.$t(`${fullName(o)} died ${year-death.getFullYear()} years ago.`),
+                            title:this_.$t(`${o.fullname} died ${year-death.getFullYear()} years ago.`),
                             start: arr_this_year_death ,
                             end: arr_this_year_death ,
                         })

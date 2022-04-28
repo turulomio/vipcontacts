@@ -43,7 +43,6 @@
 <script>
     import axios from 'axios'
     import { jsPDF } from "jspdf";
-    import {fullName} from '../functions.js'
     export default {
         props: ['person','obsolete'],
         data () {
@@ -69,7 +68,6 @@
             }
         },
         methods:{
-            fullName,
             addItem(){
                 this.selected={
                     address: "",
@@ -171,11 +169,11 @@
                     unit: "cm",
                     format: [height, width]
                 });
-                centeredText(this.fullName(this.person), height*6/11);
+                centeredText(this.person.fullname, height*6/11);
                 centeredText(item.address, height*7/11);
                 centeredText(`${item.code} ${item.city}`, height*8/11)
-                centeredText(this.CountryName(item.country), height*9/11)
-                doc.save(`${this.fullName(this.person)}.pdf`);
+                centeredText(this.$store.getters.getObjectPropertyByValue("countries",item.country,"display_name"), height*9/11)
+                doc.save(`${this.person.fullname}.pdf`);
             },
             googleMaps(item){
                 window.open(`https://maps.google.com/?q=${item.address} ${item.city}`)

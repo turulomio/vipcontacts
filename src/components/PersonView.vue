@@ -98,7 +98,7 @@
     import PersonCRUD from './PersonCRUD.vue';
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
-    import {logout, fullName, age_today, age_in_a_date, generateVcardObject} from '../functions.js'
+    import {age_today, age_in_a_date, generateVcardObject} from '../functions.js'
     import QrcodeVue from 'qrcode.vue'
     export default {
         name: 'PersonView',    
@@ -158,7 +158,7 @@
                                     var blob = new Blob([this_.generateVcardObject(this_.person).getFormattedString()], { type: 'text/vcard' });
                                     var link = window.document.createElement('a');
                                     link.href = window.URL.createObjectURL(blob);
-                                    link.download = `${this_.fullName(this_.person)}.vcf`
+                                    link.download = `${this_.person.fullname}.vcf`
                                     document.body.appendChild(link);
                                     link.click();
                                     document.body.removeChild(link);
@@ -206,7 +206,7 @@
                 else if (this.person.birth != null && this.person.death != null){
                     age_string=` ( Lived ${this.age_in_a_date(this.person.birth, this.person.death)} years )`
                 } 
-                return `${this.fullName(this.person)}${age_string}`
+                return `${this.person.fullname}${age_string}`
             }
         },        
         methods: {
@@ -220,8 +220,6 @@
                 }
                 return r
             },
-            logout,
-            fullName,
             age_today,
             age_in_a_date,
             generateVcardObject,

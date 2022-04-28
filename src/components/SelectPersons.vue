@@ -35,13 +35,8 @@
     computed: {
       items () {
         let r=[]
-        this.entries.forEach(entry => r.push({"url": entry.url, "name":this.fullName(entry)}))
+        this.entries.forEach(entry => r.push({"url": entry.url, "name":entry.fullname}))
         return r
-      },
-    },
-    methods:{
-      fullName(entry){
-            return `${entry.name} ${entry.surname} ${entry.surname2}`
       },
     },
     watch: {

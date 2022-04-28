@@ -41,7 +41,6 @@
 
 <script>
     import axios from 'axios'
-    import {fullName} from '../functions.js'
     export default {
         props: ['person','obsolete'],
         data () {
@@ -64,7 +63,6 @@
             }
         },
         methods:{
-            fullName,
             addItem(){
                 this.selected={
                     mail: "",
@@ -156,7 +154,7 @@
                 console.log(`Updating TableCrudMail RefreshKey to ${this.refreshKey}`)
             },
             mail(item){
-                window.open(`mailto:${this.fullName(this.person)}<${item.mail}>`)
+                window.open(`mailto:${this.person.fullname}<${item.mail}>`)
             },
         },
     }
