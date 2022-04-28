@@ -49,7 +49,7 @@
 
         this.isLoading = true
 
-        axios.get(`${this.$store.state.apiroot}/api/find/?search=${val}`, this.myheaders())
+        axios.get(`${this.$store.state.apiroot}/api/persons/?search=${val}`, this.myheaders())
         .then((response) => {
             this.entries=response.data 
             this.canclick=true;
