@@ -99,9 +99,9 @@
 
 <script>
 
-import btnLogIn from './components/btnLogIn';
-import btnLogOut from './components/btnLogOut';
-import SwitchLanguages from './components/SwitchLanguages.vue';
+import btnLogIn from './components/reusing/btnLogIn';
+import btnLogOut from './components/reusing/btnLogOut';
+import SwitchLanguages from './components/reusing/SwitchLanguages.vue';
 export default {
     name: 'App',
 
