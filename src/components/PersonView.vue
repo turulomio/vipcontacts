@@ -212,7 +212,7 @@
         methods: {
             displayvalues(){
                 var r=[
-                    {title:this.$t('Gender'), value: this.person.gender},
+                    {title:this.$t('Gender'), value: this.$store.getters.getObjectPropertyByValue("persongender",this.person.gender,"display_name")},
                     {title:this.$t('Birth date'), value: this.person.birth},
                 ]
                 if (this.person.death!=null){
