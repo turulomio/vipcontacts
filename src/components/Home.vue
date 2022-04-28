@@ -41,7 +41,6 @@
     import PersonCRUD from './PersonCRUD.vue'
     import MyMenuInline from './reusing/MyMenuInline.vue'
     export default {
-        name: 'home',
         components: {
             TablePersons,
             MyMenuInline,
@@ -66,7 +65,7 @@
                     },
                 ],
                 data: [],
-                loading:true,
+                loading:false,
                 search:this.$store.state.lastsearch,
 
 
@@ -90,7 +89,7 @@
                     parsedsearch="__none__";
                 }
                 
-                axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, this.myheaders())
+                axios.get(`${this.$store.state.apiroot}/api/persons/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     this.data= response.data;
@@ -108,7 +107,7 @@
                 this.on_search_change()
             }
         },
-        created(){
+        mounted(){
             this.on_search_change()
         }
     }

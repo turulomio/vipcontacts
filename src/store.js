@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
         versiondate: new Date(2022, 1, 20, 20, 46),
         apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
         publicPath: process.env.VUE_APP_PUBLIC_PATH,
+        lastsearch: null,
         persongender:[],
         countries: [],
         addresstype: [],

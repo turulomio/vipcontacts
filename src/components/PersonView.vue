@@ -236,7 +236,6 @@
                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, this.myheaders())
                 .then((response) => {
                     this.person= response.data;
-                    console.log("FULL PERSON");
                     console.log(this.person);
                     this.PersonView_key();
                     this.set_original()
