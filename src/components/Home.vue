@@ -16,8 +16,9 @@
                     autofocus
                     v-bind:placeholder="$t('Enter search')" 
                     v-on:keyup.enter="on_search_change()"
+                    :disabled="loading"
                 ></v-text-field>
-                <v-btn ref="cmdSearch" @click="on_search_change()" :disabled="!canclick" color="primary">
+                <v-btn ref="cmdSearch" @click="on_search_change()" :disabled="loading" color="primary">
                     <v-icon>mdi-search</v-icon>
                     <span class="mr-2">{{ $t("Search") }}</span>
                 </v-btn>    
@@ -65,7 +66,7 @@
                     },
                 ],
                 data: [],
-                canclick:true,
+                loading:true,
                 search:this.$store.state.lastsearch,
 
 
@@ -78,13 +79,10 @@
         },
         methods: {
             empty_person,
-            forceCmdSearchClick(){
-                this.$refs.cmdSearch.click();
-            },
             on_search_change(){
+                if (this.search==null || this.search=="") return
+                this.loading=true
                 this.$store.state.lastsearch=this.search
-                console.log(this.$store.state.lastsearch)
-                this.canclick=false;
                 var parsedsearch=this.search;
                 if (this.search == '*'){
                     parsedsearch="__all__";
@@ -95,12 +93,10 @@
                 axios.get(`${this.$store.state.apiroot}/api/find/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
-                    console.log(response.data)
                     this.data= response.data;
-                    this.canclick=true;
+                    this.loading=false
                 }, (error) => {
                     this.parseResponseError(error)
-                    this.canclick=true;
                 });
             },
             on_chip_clicked(chip){
@@ -113,10 +109,7 @@
             }
         },
         created(){
-            if (this.search!="" ){
-                this.on_search_change()
-            }
+            this.on_search_change()
         }
     }
 </script>
-

@@ -77,7 +77,6 @@ export const store = new Vuex.Store({
             state.persongender= sortObjectsArray(payload.actions.POST.gender.choices, "display_name")
             state.countries= sortObjectsArray(payload.actions.POST.address.child.children.country.choices, "display_name")
             state.addresstype= sortObjectsArray(payload.actions.POST.address.child.children.retypes.choices, "display_name")
-            console.log(state.addresstype)
             state.mailtype= sortObjectsArray(payload.actions.POST.mail.child.children.retypes.choices, "display_name")
             state.phonetype= sortObjectsArray(payload.actions.POST.phone.child.children.retypes.choices, "display_name")
             state.logtype= sortObjectsArray(payload.actions.POST.log.child.children.retypes.choices, "display_name")
