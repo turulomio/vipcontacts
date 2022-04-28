@@ -19,10 +19,6 @@ export function age_in_a_date(birth_iso_string, date_iso_string) {
     }
 }
 
-export function fullName(person){
-    return `${person.name} ${person.surname} ${person.surname2}`
-}
-
 export function localtime(value){
     if (value){
         var dateFormat = 'YYYY-MM-DD HH:mm:ss';
