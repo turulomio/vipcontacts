@@ -15,10 +15,9 @@
 </template>
 
 <script>
-    import {vuex_update_catalogs,myheaders} from '../functions.js'
     var languages=[
-                    { text: "Español", value: "es", icon: require("../assets/es.svg")}, //Got from https://github.com/hampusborgos/country-flags
-                    { text: "English", value: "en", icon: require("../assets/us.svg")},
+                    { text: "Español", value: "es", icon: require("../../assets/es.svg")}, //Got from https://github.com/hampusborgos/country-flags
+                    { text: "English", value: "en", icon: require("../../assets/us.svg")},
                   ];
 
     export default {
@@ -30,16 +29,11 @@
             }
         },  
         methods:{
-            vuex_update_catalogs,
-            myheaders,// It's used for vuex_update_catalogs so I must include it
             switchLocale(item){
                 this.$i18n.locale=item.value;
                 this.current=item;
                 localStorage.locale=item.value;
                 this.$vuetify.lang.current = item.value;
-                if (this.$store.state.logged == true){
-                    this.vuex_update_catalogs();
-                }
             },
             getStoredCurrent() {
                 if (!localStorage.locale || localStorage.locale==null) {

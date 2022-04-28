@@ -3,10 +3,8 @@
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
-            </template>
-              <template v-slot:[`item.retypes`]="{ item }">
-                <span>{{ MailTypeName(item.retypes) }}</span>
-            </template>
+            </template>            
+            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("mailtype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -25,8 +23,8 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add mail") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="this.$store.state.catalogs.mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-                <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail" />
+                <v-select :items="this.$store.state.mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+                <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail(true)" />
             </v-form>
                         
             <v-card-actions>
@@ -43,9 +41,8 @@
 
 <script>
     import axios from 'axios'
-    import {localtime, MailTypeName, CountryName, fullName} from '../functions.js'
+    import {fullName} from '../functions.js'
     export default {
-        name: 'TableCrudMail',
         props: ['person','obsolete'],
         data () {
             return {
@@ -64,15 +61,9 @@
                 selected: {},
                 
                 form_valid:false,
-                RulesEmail: [
-                    v => /.+@.+/.test(v) || this.$t('Invalid Email address') 
-                ]
             }
         },
         methods:{
-            localtime,
-            MailTypeName,
-            CountryName,
             fullName,
             addItem(){
                 this.selected={

@@ -4,9 +4,8 @@
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
-              <template v-slot:[`item.type`]="{ item }">
-                <span>{{ RelationshipTypeName(item.retypes) }}</span>
-            </template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("relationshiptype",item.retypes,"display_name") }}</template>
+
               <template v-slot:[`item.destiny`]="{ item }">
                 <span>{{ showRelationShipName(item) }}</span>
             </template>
@@ -26,7 +25,7 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit relationship") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add relationship") }}</v-card-title>
             
-            <v-select :items="this.$store.state.catalogs.relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+            <v-select :items="this.$store.state.relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
             
             <SelectPersons v-model="selected.destiny"></SelectPersons>
             
@@ -44,7 +43,6 @@
 
 <script>
     import axios from 'axios'
-    import {localtime, RelationshipTypeName, CountryName} from '../functions.js'
     import SelectPersons from './SelectPersons.vue'
     export default {
         name: 'TableCrudRelationship',
@@ -58,7 +56,7 @@
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'type'},
+                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
                     { text: this.$t('Destiny'),  sortable: true, value: 'destiny'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
@@ -71,9 +69,6 @@
             }
         },
         methods:{
-            localtime,
-            RelationshipTypeName,
-            CountryName,
             addItem(){
                 this.selected={
                     destiny: null,

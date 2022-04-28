@@ -4,7 +4,7 @@
         <v-card flat  v-if="items.length>0">
             <v-row no-gutters :style="styleheight">
                 <v-col>
-                    <v-chart autoresize :option="options" :key="key"/>
+                    <v-chart ref="chart" autoresize :option="options" :key="key" @finished="on_finished"/>
                 </v-col>
                 <v-col v-show="showtable" >
                     <v-data-table dense :headers="tableHeaders"  :items="items" class="elevation-1" disable-pagination  hide-default-footer :sort-by="['value']" :sort-desc="['value']">
@@ -32,17 +32,35 @@
         </v-card>  
         <v-row>
             <v-col align="center">
-                <v-btn color="primary" @click="buttonClick">{{buttontext}}</v-btn>
+                <v-btn  v-if="show_data" color="primary" @click="buttonClick">{{buttontext}}</v-btn>
             </v-col>
         </v-row>
     </div>
 </template>
 
 <script>
-
+    import axios from 'axios'
     export default {
-        name: 'ChartPie',
-        props: ['items', 'name', 'height'],
+        props: {
+            items: {
+                required: true
+            },
+            height: {
+                required: false,
+                default:600
+            },
+            width: {
+                required: false,
+                default:1200
+            },
+            save_prefix:{
+                required:false,
+            },
+            show_data:{
+                required:false,
+                default:true,
+            },
+        },
         data: function () {
             return {
                 showtable: false,
@@ -52,7 +70,6 @@
                     { text: 'Value', value: 'value',sortable: true, align: 'right'},
                     { text: 'Percentage', value: 'percentage',sortable: false, align: 'right'},
                 ],   
-                
             }
         },
         computed:{
@@ -81,7 +98,7 @@
                 }
             },
             styleheight: function(){
-                return `height: ${this.height};`
+                return `height: ${this.height}px; width: ${this.width}px;`
             },
             buttontext: function(){
                 if (this.showtable){
@@ -102,6 +119,19 @@
             },
             getPercentage(item){
                 return `${(item.value/this.total*100).toFixed(2)} %`
+                
+            },
+            on_finished(){
+                if (this.save_prefix!=null){
+                    var filename=this.save_prefix
+                    var data=this.$refs.chart.getDataURL().replace('data:image/png;base64,','')
+                    axios.post(`${this.$store.state.apiroot}/binary/to/global/`, {global:filename,data:data,}, this.myheaders())
+                    .then(() => {
+                        this.$emit("finished")
+                    }, (error) => {
+                        this.parseResponseError(error)
+                    });
+                }
                 
             }
         },
