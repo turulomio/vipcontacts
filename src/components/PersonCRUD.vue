@@ -11,7 +11,7 @@
                     <MyDatePicker v-model="newperson.death" :readonly="mode=='D'" :label="$t('Death date')"></MyDatePicker>
                     <v-spacer></v-spacer>           
                 </v-row>
-                <v-select :items="this.$store.state.catalogs.persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
+                <v-select :items="this.$store.state.persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
 
                 <v-card-actions> 
                     <v-spacer></v-spacer>

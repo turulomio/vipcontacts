@@ -1,15 +1,9 @@
 <template>
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
-              <template v-slot:[`item.dt_update`]="{ item }">
-                <span>{{ localtime(item.dt_update) }}</span>
-            </template>
-              <template v-slot:[`item.type`]="{ item }">
-                <span>{{ AddressTypeName(item.retypes) }}</span>
-            </template>
-              <template v-slot:[`item.country`]="{ item }">
-                <span>{{ CountryName(item.country) }}</span>
-            </template>
+            <template v-slot:[`item.dt_update`]="{ item }">{{ localtime(item.dt_update) }}</template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("addresstype",item.retypes,"display_name") }}</template>
+            <template v-slot:[`item.country`]="{ item }">{{ $store.getters.getObjectPropertyByValue("countries",item.country,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -28,11 +22,11 @@
                 <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit address") }}</v-card-title>
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add address") }}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>
-                    <v-select :items="this.$store.state.catalogs.addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value" required />
-                    <v-text-field v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesTextRequired300"  />
-                    <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesText10" />
-                    <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesTextRequired100"/>
-                    <v-autocomplete :items="this.$store.state.catalogs.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value" required/>
+                    <v-select :items="this.$store.state.addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value" required />
+                    <v-text-field v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesString(300,true)"  />
+                    <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesString(10,false)" />
+                    <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesString(100,true)"/>
+                    <v-autocomplete :items="this.$store.state.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value" required/>
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -49,9 +43,8 @@
 <script>
     import axios from 'axios'
     import { jsPDF } from "jspdf";
-    import {localtime, AddressTypeName, CountryName, fullName} from '../functions.js'
+    import {fullName} from '../functions.js'
     export default {
-        name: 'TableCrudAddress',
         props: ['person','obsolete'],
         data () {
             return {
@@ -59,7 +52,7 @@
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'type'},
+                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
                     { text: this.$t('Address'),  sortable: true, value: 'address'},
                     { text: this.$t('Code'),  sortable: true, value: 'code'},
                     { text: this.$t('City'),  sortable: true, value: 'city'},
@@ -73,23 +66,9 @@
                 selected: {},
                 
                 form_valid:false,
-                RulesText10: [
-                    v => ( v.length <10) || this.$t('Text must be less than 10 characters'),
-                ],
-                RulesTextRequired100: [
-                    v => !!v || this.$t('Text is required'),
-                    v => (v && v.length <100) || this.$t('Text must be less than 100 characters'),
-                ],
-                RulesTextRequired300: [
-                    v => !!v || this.$t('Text is required'),
-                    v => (v && v.length <300) || this.$t('Text must be less than 300 characters'),
-                ],
             }
         },
         methods:{
-            localtime,
-            AddressTypeName,
-            CountryName,
             fullName,
             addItem(){
                 this.selected={

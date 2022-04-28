@@ -4,9 +4,8 @@
               <template v-slot:[`item.datetime`]="{ item }">
                 <span>{{ localtime(item.datetime) }}</span>
             </template>
-              <template v-slot:[`item.retypes`]="{ item }">
-                <span>{{ LogTypeName(item.retypes) }}</span>
-            </template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("logtype",item.retypes,"display_name") }}</template>
+
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -24,7 +23,7 @@
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
                 <v-select :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
-                <v-textarea v-model="selected.text" type="text" :counter="1000" :label="$t('Log')" required :placeholder="$t('Enter a log')" :rules="RulesTextRequired1000" />
+                <v-textarea v-model="selected.text" type="text" :counter="1000" :label="$t('Log')" required :placeholder="$t('Enter a log')" :rules="RulesString(1000,true)" />
             </v-form>
                         
             <v-card-actions>
@@ -42,8 +41,6 @@
 
 <script>
     import axios from 'axios'
-    import {myheaders} from '../functions.js'
-    import {localtime, LogTypeName} from '../functions.js'
     export default {
         name: 'TableCrudLog',
         props: ['person','obsolete'],
@@ -74,19 +71,12 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
-                nonAutomaticTypes: this.$store.state.catalogs.logtype.filter( x=> x.value>=100),
+                nonAutomaticTypes: this.$store.state.logtype.filter( x=> x.value>=100),
                 
                 form_valid:false,
-                RulesTextRequired1000: [
-                    v => !!v || this.$t('Text is required'),
-                    v => (v && v.length <1000) || this.$t('Text must be less than 1000 characters'),
-                ],
             }
         },
         methods:{
-            localtime,
-            LogTypeName,
-            myheaders,
             addItem(){
                 this.selected={
                     text: "",
@@ -162,5 +152,3 @@
         },
     }
 </script>
-<style scoped>
-</style>
