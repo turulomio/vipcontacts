@@ -3,10 +3,8 @@
         <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
-            </template>
-              <template v-slot:[`item.retypes`]="{ item }">
-                <span>{{ PhoneTypeName(item.retypes) }}</span>
-            </template>
+            </template>            
+            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("phonetype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -25,8 +23,8 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add phone") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="this.$store.state.catalogs.phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
-                <v-text-field v-if="[7,8].includes(selected.retypes)" v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesTextRequired50"/>
+                <v-select :items="this.$store.state.phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
+                <v-text-field v-if="[7,8].includes(selected.retypes)" v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesString(50,true)"/>
                 <vue-tel-input defaultCountry="es" @validate="on_phone_validate" v-if="![7,8].includes(selected.retypes)" v-model="selected.phone" showDialCode mode="international"></vue-tel-input>
             </v-form>
                         
@@ -44,9 +42,7 @@
 
 <script>
     import axios from 'axios'
-    import {localtime, PhoneTypeName, CountryName} from '../functions.js'
     export default {
-        name: 'TableCrudPhone',
         props: ['person','obsolete'],
         data () {
             return {
@@ -67,16 +63,9 @@
                 phone:null,
                 
                 form_valid:false,
-                RulesTextRequired50: [
-                    v => !!v || this.$t('Text is required'),
-                    v => (v && v.length <50) || this.$t('Text must be less than 50 characters'),
-                ],
             }
         },
         methods:{
-            localtime,
-            PhoneTypeName,
-            CountryName,
             addItem(){
                 this.selected={
                     phone: "",

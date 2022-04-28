@@ -44,37 +44,6 @@ export function moment_day_start(isostring){
     return null;
 }   
 
-
-export function AddressTypeName(value){
-    var retypes=this.$store.state.catalogs.addresstype.find(t => t.value==value);
-    return retypes.display_name;
-}
-
-export function CountryName(value){
-    var retypes=this.$store.state.catalogs.countries.find(t => t.value==value);
-    return retypes.display_name;
-}
-
-export function MailTypeName(value){
-    var retypes=this.$store.state.catalogs.mailtype.find(t => t.value==value);
-    return retypes.display_name;
-}
-
-export function LogTypeName(value){
-    var retypes=this.$store.state.catalogs.logtype.find(t => t.value==value);
-    return retypes.display_name;
-}
-
-export function PhoneTypeName(value){
-    var retypes=this.$store.state.catalogs.phonetype.find(t => t.value==value);
-    return retypes.display_name;
-}
-
-export function RelationshipTypeName(value){
-    var retypes=this.$store.state.catalogs.relationshiptype.find(t => t.value==value);
-    return retypes.display_name;
-}
-
 export function myheaders(){
     return {
         headers:{
@@ -105,23 +74,6 @@ export function myheaders_formdata(){
     }
 }
 
-export function vuex_update_catalogs(){   
-    axios.options(`${this.$store.state.apiroot}/api/persons/`, this.myheaders())
-    .then((response) => {
-        this.$store.state.catalogs.persongender= sortObjectsArray(response.data.actions.POST.gender.choices, "display_name")
-        this.$store.state.catalogs.countries= sortObjectsArray(response.data.actions.POST.address.child.children.country.choices, "display_name")
-        this.$store.state.catalogs.addresstype= sortObjectsArray(response.data.actions.POST.address.child.children.retypes.choices, "display_name")
-        this.$store.state.catalogs.mailtype= sortObjectsArray(response.data.actions.POST.mail.child.children.retypes.choices, "display_name")
-        this.$store.state.catalogs.phonetype= sortObjectsArray(response.data.actions.POST.phone.child.children.retypes.choices, "display_name")
-        this.$store.state.catalogs.logtype= sortObjectsArray(response.data.actions.POST.log.child.children.retypes.choices, "display_name")
-        this.$store.state.catalogs.relationshiptype=sortObjectsArray(response.data.actions.POST.relationship.child.children.retypes.choices, "display_name")
-        this.$store.state.catalogs.mimetype= sortObjectsArray(response.data.actions.POST.blob.child.children.mime.choices, "display_name")
-        console.log("Updated catalogs")
-        return
-    }, (error) => {
-        this.parseResponseError(error)
-    });
-}
 
 export function logout(){
     const formData = new FormData();

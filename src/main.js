@@ -18,26 +18,7 @@ Vue.use(VueTelInput);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
-export const store = new Vuex.Store({
-    state: {
-        token:null,
-        logged:false,
-        version: "0.3.0",
-        versiondate: new Date(2021, 3, 23, 9, 22),
-        apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
-        publicPath: process.env.VUE_APP_PUBLIC_PATH,
-        catalogs: {
-            addresstype: [],
-            countries: [],
-            persongender: [],
-            mailtype: [],
-            phonetype: [],
-            logtype: [],
-            mimetype:[],
-        },
-        lastsearch: "",
-    },
-})
+import {store} from './store.js'
 import About from './components/about';
 import Home from './components/Home';
 import GroupMembers from './components/GroupMembers';
@@ -66,11 +47,12 @@ const router = new VueRouter({
 });
 
 // MIXIN GLOBAL
-import {myheaders,myheaders_noauth,parseResponse,parseResponseError,getLocalStorage,myheaders_formdata} from './functions.js'
-import {RulesString} from './components/reusing/rules.js'
+import {localtime,myheaders,myheaders_noauth, parseResponse,parseResponseError,getLocalStorage,myheaders_formdata} from './functions.js'
+import {RulesString,RulesEmail} from './components/reusing/rules.js'
 
 Vue.mixin({
   methods: {
+    localtime,
     myheaders,
     myheaders_formdata,
     myheaders_noauth,
@@ -78,17 +60,18 @@ Vue.mixin({
     parseResponseError,
     getLocalStorage,
     RulesString,
+    RulesEmail,
   }
 })
 
-new Vue({
-    i18n,
-    store:store,
-    router,
-    vuetify,
-    render: h => h(App)
-}).$mount('#app')
 
-
-
+const app=new Vue({
+  i18n,
+  store:store,
+  router,
+  vuetify,
+  render: h => h(App)
+})
+store.$app = app
+app.$mount('#app')
 
