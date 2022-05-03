@@ -57,7 +57,6 @@
 
 <script>
     import axios from 'axios'
-    import {localtime} from '../functions.js'
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudBlob',
@@ -92,7 +91,6 @@
             }
         },
         methods:{
-            localtime,
             addItem(){
                 this.selected={
                     dt_update: new Date(),

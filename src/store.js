@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import {sortObjectsArray} from './functions.js'
+import {sortObjectsArray} from './components/reusing/my_commons.js'
 Vue.use(Vuex);
 
 

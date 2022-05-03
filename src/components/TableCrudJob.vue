@@ -38,7 +38,6 @@
 
 <script>
     import axios from 'axios'
-    import {localtime,} from '../functions.js'
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudJob',
@@ -66,7 +65,6 @@
             }
         },
         methods:{
-            localtime,
             addItem(){
                 this.selected={
                     profession: "",

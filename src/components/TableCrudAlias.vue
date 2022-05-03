@@ -19,9 +19,7 @@
 
 <script>
     import axios from 'axios'
-    import {localtime} from '../functions.js'
     export default {
-        name: 'TableCrudAlias',
         props: ['person','obsolete'],
         data () {
             return {
@@ -44,7 +42,6 @@
             }
         },
         methods:{
-            localtime,
             addAlias(){
                 var alias={
                     name:null,

@@ -47,11 +47,13 @@ const router = new VueRouter({
 });
 
 // MIXIN GLOBAL
-import {localtime,myheaders,myheaders_noauth, parseResponse,parseResponseError,getLocalStorage,myheaders_formdata} from './functions.js'
+import {getLocalStorage} from './functions.js'
+import {localtime,myheaders,myheaders_noauth, parseResponse,parseResponseError,myheaders_formdata, arrayobjects_to_stringofstrings,sortObjectsArray} from './components/reusing/my_commons.js'
 import {RulesString,RulesEmail} from './components/reusing/rules.js'
 
 Vue.mixin({
   methods: {
+    arrayobjects_to_stringofstrings,
     localtime,
     myheaders,
     myheaders_formdata,
@@ -59,6 +61,7 @@ Vue.mixin({
     parseResponse,
     parseResponseError,
     getLocalStorage,
+    sortObjectsArray,
     RulesString,
     RulesEmail,
   }

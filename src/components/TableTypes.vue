@@ -25,8 +25,7 @@
     </div>
 </template>
 <script>
-    import axios from 'axios'  
-    import {arrayobjects_to_stringofstrings} from '../functions.js'
+    import axios from 'axios'
     export default {
         data(){ 
             return{
@@ -56,8 +55,7 @@
                 this.update()
             },
         },
-        methods: {     
-            arrayobjects_to_stringofstrings,
+        methods: {
             update(){
                 axios.get(`${this.$store.state.apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}`, this.myheaders())
                 .then((response) => {
@@ -87,7 +85,7 @@
             },
             mergeItems(){       
                 if (this.items_selected.length>1){
-                    var r = confirm(this.$t("Se van a unir los tipos seleccionados:\n'"+ arrayobjects_to_stringofstrings(this.items_selected, 'name')+"'\n¿Quieres continuar?"))
+                    var r = confirm(this.$t("Se van a unir los tipos seleccionados:\n'"+ this.arrayobjects_to_stringofstrings(this.items_selected, 'name')+"'\n¿Quieres continuar?"))
                     if(r == false) {
                         return
                     }
