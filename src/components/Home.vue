@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>{{ $t('Wellcome to Vip Contacts') }}
-            <MyMenuInline :items="menuinline_items" :context="this"></MyMenuInline>
+            <MyMenuInline :items="menuinline_items" :context="this" v-if="$store.state.logged"></MyMenuInline>
         </h1>
         <br>
         <div v-show="this.$store.state.logged" class="padding">
