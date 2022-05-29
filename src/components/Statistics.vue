@@ -15,27 +15,27 @@
             <v-tabs-items v-model="tab" v-if="statistics">
                 <v-tab-item key="Gender">
                     <v-card flat>
-                      <chart-pie :name="$t('Gender')" :items="statistics.gender" height="600px" :key="key"></chart-pie>
+                      <chart-pie :name="$t('Gender')" :items="statistics.gender" :key="key"></chart-pie>
                     </v-card>
                 </v-tab-item>
                 <v-tab-item key="Jobs">
                     <v-card flat>
-                      <chart-pie :name="$t('Jobs')" :items="statistics.jobs" height="600px" :key="key"></chart-pie>
+                      <chart-pie :name="$t('Jobs')" :items="statistics.jobs" :key="key"></chart-pie>
                     </v-card>
                 </v-tab-item>
                 <v-tab-item key="Countries">
                     <v-card flat>
-                      <chart-pie :name="$t('Countries')" :items="statistics.countries" height="600px" :key="key"></chart-pie>
+                      <chart-pie :name="$t('Countries')" :items="statistics.countries" :key="key"></chart-pie>
                     </v-card>
                 </v-tab-item>
                 <v-tab-item key="Cities">
                     <v-card flat>
-                      <chart-pie :name="$t('Cities')" :items="statistics.cities" height="600px" :key="key"></chart-pie>
+                      <chart-pie :name="$t('Cities')" :items="statistics.cities" :key="key"></chart-pie>
                     </v-card>
                 </v-tab-item>
                 <v-tab-item key="Registers">
                     <v-card flat>
-                      <chart-pie :name="$t('Vip Contacts registers')" :items="statistics.registers" height="600px" :key="key"></chart-pie>
+                      <chart-pie :name="$t('Vip Contacts registers')" :items="statistics.registers" :key="key"></chart-pie>
                     </v-card>
                 </v-tab-item>
             </v-tabs-items>
