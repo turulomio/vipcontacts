@@ -131,13 +131,6 @@ h1 {
     padding: 10px;
 }
 
-SwitchLanguages{
-    vertical-align:center;
-}
-
-.tabicon{
-    margin: 40px;
-}
 .login{
     padding:30px;
 }
@@ -146,6 +139,12 @@ SwitchLanguages{
 .padding{
     padding-left:30px;
     padding-right:30px;
+}
+
+
+.last_update{
+    text-align:right;
+    color: gray;
 }
 </style>
 

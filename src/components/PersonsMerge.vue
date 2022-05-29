@@ -46,7 +46,12 @@
                 axios.post(`${this.$store.state.apiroot}/persons/merge/`, this.new_pm,  this.myheaders())
                 .then((response) => {
                     console.log(response.data)
-                    this.$emit("merged")
+                    if (response.data==true){
+                        this.$router.push({ name: 'home'})
+                    } else {
+                        alert(this.$t("There was a problem merging contacts"))
+                    }
+                   
                 }, (error) => {
                     this.parseResponseError(error)
                 })

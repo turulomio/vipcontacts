@@ -4,7 +4,9 @@
                 <MyMenuInline :items="menuinline_items" :context="this"></MyMenuInline>
         </h1>
 
-        <DisplayValues :items="displayvalues()" :key="key"></DisplayValues>
+        <DisplayValues :items="displayvalues()" :key="key+1"></DisplayValues>
+
+        <div class="last_update mr-8" v-html="$t('Last modification: {0}').format(localtime(this.person.contact_last_update))"></div>
         <div class="tabs login">
             <v-card>
                 <v-tabs  background-color="primary" dark v-model="tab" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
@@ -22,48 +24,48 @@
                 <v-tabs-items v-model="tab">
                     <v-tab-item key="Alias">
                         <v-card flat>
-                            <TableCrudAlias :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
+                            <TableCrudAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
                         </v-card>
                     </v-tab-item>
                     
                     <v-tab-item key="Mails">
                         <v-card flat>
-                            <TableCrudMail :person="this.person" :key="key"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
+                            <TableCrudMail :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Phones">
                         <v-card flat>
-                            <TableCrudPhone :person="this.person" :key="key"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
+                            <TableCrudPhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Address">
                         <v-card flat>
-                            <TableCrudAddress :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
+                            <TableCrudAddress :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Jobs">
                         <v-card flat>
-                            <TableCrudJob :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
+                            <TableCrudJob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Relations">
                         <v-card flat>
-                            <TableCrudRelationship :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
+                            <TableCrudRelationship :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Groups">
                         <v-card flat>
-                            <TableCrudGroup :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
+                            <TableCrudGroup :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Media">
                         <v-card flat>
-                            <TableCrudBlob :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
+                            <TableCrudBlob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
                         </v-card>
                     </v-tab-item>
                     <v-tab-item key="Logs">
                         <v-card flat>
-                            <TableCrudLog :person="this.person" :key="key" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
+                            <TableCrudLog :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
                         </v-card>
                     </v-tab-item>
                 </v-tabs-items>
@@ -86,16 +88,16 @@
 
 <script>
     import axios from 'axios'
-    import TableCrudAlias from './TableCrudAlias';
-    import TableCrudAddress from './TableCrudAddress';
-    import TableCrudBlob from './TableCrudBlob';
-    import TableCrudGroup from './TableCrudGroup';
-    import TableCrudJob from './TableCrudJob';
-    import TableCrudLog from './TableCrudLog';
-    import TableCrudMail from './TableCrudMail';
-    import TableCrudPhone from './TableCrudPhone';
-    import TableCrudRelationship from './TableCrudRelationship';
-    import PersonCRUD from './PersonCRUD.vue';
+    import TableCrudAlias from './TableCrudAlias'
+    import TableCrudAddress from './TableCrudAddress'
+    import TableCrudBlob from './TableCrudBlob'
+    import TableCrudGroup from './TableCrudGroup'
+    import TableCrudJob from './TableCrudJob'
+    import TableCrudLog from './TableCrudLog'
+    import TableCrudMail from './TableCrudMail'
+    import TableCrudPhone from './TableCrudPhone'
+    import TableCrudRelationship from './TableCrudRelationship'
+    import PersonCRUD from './PersonCRUD.vue'
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
     import {age_today, age_in_a_date, generateVcardObject} from '../functions.js'
@@ -155,13 +157,13 @@
                                 name: this.$t("Generate VCard"),
                                 icon: "mdi-plus",
                                 code: function(this_){
-                                    var blob = new Blob([this_.generateVcardObject(this_.person).getFormattedString()], { type: 'text/vcard' });
-                                    var link = window.document.createElement('a');
-                                    link.href = window.URL.createObjectURL(blob);
+                                    var blob = new Blob([this_.generateVcardObject(this_.person).getFormattedString()], { type: 'text/vcard' })
+                                    var link = window.document.createElement('a')
+                                    link.href = window.URL.createObjectURL(blob)
                                     link.download = `${this_.person.fullname}.vcf`
-                                    document.body.appendChild(link);
-                                    link.click();
-                                    document.body.removeChild(link);
+                                    document.body.appendChild(link)
+                                    link.click()
+                                    document.body.removeChild(link)
                                 },
                             },
                             {
@@ -170,7 +172,7 @@
                                 code: function(this_){
                                     let searchString=this_.$t("Problems with search string")
                                     if (this_.person.search.length==1){
-                                        searchString=this_.person.search[0].string;
+                                        searchString=this_.person.search[0].string
                                     }
                                     alert(searchString)
                                 },
@@ -183,8 +185,6 @@
                 qr:"",
                 qrsize: 800,
                 dialog_qr: false,
-                original: {},
-                person_changed: false,
                 key:0,
 
 
@@ -196,7 +196,7 @@
         },
         computed: {
             fullNameWithAge: function (){
-                var age_string="";
+                var age_string=""
                 if (this.person.birth != null && this.person.death == null){
                     age_string=` ( ${this.age_today(this.person.birth)} years )`
                 } 
@@ -235,34 +235,14 @@
                 }
                 axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, this.myheaders())
                 .then((response) => {
-                    this.person= response.data;
-                    console.log(this.person);
-                    this.PersonView_key();
-                    this.set_original()
-                    this.person_fields_have_changed()
-                    return response.data;//To make syncronous
+                    this.person= response.data
+                    console.log(this.person)
+                    this.key=this.key+1
+                    return response.data//To make syncronous
                     
                 }, (error) => {
                     this.parseResponseError(error)
-                });
-            },
-            // Used to manually clear the form
-            //
-            // @arg The first parameter is a Boolean value that represents...
-            //
-            set_original(){
-                this.original={
-                    name: this.person.name,
-                    surname: this.person.surname,
-                    surname2: this.person.surname2,
-                    gender: this.person.gender,
-                    birth: this.person.birth,
-                    death: this.person.death,
-                }
-            },
-            PersonView_key(){
-                this.key=this.key+1;
-                console.log(`Updating PersonView key to ${this.key}`)
+                })
             },
             badge_number(s){
                 try{
@@ -284,21 +264,6 @@
                     }
                 } catch (error) {
                     return 0
-                }
-            },
-
-            person_fields_have_changed(){
-                console.log("AHORA CHANGED")
-                if (this.person.name!=this.original.name ||
-                    this.person.surname!=this.original.surname ||
-                    this.person.surname2!=this.original.surname2 ||
-                    this.person.birth!=this.original.birth ||
-                    this.person.death!=this.original.death ||
-                    this.person.gender!=this.original.gender 
-                ) {
-                    this.person_changed= true
-                } else {
-                    this.person_changed=false
                 }
             },
             on_PersonCRUD_cruded(){

@@ -76,8 +76,3 @@
         }
     }
 </script>
-<style>
-.login{
-    padding:30px;
-}
-</style>
