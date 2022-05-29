@@ -8,3 +8,11 @@ export function empty_person(){
         gender: 0,
     }
 }
+
+
+export function empty_persons_merge(){
+    return {
+        from: null,
+        to: null,
+    }
+}

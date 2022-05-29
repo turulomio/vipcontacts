@@ -18,6 +18,8 @@
                         <v-list-item-icon><v-icon color="#757575;">mdi-home</v-icon></v-list-item-icon>
                         <v-list-item-title>Home</v-list-item-title>
                     </v-list-item>
+
+<!--                     CONTACTS -->
                     <v-list-group :value="false" prepend-icon="mdi-account-circle" v-if="this.$store.state.logged">
                         <template v-slot:activator>
                             <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
@@ -25,6 +27,9 @@
 
                         <v-list-item link  router :to="{ name: 'person_last_edited'}">
                             <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item link  router :to="{ name: 'persons_merge'}">
+                            <v-list-item-title>{{ $t("Merge contacts") }}</v-list-item-title>
                         </v-list-item>
                     </v-list-group>
 

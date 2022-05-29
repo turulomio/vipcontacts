@@ -1,32 +1,34 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import App from './App.vue'
-import vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify'
 import i18n from './i18n'
-import VueRouter from 'vue-router';
+import VueRouter from 'vue-router'
 
-import "echarts";
+import "echarts"
 import ECharts from 'vue-echarts'
 Vue.component('v-chart', ECharts)
 
+import 'flag-icons/css/flag-icons.min.css'
 
 
-import VueTelInput from 'vue-tel-input';
-import 'vue-tel-input/dist/vue-tel-input.css';
-Vue.use(VueTelInput);
+import VueTelInput from 'vue-tel-input'
+import 'vue-tel-input/dist/vue-tel-input.css'
+Vue.use(VueTelInput)
 
-Vue.use(VueRouter);
-Vue.use(Vuex);
+Vue.use(VueRouter)
+Vue.use(Vuex)
 
 import {store} from './store.js'
-import About from './components/about';
-import Home from './components/Home';
-import GroupMembers from './components/GroupMembers';
-import PersonView from './components/PersonView';
-import PersonLastEditions from './components/PersonLastEditions';
-import Settings from './components/Settings';
-import Statistics from './components/Statistics';
-import TableTypes from './components/TableTypes.vue';
+import About from './components/about'
+import Home from './components/Home'
+import GroupMembers from './components/GroupMembers'
+import PersonView from './components/PersonView'
+import PersonLastEditions from './components/PersonLastEditions'
+import PersonsMerge from './components/PersonsMerge.vue'
+import Settings from './components/Settings'
+import Statistics from './components/Statistics'
+import TableTypes from './components/TableTypes.vue'
 
 
 
@@ -42,14 +44,15 @@ const router = new VueRouter({
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/group/members/`, name: 'group_members', component: GroupMembers },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/edit/`, name: 'person_edit', component: PersonView, props: true },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/person/lasteditions/`, name: 'person_last_edited', component: PersonLastEditions },
+    { path: `${process.env.VUE_APP_PUBLIC_PATH}/persons/merge/`, name: 'persons_merge', component: PersonsMerge },
     { path: `${process.env.VUE_APP_PUBLIC_PATH}/administration/types/`, name: 'administration_types', component: TableTypes},
   ]
-});
+})
 
 // MIXIN GLOBAL
 import {getLocalStorage} from './functions.js'
 import {localtime,myheaders,myheaders_noauth, parseResponse,parseResponseError,myheaders_formdata, arrayobjects_to_stringofstrings,sortObjectsArray} from './components/reusing/my_commons.js'
-import {RulesString,RulesEmail} from './components/reusing/rules.js'
+import {RulesString,RulesEmail,RulesSelection} from './components/reusing/rules.js'
 
 Vue.mixin({
   methods: {
@@ -64,6 +67,7 @@ Vue.mixin({
     sortObjectsArray,
     RulesString,
     RulesEmail,
+    RulesSelection,
   }
 })
 

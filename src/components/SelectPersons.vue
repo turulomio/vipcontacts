@@ -10,13 +10,14 @@
         hide-selected
         outlined
         persistent-hint
-        :label="$t('Select a contact')"
+        :label="($attrs.label) ? $attrs.label : $t('Select a contact')"
         placeholder="Start typing to Search"
         prepend-icon="mdi-database-search"
+        :rules="($attrs.rules) ? $attrs.rules : []"
       ></v-autocomplete>
 </template>
 <script>
-    import axios from 'axios'
+  import axios from 'axios'
   export default {
     name:"SelectPersons",
     props: {
@@ -24,13 +25,15 @@
             required: true
         }
     },
-    data: () => ({
-      descriptionLimit: 60,
-      entries: [],
-      isLoading: false,
-      search: null,
-      localValue: null
-    }),
+    data(){ 
+        return{
+          descriptionLimit: 60,
+          entries: [],
+          isLoading: false,
+          search: null,
+          localValue: null
+        }
+    },
 
     computed: {
       items () {
@@ -59,14 +62,17 @@
         })
           .finally(() => (this.isLoading = false));
       },
-     localValue (newValue) {
-       this.$emit('input', newValue)
-       console.log(`LocalValue changed and emited input to ${newValue}`)
-     },
-     value (newValue) {
-       this.localValue = newValue
-       console.log(`value changed to ${newValue}`)
-     }
+      localValue (newValue) {
+        this.$emit('input', newValue)
+        console.log(`LocalValue changed and emited input to ${newValue}`)
+      },
+      value (newValue) {
+        this.localValue = newValue
+        //console.log(`value changed to ${newValue}`)
+      }
     },
+    mounted(){
+      //console.log(this.$attrs)
+    }
   }
 </script>
