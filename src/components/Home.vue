@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="pa-5">
         <h1>{{ $t('Wellcome to Vip Contacts') }}
             <MyMenuInline :items="menuinline_items" :context="this" v-if="$store.state.logged"></MyMenuInline>
         </h1>
         <br>
-        <div v-show="this.$store.state.logged" class="padding">
+        <div v-show="this.$store.state.logged">
             
-            <v-row class="padding">
+            <v-row class="pa-5">
                 <v-text-field 
                     v-model="search" 
                     type="text" 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
+        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="key" >
             <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
@@ -22,9 +22,9 @@
         
         <!-- DIALOG CRUD -->
         <v-dialog v-model="dialog" max-width="800">
-            <v-card  class="login">
-                <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
-                <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
+            <v-card  class="pa-3">
+                <h1 class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</h1>
+                <h1 class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</h1>
                 <v-form ref="form" v-model="form_valid" lazy-validation >
                     <v-file-input v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
                     <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
@@ -41,12 +41,13 @@
                 
         <!-- DIALOG PASTE-->
         <v-dialog v-model="dialog_paste" max-width="800" >
-            <v-card  class="login">
-                <v-card-title class="headline" v-if="isEdition==false">{{ $t("Paste image") }}</v-card-title>
+            <v-card  class="pa-3">
+                <h1 v-if="isEdition==false">{{ $t("Paste image") }}</h1>
                 <v-form ref="form_paste" v-model="form_paste_valid" lazy-validation >
-                <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
-                <PasteImage v-model="pasted_image" :rules="RulesSelection(true)"/>
+                   <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                   <PasteImage v-model="pasted_image" :rules="RulesSelection(true)" :key="key"  />
                 </v-form>
+                <br>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" @click.native="acceptPaste()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
@@ -85,7 +86,7 @@
         props: ['person','obsolete'],
         data () {
             return {
-                refreshKey:0,
+                key:0,
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
@@ -139,7 +140,7 @@
                     this.parseResponse(response)
                     this.$emit('person')
                     this.dialog=false;
-                    this.refreshKey=this.refreshKey+1
+                    this.key=this.key+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -156,7 +157,7 @@
                     this.parseResponse(response)
                     this.$emit('person')
                     this.dialog=false;
-                    this.refreshKey=this.refreshKey+1
+                    this.key=this.key+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -176,7 +177,7 @@
                     this.parseResponse(response)
                     this.$emit("person")
                     this.dialog=false;
-                    this.refreshKey=this.refreshKey+1 
+                    this.key=this.key+1 
                     this.$emit('cruded') 
                 }, (error) => {
                     this.parseResponseError(error)
@@ -194,7 +195,7 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.refreshKey=this.refreshKey+1
+                    this.key=this.key+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -211,7 +212,7 @@
                 .then((response) => {
                     this.parseResponse(response)
                     console.log(response.data);
-                    this.refreshKey=this.refreshKey+1
+                    this.key=this.key+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)

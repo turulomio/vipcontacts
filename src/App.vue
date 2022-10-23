@@ -131,16 +131,6 @@ h1 {
     padding: 10px;
 }
 
-.login{
-    padding:30px;
-}
-
-
-.padding{
-    padding-left:30px;
-    padding-right:30px;
-}
-
 
 .last_update{
     text-align:right;

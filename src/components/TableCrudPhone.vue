@@ -18,7 +18,7 @@
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
-        <v-card  class="login">
+        <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit phone") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add phone") }}</v-card-title>
             

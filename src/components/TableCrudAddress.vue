@@ -18,7 +18,7 @@
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
-            <v-card  class="login">
+            <v-card  class="pa-3">
                 <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit address") }}</v-card-title>
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add address") }}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>

@@ -1,6 +1,6 @@
 <template>
     <div v-show="this.$store.state.logged">
-        <div  class="login">
+        <div  class="pa-3">
             <h1>{{ $t("Settings") }}</h1>
             
             <v-form ref="form" v-model="form_valid" lazy-validation >

@@ -16,7 +16,7 @@
 
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
-        <v-card  class="login">
+        <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
             <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.$store.state.apiroot}/api/professions/`" field="profession" />

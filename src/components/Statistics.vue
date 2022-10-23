@@ -1,6 +1,6 @@
 <template>
     <div v-show="this.$store.state.logged">
-        <div class="login">
+        <div class="pa-3">
             <h1>{{ $t("Statistics") }}</h1>
 
             <v-tabs  background-color="primary" dark v-model="tab" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>

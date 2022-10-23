@@ -10,7 +10,7 @@
         </v-card>
         <v-btn color="error"  @click="mergeItems()" :disabled="items_selected.length<1">{{ $t("Merge / Rename types") }}</v-btn>
         <v-dialog v-model="dialog" max-width="550">
-            <v-card  class="login">
+            <v-card  class="pa-3">
                 <v-card-title class="headline">{{dialog_title}}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-text-field v-model="newname" type="text" :counter="255" :label="$t('Tipo')" required :placeholder="$t('Introduzca un tipo')" autofocus/>
