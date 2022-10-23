@@ -5,7 +5,7 @@
         </h1>
         <div v-show="this.$store.state.logged">
             
-             <v-alert dense class="ma-3 px-10" outlined type="error" v-if="next_important_dates.length>0" @click="on_click_alert_next_important_dates">{{$t("You have next import dates")}}</v-alert>
+             <v-alert dense class="ma-3 px-10" outlined type="error" v-if="next_important_dates.length>0" @click="on_click_alert_next_important_dates">{{$t("You have next important dates")}}</v-alert>
             <v-row class="pa-5">
                 <v-text-field 
                     v-model="search" 
