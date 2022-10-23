@@ -5,7 +5,7 @@
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.blob`]="{ item }">
-                <img :src="`data:${item.mime};base64,${item.blob}`" width="24" height="24" v-if="canBeViewed(item)" @click="showCarrusel" />
+                <img contain :src="`data:${item.mime};base64,${item.blob}`" width="24" height="24" v-if="canBeViewed(item)" @click="showCarrusel" />
             </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -15,26 +15,40 @@
             </template>
         </v-data-table>            
         <v-btn color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
+        <v-btn color="primary" @click="pasteItem()" >{{ $t('Paste blob') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showCarrusel()" >{{ $t('Carrusel') }}</v-btn>
         
-        <!-- DIALOG -->
+        <!-- DIALOG CRUD -->
         <v-dialog v-model="dialog" max-width="800">
             <v-card  class="login">
                 <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
                 
-                <v-file-input v-model="selected.blob"  v-bind:label="$t('File')" required v-bind:placeholder="$t('Select a filename')" v-if ="isEdition==false"/>
-                <v-select :items="this.$store.state.mimetype" v-model="selected.mime" :label="$t('Select a mime')"  item-text="display_name" item-value="value"  ></v-select>  
+                <v-file-input v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false"/>
+                <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
 
-                <AutoCompleteApiOneField v-model="selected.name" v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
-                
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
                     <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
-                    <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
+                    <v-btn color="error" @click.native="dialog = false">{{ $t("Cancel") }}</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+                
+        <!-- DIALOG PASTE-->
+        <v-dialog v-model="dialog_paste" max-width="800" >
+            <v-card  class="login">
+                <v-card-title class="headline" v-if="isEdition==false">{{ $t("Paste image") }}</v-card-title>
+                <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
+                <PasteImage v-model="pasted_image"></PasteImage>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click.native="acceptPaste()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                    <v-btn color="error" @click.native="dialog_paste   = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -58,10 +72,13 @@
 <script>
     import axios from 'axios'
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
+    import PasteImage from './PasteImage.vue'
+    import {empty_blob} from '../empty_objects.js'
     export default {
         name: 'TableCrudBlob',
         components: {
             AutoCompleteApiOneField,
+            PasteImage,
         },
         props: ['person','obsolete'],
         data () {
@@ -79,83 +96,85 @@
                 vShowObsolete:false,
                 isEdition: true,
                 dialog: false,
+                //Paste dialog
+                dialog_paste:false,
+                pasted_image:null,
+                //
                 dialog_carrusel: false,
                 carrusel:[],
                 selected: {},
-                blob_string: null,
-                blob_names:[],
-                RulesTextRequired100: [
-                    v => !!v || this.$t('Text is required'),
-                    v => (v && v.length <100) || this.$t('Text must be less than 100 characters'),
-                ],
+                file_input: null,
             }
         },
         methods:{
             addItem(){
-                this.selected={
-                    dt_update: new Date(),
-                    dt_obsolete: '',
-                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
-                    name: null,
-                    mime: null,
-                    blob: null,
-                    photocontact: false,
-                };
-                this.dialog=true;
+                this.selected=empty_blob()
                 this.isEdition=false;
+                this.dialog=true;
             },
-            acceptAddition(){
-                let data = new FormData(); // creates a new FormData object
-                data.append('dt_update', this.selected.dt_update.toISOString()); // add your file to form data
-                data.append('dt_obsolete', this.selected.dt_obsolete); // add your file to form data
-                data.append('person', this.selected.person); // add your file to form data
-                data.append('name', this.selected.name); // add your file to form data
-                data.append('mime', this.selected.mime); // add your file to form data
-                data.append('blob', this.selected.blob); // add your file to form data
-                data.append('photocontact', this.selected.photocontact); // add your file to form data
-                axios.post(`${this.$store.state.apiroot}/api/blob/`, data, this.myheaders_formdata())
+            async pasteItem(){
+                this.selected=empty_blob()
+                this.isEdition=false
+                this.pasted_image=null
+                this.key=this.key+1
+                this.dialog_paste=true
+            },
+
+            async acceptPaste(){                
+                if (this.pasted_image==null){
+                    alert(this.$t("You need to paste and image"))
+                    return
+                }
+
+                this.selected.mime=this.pasted_image.mime
+                this.selected.blob=this.pasted_image.image
+                this.selected.person=`${this.$store.state.apiroot}/api/persons/${this.person.id}/`
+                axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
-                    console.log(response.data)
                     this.$emit('person')
                     this.dialog=false;
-                    this.TableCrudBlob_refreshKey();
+                    this.refreshKey=this.refreshKey+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
-                });
+                })
             },
-            
+            async acceptAddition(){                
+                var image= await this.getBase64(this.file_input)
+                this.selected.mime=image.mime
+                this.selected.blob=image.image
+                this.selected.person=`${this.$store.state.apiroot}/api/persons/${this.person.id}/`
+                axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
+                .then((response) => {
+                    this.parseResponse(response)
+                    this.$emit('person')
+                    this.dialog=false;
+                    this.refreshKey=this.refreshKey+1
+                    this.$emit('cruded')
+                }, (error) => {
+                    this.parseResponseError(error)
+                })
+            },
             editItem(item){
                 console.log(item)
                 this.selected=item;
                 this.dialog=true;
                 this.isEdition=true;
             },
+            empty_blob,
             acceptEdition(){
-                //Doesn't change blob only update metadata
-                let data = new FormData(); // creates a new FormData object
-                data.append('dt_update', new Date().toISOString()); // add your file to form data
-                data.append('dt_obsolete', this.selected.dt_obsolete||""); // add your file to form data
-                data.append('person', this.selected.person); // add your file to form data
-                data.append('name', this.selected.name); // add your file to form data
-                data.append('mime', this.selected.mime); // add your file to form data
-                data.append('photocontact', this.selected.photocontact); // add your file to form data
-                axios.put(this.selected.url, data, this.myheaders_formdata())
+                axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
-                    console.log(response.data);
                     this.$emit("person")
                     this.dialog=false;
-                    this.TableCrudBlob_refreshKey(); 
+                    this.refreshKey=this.refreshKey+1 
                     this.$emit('cruded') 
                 }, (error) => {
                     this.parseResponseError(error)
                 });
                 
-            },
-            cancelDialog(){
-                this.dialog = false;                
             },
             deleteItem(item){
                 var r = confirm("Do you want to delete this blob?");
@@ -168,7 +187,7 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableCrudBlob_refreshKey();
+                    this.refreshKey=this.refreshKey+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -185,7 +204,7 @@
                 .then((response) => {
                     this.parseResponse(response)
                     console.log(response.data);
-                    this.TableCrudBlob_refreshKey();
+                    this.refreshKey=this.refreshKey+1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -195,10 +214,6 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            TableCrudBlob_refreshKey(){
-                this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudBlob RefreshKey to ${this.refreshKey}`)
-            },    
             canBeViewed(item){
                 if (item.mime=="image/png" || item.mime=="image/jpeg") return true
                 return false
@@ -217,8 +232,5 @@
                 this.dialog_carrusel=true
             }
         },
-        
-        created() {           
-        }
     }
 </script>
