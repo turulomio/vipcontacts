@@ -25,10 +25,10 @@
             <v-card  class="login">
                 <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</v-card-title>
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</v-card-title>
-                
-                <v-file-input v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false"/>
-                <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
-
+                <v-form ref="form" v-model="form_valid" lazy-validation >
+                    <v-file-input v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
+                    <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
@@ -43,8 +43,10 @@
         <v-dialog v-model="dialog_paste" max-width="800" >
             <v-card  class="login">
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Paste image") }}</v-card-title>
-                <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" />   
-                <PasteImage v-model="pasted_image"></PasteImage>
+                <v-form ref="form_paste" v-model="form_paste_valid" lazy-validation >
+                <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                <PasteImage v-model="pasted_image" :rules="RulesSelection(true)"/>
+                </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" @click.native="acceptPaste()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
@@ -96,9 +98,11 @@
                 vShowObsolete:false,
                 isEdition: true,
                 dialog: false,
+                form_valid: false,
                 //Paste dialog
                 dialog_paste:false,
                 pasted_image:null,
+                form_paste_valid:false,
                 //
                 dialog_carrusel: false,
                 carrusel:[],
@@ -121,6 +125,7 @@
             },
 
             async acceptPaste(){                
+                if (this.$refs.form_paste.validate()==false) return     
                 if (this.pasted_image==null){
                     alert(this.$t("You need to paste and image"))
                     return
@@ -140,7 +145,8 @@
                     this.parseResponseError(error)
                 })
             },
-            async acceptAddition(){                
+            async acceptAddition(){     
+                if (this.$refs.form.validate()==false) return          
                 var image= await this.getBase64(this.file_input)
                 this.selected.mime=image.mime
                 this.selected.blob=image.image
@@ -164,6 +170,7 @@
             },
             empty_blob,
             acceptEdition(){
+                if (this.$refs.form.validate()==false) return     
                 axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
