@@ -128,7 +128,7 @@
             async acceptPaste(){                
                 if (this.$refs.form_paste.validate()==false) return     
                 if (this.pasted_image==null){
-                    alert(this.$t("You need to paste and image"))
+                    alert(this.$t("You need to paste an image"))
                     return
                 }
 
