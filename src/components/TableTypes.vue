@@ -1,9 +1,9 @@
 
 <template>
     <div>
-        <h1>{{ $t('Administración de tablas auxiliares') }}</h1>
+        <h1>{{ $t('Auxiliar tables management') }}</h1>
         <br>
-        <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Selecciona una tabla de la base de datos')" item-text="name"  return-object ></v-select>
+        <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-text="name"  return-object ></v-select>
         <v-card class="padding">
             <v-text-field v-model="search" append-icon="mdi-magnify" label="Bucar en tabla" single-line></v-text-field>
             <v-data-table dense v-model="items_selected" :headers="headers" :items="items" sort-by="count" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
@@ -13,7 +13,7 @@
             <v-card  class="pa-3">
                 <v-card-title class="headline">{{dialog_title}}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>
-                    <v-text-field v-model="newname" type="text" :counter="255" :label="$t('Tipo')" required :placeholder="$t('Introduzca un tipo')" autofocus/>
+                    <v-text-field v-model="newname" type="text" :counter="255" :label="$t('Add a type')" required :placeholder="$t('Add a type')" autofocus/>
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>

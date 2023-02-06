@@ -12,7 +12,6 @@ String.prototype.format = function() {
     return formatted;
 };
 
-
 export function my_round(num, decimals = 2) {
     return Math.round(num*Math.pow(10, decimals))/Math.pow(10, decimals)
 }
