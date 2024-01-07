@@ -1,0 +1,115 @@
+<template>
+    <div v-show="this.$store.state.logged">
+            <h1>{{ title() }}</h1>
+            <v-card class="pa-4 ma-3">
+                <v-text-field v-model="newperson.name"  :readonly="mode=='D'" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
+                <v-text-field v-model="newperson.surname" :readonly="mode=='D'" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
+                <v-text-field v-model="newperson.surname2" :readonly="mode=='D'" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
+                <v-row class="pl-8 my-3" justify="center">
+                    <MyDatePicker v-model="newperson.birth" :readonly="mode=='D'" :label="$t('Birth date')"></MyDatePicker>
+                    <v-spacer></v-spacer>
+                    <MyDatePicker v-model="newperson.death" :readonly="mode=='D'" :label="$t('Death date')"></MyDatePicker>
+                    <v-spacer></v-spacer>           
+                </v-row>
+                <v-select :items="this.$store.state.persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
+
+                <v-card-actions> 
+                    <v-spacer></v-spacer>
+                    <v-btn color="primary" @click.native="accept_dialog()" >{{ button() }}</v-btn>
+                </v-card-actions>
+            </v-card>
+    </div>
+</template>
+
+<script>
+    import axios from 'axios'
+    import MyDatePicker from './reusing/MyDatePicker.vue'
+    export default {  
+        components: {
+            MyDatePicker,
+        },
+        props:{
+            person:{
+                required:true,
+            },
+            deleting:{
+                required:false,
+                default:false
+            },
+            
+        },
+        data () {
+            return {
+                newperson: null,
+                mode:null, //C: Create, R: Read, U: Update, D: Delete
+            }
+        },
+        methods: {
+            title(){
+                if (this.mode=="D"){
+                    return this.$t("Deleting a contact")
+                } else if (this.mode=="U"){
+                    return this.$t("Updating a contact")
+                } else if (this.mode=="C"){
+                    return this.$t("Creating a new contact")
+                }
+            },
+            button(){
+                if(this.mode=="U"){
+                    return this.$t("Update")
+                } else if (this.mode=="C"){
+                    return this.$t("Create")
+                } else if (this.mode=="D"){
+                    return this.$t("Delete")
+                }
+            },
+            accept_dialog(){             
+                if (this.mode=="C"){
+                    axios.post(`${this.$store.state.apiroot}/api/persons/`, this.newperson, this.myheaders())
+                    .then((response) => {
+                        this.$emit("cruded")
+                        console.log(response.data)
+                    }, (error) => {
+                        this.parseResponseError(error)
+                    });
+                }
+                else if (this.mode=="U"){
+                    this.newperson.dt_update=new Date()
+                    axios.put(`${this.$store.state.apiroot}/api/persons/${this.newperson.id}/`, this.newperson, this.myheaders())
+                    .then(() => {
+                        this.$emit("cruded")
+                    }, (error) => {
+                        this.parseResponseError(error)
+                    });
+                }
+                else if (this.mode=="D"){
+                    var r = confirm(this.$t("Do you want to delete this contact?"))
+                    if(r == false) {
+                        return
+                    } 
+                    r = confirm(this.$t("The contact and all it's dependent data will be deleted. Do you want to continue?"))
+                    if(r == false) {
+                        return
+                    } 
+                    axios.delete(`${this.$store.state.apiroot}/api/persons/${this.newperson.id}`, this.myheaders())
+                    .then(() => {
+                        this.$router.push({name:'home'})
+                    }, (error) => {
+                        this.parseResponseError(error)
+                    });
+                }
+            },
+        },
+        created(){
+            if (this.deleting==true){
+                this.mode="D"
+            } else if ( this.person.url!=null){ 
+                this.mode="U"
+            } else {
+                this.mode="C"
+            }
+            this.newperson=Object.assign({},this.person)
+        }
+
+    }
+</script>
