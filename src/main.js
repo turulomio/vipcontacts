@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 
 // import * as echarts from "echarts"
-import ECharts from 'vue-echarts'
+// import ECharts from 'vue-echarts'
 
 import 'flag-icons/css/flag-icons.min.css'
 
@@ -24,7 +24,7 @@ app.use(i18n)
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
-app.component('v-chart', ECharts)
+// app.component('v-chart', ECharts)
 app.use(VueTelInput)
 app.mount('#app')
 

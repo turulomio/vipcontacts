@@ -7,7 +7,7 @@
                     <v-list-item>
                         <v-list-item-content>
                             <v-list-item-title class="title">Vip Contacts</v-list-item-title>
-                            <v-list-item-subtitle>{{ $store.state.version }}</v-list-item-subtitle>
+                            <v-list-item-subtitle>{{ useStore().version }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
 
@@ -20,7 +20,7 @@
                     </v-list-item>
 
 <!--                     CONTACTS -->
-                    <v-list-group :value="false" prepend-icon="mdi-account-circle" v-if="this.$store.state.logged">
+                    <v-list-group :value="false" prepend-icon="mdi-account-circle" v-if="useStore().logged">
                         <template v-slot:activator>
                             <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
                         </template>
@@ -34,7 +34,7 @@
                     </v-list-group>
 
 <!--                     GROUP -->
-                    <v-list-group :value="false" prepend-icon="mdi-account-supervisor-circle" v-if="this.$store.state.logged">
+                    <v-list-group :value="false" prepend-icon="mdi-account-supervisor-circle" v-if="useStore().logged">
                         <template v-slot:activator>
                             <v-list-item-title>{{ $t("Groups") }}</v-list-item-title>
                         </template>
@@ -47,12 +47,12 @@
                     
 <!--                     SETTINGS -->
 <!--                     ADMINISTRACION -->
-                    <v-list-group :value="false" prepend-icon="mdi-cog" v-if="this.$store.state.logged">
+                    <v-list-group :value="false" prepend-icon="mdi-cog" v-if="useStore().logged">
                         <template v-slot:activator>
                             <v-list-item-title>{{ $t("Settings") }}</v-list-item-title>
                         </template>
 
-                        <v-list-item link router :to="{ name: 'settings'}" v-if="this.$store.state.logged">
+                        <v-list-item link router :to="{ name: 'settings'}" v-if="useStore().logged">
                             <v-list-item-title>{{ $t("Your settings") }}</v-list-item-title>
                         </v-list-item>
                         <v-list-item link  router :to="{ name: 'administration_types'}">
@@ -69,7 +69,7 @@
                             <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
                         </v-list-item>
                         
-                        <v-list-item link  router :to="{ name: 'statistics'}" v-if="this.$store.state.logged">
+                        <v-list-item link  router :to="{ name: 'statistics'}" v-if="useStore().logged">
                             <v-list-item-title class="mr-7">{{ $t("Statistics") }}</v-list-item-title>
                         </v-list-item>
                         
@@ -92,8 +92,8 @@
             <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
             <v-spacer />
             <BtnSwitchLanguages />
-            <BtnLogIn v-show="!this.$store.state.logged"/>
-            <BtnLogOut v-show="this.$store.state.logged"/>
+            <BtnLogIn v-show="!useStore().logged"/>
+            <BtnLogOut v-show="useStore().logged"/>
 
         </v-app-bar>
         <v-main>   
@@ -107,6 +107,7 @@
 import BtnLogIn from './components/reusing/BtnLogIn';
 import BtnLogOut from './components/reusing/BtnLogOut';
 import BtnSwitchLanguages from './components/reusing/BtnSwitchLanguages.vue';
+import { useStore } from './store';
 export default {
     name: 'App',
 
@@ -122,6 +123,9 @@ export default {
             drawer: false,
         }
     },
+    methods:{
+        useStore,
+    }
 };
 
 </script>
