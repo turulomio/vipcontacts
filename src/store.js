@@ -1,18 +1,18 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+
+import { defineStore } from 'pinia'
 import axios from 'axios'
-import {sortObjectsArray} from './components/reusing/my_commons.js'
-Vue.use(Vuex);
+import { myheaders, parseResponseError,sortObjectsArray} from './functions.js'
 
 
-export const store = new Vuex.Store({
-    state: {
+export const useStore = defineStore('global', {
+  state: () => {
+    return { 
         token:null,
         logged:false,
         version: "0.1.0",
         versiondate: new Date(2022, 1, 20, 20, 46),
-        apiroot: process.env.VUE_APP_DJANGO_VIPCONTACTS_URL,
-        publicPath: process.env.VUE_APP_PUBLIC_PATH,
+        apiroot: import.meta.env.VITE_DJANGO_VIPCONTACTS_URL,
+        publicPath: import.meta.env.VITE_PUBLIC_PATH,
         lastsearch: null,
         persongender:[],
         countries: [],
@@ -21,85 +21,40 @@ export const store = new Vuex.Store({
         logtype:[],
         relationshiptype: [],
         mimetype:[],
-    },    
-    getters:{
-        getObjectByUrl:(state) => (catalog,url,default_=null) => {
-            var r=state[catalog].find(o => o.url==url)
-            if (r==null){
-                return default_
-            } else {
-                return r
-            }
-        },
-        getObjectById:(state) => (catalog,id,default_=null) => {
-            var r=state[catalog].find(o => o.id==id)
-            if (r==null){
-                return default_
-            } else {
-                return r
-            }
-        },
-        //Dv Value (for options catalogs)
-        getObjectByValue:(state) => (catalog,v,default_=null) => {
-            var r=state[catalog].find(o => o.value==v)
-            if (r==null){
-                return default_
-            } else {
-                return r
-            }
-        },
-        getObjectPropertyByValue:(state,getters) => (catalog,v,property,default_=null) => {
-            var r=getters.getObjectByValue(catalog,v)
-            if (r==null){
-                return default_
-            } else {
-                return r[property]
-            }
-        },
-        getObjectPropertyByUrl:(state,getters) => (catalog,url,property,default_=null) => {
-            var r=getters.getObjectByUrl(catalog,url)
-            if (r==null){
-                return default_
-            } else {
-                return r[property]
-            }
-        },
-        getObjectPropertyById:(state,getters) => (catalog,id,property,default_=null) => {
-            var r=getters.getObjectById(catalog,id)
-            if (r==null){
-                return default_
-            } else {
-                return r[property]
-            }
-        },
-    },
-    mutations: { // Only sincronous changes data
-        updateOptions: (state, payload) =>{
-            state.persongender= sortObjectsArray(payload.actions.POST.gender.choices, "display_name")
-            state.countries= sortObjectsArray(payload.actions.POST.address.child.children.country.choices, "display_name")
-            state.addresstype= sortObjectsArray(payload.actions.POST.address.child.children.retypes.choices, "display_name")
-            state.mailtype= sortObjectsArray(payload.actions.POST.mail.child.children.retypes.choices, "display_name")
-            state.phonetype= sortObjectsArray(payload.actions.POST.phone.child.children.retypes.choices, "display_name")
-            state.logtype= sortObjectsArray(payload.actions.POST.log.child.children.retypes.choices, "display_name")
-            state.relationshiptype=sortObjectsArray(payload.actions.POST.relationship.child.children.retypes.choices, "display_name")
-            state.mimetype= sortObjectsArray(payload.actions.POST.blob.child.children.mime.choices, "display_name")
-
-        },
-    },
-    actions: {// Can be asynchronous. Fetch data
-
-        getAll(context){
-            return context.dispatch("getOptions")
-        },
-        getOptions(context){
-            var start=new Date()
-            return axios.options(`${store.state.apiroot}/api/persons/`, store.$app.myheaders())
-            .then((response) => {
-                context.commit('updateOptions', response.data)
-                console.log(`Updated options in ${new Date()-start} ms`)
-            }, (error) => {
-                store.$app.parseResponseError(error)
-            });
-        },
     }
+  },
+
+  actions: {
+    setToken(token){
+      this.token=token
+      if (this.token){
+        this.logged=true
+      } else {
+        this.logged=false
+      }
+    },
+    updateSettings() {
+        var start=new Date()
+        return axios.options(`${this.apiroot}/api/persons/`, myheaders())
+        .then((response) => {
+            this.persongender= sortObjectsArray(response.data.actions.POST.gender.choices, "display_name")
+            this.countries= sortObjectsArray(response.data.actions.POST.address.child.children.country.choices, "display_name")
+            this.addresstype= sortObjectsArray(response.data.actions.POST.address.child.children.retypes.choices, "display_name")
+            this.mailtype= sortObjectsArray(response.data.actions.POST.mail.child.children.retypes.choices, "display_name")
+            this.phonetype= sortObjectsArray(response.data.actions.POST.phone.child.children.retypes.choices, "display_name")
+            this.logtype= sortObjectsArray(response.data.actions.POST.log.child.children.retypes.choices, "display_name")
+            this.relationshiptype=sortObjectsArray(response.data.actions.POST.relationship.child.children.retypes.choices, "display_name")
+            this.mimetype= sortObjectsArray(response.data.actions.POST.blob.child.children.mime.choices, "display_name")
+            console.log(`Updated options in ${new Date()-start} ms`)
+        }, (error) => {
+            parseResponseError(error)
+        });
+    },
+
+    updateAll(){
+      return Promise.all([
+        this.updateOptions(),
+      ])
+    },
+  }
 })

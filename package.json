@@ -16,8 +16,8 @@
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
   "dependencies": {
-    "@mdi/font": "7.4.47",
     "@intlify/vue-i18n-loader": "^4.2.0",
+    "@mdi/font": "7.4.47",
     "axios": "1.6.5",
     "core-js": "^3.35.0",
     "echarts": "^5.4.3",
@@ -27,20 +27,21 @@
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.44",
     "pinia": "^2.1.7",
-    "roboto-fontface": "*",
     "qrcode.vue": "^3.4.1",
+    "roboto-fontface": "*",
     "vcards-js": "^2.10.0",
+    "vite-plugin-eslint": "^1.8.1",
     "vue": "^3.4.5",
     "vue-echarts": "^6.6.8",
     "vue-i18n": "^9.9.0",
     "vue-router": "^4.2.5",
     "vue-tel-input": "^8.3.1",
     "vuetify": "^3.4.9",
-    "vuex": "^4.1.0",
     "vuetify_rules": "^0.6.0",
+    "vuex": "^4.1.0",
     "webfontloader": "^1.6.28"
   },
-  "devDependencies": {    
+  "devDependencies": {
     "@cypress/code-coverage": "^3.12.15",
     "@cypress/vite-dev-server": "^5.0.7",
     "@vitejs/plugin-vue": "^5.0.0",

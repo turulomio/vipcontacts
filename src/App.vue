@@ -91,9 +91,9 @@
             <v-spacer />
             <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
             <v-spacer />
-            <SwitchLanguages />
-            <btnLogIn v-show="!this.$store.state.logged"/>
-            <btnLogOut v-show="this.$store.state.logged"/>
+            <BtnSwitchLanguages />
+            <BtnLogIn v-show="!this.$store.state.logged"/>
+            <BtnLogOut v-show="this.$store.state.logged"/>
 
         </v-app-bar>
         <v-main>   
@@ -104,16 +104,16 @@
 
 <script>
 
-import btnLogIn from './components/reusing/btnLogIn';
-import btnLogOut from './components/reusing/btnLogOut';
-import SwitchLanguages from './components/reusing/SwitchLanguages.vue';
+import BtnLogIn from './components/reusing/BtnLogIn';
+import BtnLogOut from './components/reusing/BtnLogOut';
+import BtnSwitchLanguages from './components/reusing/BtnSwitchLanguages.vue';
 export default {
     name: 'App',
 
     components: {
-        btnLogIn,
-        btnLogOut,
-        SwitchLanguages,
+        BtnLogIn,
+        BtnLogOut,
+        BtnSwitchLanguages,
     },
 
     data () {

@@ -17,5 +17,7 @@ module.exports = {
     ],
     "rules": {
       "vue/multi-word-component-names": "off",
+      "vue/no-v-model-argument": "warn",
+      "vue/valid-v-slot": "off",
     }
 }

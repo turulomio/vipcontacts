@@ -4,7 +4,7 @@
         <h2>{{ `${$store.state.version} (${$store.state.versiondate.toISOString().slice(0,10)})` }}</h2>
         
         <v-container  class="paragraph">
-            <p>{{ $t("Vip Contacts is a contact management application") }}<p>
+            <p>{{ $t("Vip Contacts is a contact management application") }}</p>
             
             <p class="paragraph" ref="github"></p>
             <p class="paragraph">{{ $t("Main features:") }}</p>

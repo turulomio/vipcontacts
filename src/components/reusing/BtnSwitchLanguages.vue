@@ -1,11 +1,11 @@
-/*
+<!--
     You must set in main.js import 'flag-icons/css/flag-icons.min.css' to use "fi" classes
-*/
+ -->
 
 <template>
-    <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" v-on="on" :close-on-content-click="false" >
+    <v-menu >
+        <template v-slot:activator="{ props }">
+            <v-btn color="primary" v-bind="props" :close-on-content-click="false" >
                 <v-icon :class="'fi fib fi-'+current.flag"></v-icon>
             </v-btn>
         </template>
@@ -24,7 +24,7 @@
                   ];
 
     export default {
-        name: 'SwitchLanguages',
+        name: 'BtnSwitchLanguages',
         data(){
             return {
                 locales: languages,
@@ -36,7 +36,8 @@
                 this.$i18n.locale=item.value;
                 this.current=item;
                 localStorage.locale=item.value;
-                this.$vuetify.lang.current = item.value;
+                //console.log(this.$vuetify.locale.value)
+                //this.$vuetify.locale.current = item.value;
             },
             getStoredCurrent() {
                 if (!localStorage.locale || localStorage.locale==null) {
