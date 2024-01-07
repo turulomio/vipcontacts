@@ -33,7 +33,7 @@ export const useStore = defineStore('global', {
         this.logged=false
       }
     },
-    updateSettings() {
+    updateOptions() {
         var start=new Date()
         return axios.options(`${this.apiroot}/api/persons/`, myheaders())
         .then((response) => {

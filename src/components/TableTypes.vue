@@ -6,7 +6,7 @@
         <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-text="name"  return-object ></v-select>
         <v-card class="padding">
             <v-text-field v-model="search" append-icon="mdi-magnify" label="Bucar en tabla" single-line></v-text-field>
-            <v-data-table dense v-model="items_selected" :headers="headers" :items="items" sort-by="count" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
+            <v-data-table dense v-model="items_selected" :headers="headers" :items="items"  :sort-by="[{key:'count',order:'asc'}]" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
         </v-card>
         <v-btn color="error"  @click="mergeItems()" :disabled="items_selected.length<1">{{ $t("Merge / Rename types") }}</v-btn>
         <v-dialog v-model="dialog" max-width="550">

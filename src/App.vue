@@ -5,24 +5,20 @@
                 <v-list>
                 
                     <v-list-item>
-                        <v-list-item-content>
                             <v-list-item-title class="title">Vip Contacts</v-list-item-title>
                             <v-list-item-subtitle>{{ useStore().version }}</v-list-item-subtitle>
-                        </v-list-item-content>
                     </v-list-item>
 
                     <v-divider></v-divider>
                 
 <!--                     HOME -->
-                    <v-list-item link router :to="{ name: 'home'}">
-                        <v-list-item-icon><v-icon color="#757575;">mdi-home</v-icon></v-list-item-icon>
-                        <v-list-item-title>Home</v-list-item-title>
+                    <v-list-item link router :to="{ name: 'home'}" prepend-icon="mdi-home" :title="$t('Home')">
                     </v-list-item>
 
 <!--                     CONTACTS -->
-                    <v-list-group :value="false" prepend-icon="mdi-account-circle" v-if="useStore().logged">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Contacts") }}</v-list-item-title>
+                    <v-list-group value="Contacts" prepend-icon="mdi-account-circle" v-if="useStore().logged">
+                        <template v-slot:activator="{props}">
+                            <v-list-item v-bind="props" prepend-icon="mdi-account-circle" :title="$t('Contacts')" />
                         </template>
 
                         <v-list-item link  router :to="{ name: 'person_last_edited'}">
@@ -34,22 +30,21 @@
                     </v-list-group>
 
 <!--                     GROUP -->
-                    <v-list-group :value="false" prepend-icon="mdi-account-supervisor-circle" v-if="useStore().logged">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Groups") }}</v-list-item-title>
+                    <v-list-group value="Group" v-if="useStore().logged">
+                        <template v-slot:activator="{props}">
+                            <v-list-item v-bind="props" prepend-icon="mdi-account-supervisor-circle" :title="$t('Groups')" />
                         </template>
 
                         <v-list-item link  router :to="{ name: 'group_members'}">
                             <v-list-item-title class="mr-7">{{ $t("Members") }}</v-list-item-title>
-                            <v-list-item-icon><v-icon></v-icon></v-list-item-icon>
                         </v-list-item>
                     </v-list-group>
                     
 <!--                     SETTINGS -->
 <!--                     ADMINISTRACION -->
-                    <v-list-group :value="false" prepend-icon="mdi-cog" v-if="useStore().logged">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Settings") }}</v-list-item-title>
+                    <v-list-group value="Settings" v-if="useStore().logged">
+                        <template v-slot:activator="{props}">
+                            <v-list-item v-bind="props" prepend-icon="mdi-cog" :title="$t('Settings')" />
                         </template>
 
                         <v-list-item link router :to="{ name: 'settings'}" v-if="useStore().logged">
@@ -60,11 +55,11 @@
                         </v-list-item>
                     </v-list-group>
 <!--                     HELP -->
-                    <v-list-group :value="false" prepend-icon="mdi-lifebuoy">
-                        <template v-slot:activator>
-                            <v-list-item-title>{{ $t("Help") }}</v-list-item-title>
-                        </template>
+                    <v-list-group value="Help">
 
+                        <template v-slot:activator="{props}">
+                            <v-list-item v-bind="props" prepend-icon="mdi-lifebuoy" :title="$t('Help')" />
+                        </template>
                         <v-list-item link  router :to="{ name: 'about'}">
                             <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
                         </v-list-item>

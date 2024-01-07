@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData" sort-by="dt_update" class="elevation-1" :key="refreshKey" >
+        <v-data-table :headers="tableHeaders" :items="tableData" :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="refreshKey" >
             <template v-slot:[`item.dt_update`]="{ item }">{{ localtime(item.dt_update) }}</template>
             <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("addresstype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.country`]="{ item }">{{ $store.getters.getObjectPropertyByValue("countries",item.country,"display_name") }}</template>

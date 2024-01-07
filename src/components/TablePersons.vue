@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <v-data-table :headers="headers" :items="data" :sort-by="orderby" class="elevation-1" @click:row="viewItem">
+        <v-data-table :headers="headers" :items="data" :sort-by="[{key:orderby,order:'asc'}]" class="elevation-1" @click:row="viewItem">
             <template v-slot:[`item.name`]="{ item }">
                 <v-icon small class="mr-2" >{{person_icon(item)}}</v-icon>
                 {{item.name}}

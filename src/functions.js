@@ -1,5 +1,6 @@
 import vCardsJS from 'vcards-js'
 import { my_round } from 'vuetify_rules';
+import { useStore}  from '@/store'
 
 // Function to use "{0} {1}".format(a, b) style
 String.prototype.format = function() {
@@ -16,8 +17,8 @@ String.prototype.format = function() {
 export function myheaders(){
     return {
         headers:{
-            'Authorization': `Token ${this.$store.state.token}`,
-            'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
+            'Authorization': `Token ${useStore().token}`,
+            'Accept-Language': `${localStorage.locale}-${localStorage.locale}`,
             'Content-Type':'application/json'
         }
     }
@@ -27,7 +28,7 @@ export function myheaders(){
 export function myheaders_noauth(){
     return {
         headers:{
-            'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
+            'Accept-Language': `${localStorage.locale}-${localStorage.locale}`,
             'Content-Type':'application/json'
         }
     }
@@ -36,8 +37,8 @@ export function myheaders_noauth(){
 export function myheaders_formdata(){
     return {
         headers:{
-            'Authorization': `Token ${this.$store.state.token}`,
-            'Accept-Language': `${this.$i18n.locale}-${this.$i18n.locale}`,
+            'Authorization': `Token ${useStore().token}`,
+            'Accept-Language': `${localStorage.locale}-${localStorage.locale}`,
             'Content-Type': 'multipart/form-data'
         }
     }
@@ -82,8 +83,8 @@ export function sortObjectsArray(objectsArray, sortKey)
 export function parseResponse(response){
     if (response.status==200){ //Good connection
         if (response.data == "Wrong credentials"){
-            this.$store.state.token=null
-            this.$store.state.logged=false
+            useStore().token=null
+            useStore().logged=false
             alert(this.$t("Wrong credentials"))
             return false
         }
@@ -106,8 +107,8 @@ export function parseResponseError(error){
 //       console.log(error.response.headers);
         if (error.response.status == 401){
             alert (this.$t("You aren't authorized to do this request"))
-            this.$store.state.token=null;
-            this.$store.state.logged=false;
+            useStore().token=null;
+            useStore().logged=false;
             if (this.$router.currentRoute.name != "home") this.$router.push("home")
             console.log(error.response)
         } else if (error.response.status == 400){ // Used for developer or app errors
@@ -201,7 +202,7 @@ export function ifnullempty(value){
 
 // Generate a hyperlinked_url (DRF hyperlinked url) from model and id uses $sotre for apiroot
 export function hyperlinked_url(model,id){
-    return `${this.$store.state.apiroot}/api/${model}/${id}/`
+    return `${useStore().apiroot}/api/${model}/${id}/`
 }
 
 //Gets id (integer) from an hyperlinked_url(DRF hyperlinked ul)
