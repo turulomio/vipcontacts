@@ -11,9 +11,12 @@ describe('e2e Home', () => {
     // Add new person
     cy.getDataTest('MyMenuInline_Button').last().click()
     cy.getDataTest('MyMenuInline_Header0_Item0').click()
-    cy.getDataTest('AccountsoperationsSearch_Search').type("comment")
-    cy.getDataTest('AccountsoperationsSearch_Button').click()
-    
+    cy.getDataTest('PersonCRUD_Name').type("Elvis")
+    cy.getDataTest('PersonCRUD_Surname').type("Presley")
+    cy.getDataTest('PersonCRUD_Surname2').type("The King")
+    cy.getDataTest('PersonCRUD_Button').click()
+    cy.getDataTest('Home_Search').type("Elvis")
+    cy.getDataTest('Home_Button').click()
   })
 
   

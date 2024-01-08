@@ -2,20 +2,20 @@
     <div v-show="useStore().logged">
             <h1>{{ title() }}</h1>
             <v-card class="pa-4 ma-3">
-                <v-text-field v-model="newperson.name"  :readonly="mode=='D'" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
-                <v-text-field v-model="newperson.surname" :readonly="mode=='D'" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
-                <v-text-field v-model="newperson.surname2" :readonly="mode=='D'" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
+                <v-text-field data-test="PersonCRUD_Name" v-model="newperson.name"  :readonly="mode=='D'" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
+                <v-text-field data-test="PersonCRUD_Surname" v-model="newperson.surname" :readonly="mode=='D'" type="text" v-bind:label="$t('Surname')" :counter="75" v-bind:placeholder="$t('Enter surname')" ></v-text-field>
+                <v-text-field data-test="PersonCRUD_Surname2" v-model="newperson.surname2" :readonly="mode=='D'" type="text" v-bind:label="$t('Second surname')" :counter="75" v-bind:placeholder="$t('Enter second surname')" ></v-text-field>
                 <v-row class="pl-8 my-3" justify="center">
-                    <MyDatePicker v-model="newperson.birth" :readonly="mode=='D'" :label="$t('Birth date')"></MyDatePicker>
+                    <MyDatePicker data-test="PersonCRUD_Birth" v-model="newperson.birth" :readonly="mode=='D'" :label="$t('Birth date')"></MyDatePicker>
                     <v-spacer></v-spacer>
-                    <MyDatePicker v-model="newperson.death" :readonly="mode=='D'" :label="$t('Death date')"></MyDatePicker>
+                    <MyDatePicker data-test="PersonCRUD_Death" v-model="newperson.death" :readonly="mode=='D'" :label="$t('Death date')"></MyDatePicker>
                     <v-spacer></v-spacer>           
                 </v-row>
-                <v-select :items="useStore().persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
+                <v-select data-test="PersonCRUD_Gender" :items="useStore().persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-title="display_name" item-value="value" ></v-select>
 
                 <v-card-actions> 
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click.native="accept_dialog()" >{{ button() }}</v-btn>
+                    <v-btn data-test="PersonCRUD_Button" color="primary" @click.native="accept_dialog()" >{{ button() }}</v-btn>
                 </v-card-actions>
             </v-card>
     </div>
@@ -24,6 +24,7 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { myheaders,parseResponseError } from '@/functions';
     import MyDatePicker from './reusing/MyDatePicker.vue'
     export default {  
         components: {
@@ -47,6 +48,8 @@
         },
         methods: {
             useStore,
+            myheaders,
+            parseResponseError,
             title(){
                 if (this.mode=="D"){
                     return this.$t("Deleting a contact")

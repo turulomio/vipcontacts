@@ -4,10 +4,10 @@
             <MyMenuInline :items="menuinline_items" v-if="useStore().logged"></MyMenuInline>
         </h1>
         <div v-show="this.useStore().logged">
-            
              <v-alert dense class="ma-3 px-10" outlined type="error" v-if="next_important_dates.length>0" @click="on_click_alert_next_important_dates">{{$t("You have next important dates")}}</v-alert>
             <v-row class="pa-5">
                 <v-text-field 
+                    data-test="Home_Search"
                     v-model="search" 
                     type="text" 
                     :counter="100"  
@@ -18,7 +18,7 @@
                     v-on:keyup.enter="on_search_change()"
                     :disabled="loading"
                 ></v-text-field>
-                <v-btn ref="cmdSearch" @click="on_search_change()" :disabled="loading" color="primary">
+                <v-btn data-test="Home_Button" ref="cmdSearch" @click="on_search_change()" :disabled="loading" color="primary">
                     <v-icon>mdi-search</v-icon>
                     <span class="mr-2">{{ $t("Search") }}</span>
                 </v-btn>    
@@ -27,7 +27,7 @@
             <TablePersons :data="data" @chipClicked="on_chip_clicked"></TablePersons>
         </div>
         <!-- DIALOG PERSONCRUD -->
-        <v-dialog v-model="dialog_person_crud" width="35%">
+        <v-dialog v-model="dialog_person_crud" width="50%">
             <v-card class="pa-4">
                 <PersonCRUD :person="person" :deleting="person_deleting" :key="key_person_crud" @cruded="on_PersonCRUD_cruded()"></PersonCRUD>
             </v-card>
