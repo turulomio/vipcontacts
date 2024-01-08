@@ -1,7 +1,7 @@
 <template>
     <div class="pa-5">
         <h1>{{ $t('Wellcome to Vip Contacts') }}
-            <MyMenuInline :items="menuinline_items" :context="this" v-if="useStore().logged"></MyMenuInline>
+            <MyMenuInline :items="menuinline_items" v-if="useStore().logged"></MyMenuInline>
         </h1>
         <div v-show="this.useStore().logged">
             
@@ -65,11 +65,11 @@
                             {
                                 name: this.$t("Add a new person"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    this_.person=this_.empty_person()
-                                    this_.key_person_crud=this_.key_person_crud+1
-                                    this_.dialog_person_crud=true
-                                },
+                                code: function(){
+                                    this.person=this.empty_person()
+                                    this.key_person_crud=this.key_person_crud+1
+                                    this.dialog_person_crud=true
+                                }.bind(this),
                             },
                         ]
                     },

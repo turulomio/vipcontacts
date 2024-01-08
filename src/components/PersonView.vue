@@ -1,7 +1,7 @@
 <template>
     <div v-show="useStore().logged">
         <h1>{{ fullNameWithAge }}
-                <MyMenuInline :items="menuinline_items" :context="this"></MyMenuInline>
+                <MyMenuInline :items="menuinline_items"></MyMenuInline>
         </h1>
 
         <DisplayValues :items="displayvalues()" :key="key+1"></DisplayValues>
@@ -129,54 +129,54 @@
                             {
                                 name: this.$t("Edit contact"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    this_.person_deleting=false
-                                    this_.key_person_crud=this_.key_person_crud+1
-                                    this_.dialog_person_crud=true
-                                },
+                                code: function(){
+                                    this.person_deleting=false
+                                    this.key_person_crud=this.key_person_crud+1
+                                    this.dialog_person_crud=true
+                                    .bind(this)},
                             },
                             {
                                 name: this.$t("Delete contact"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    this_.person_deleting=true
-                                    this_.key_person_crud=this_.key_person_crud+1
-                                    this_.dialog_person_crud=true
-                                },
+                                code: function(){
+                                    this.person_deleting=true
+                                    this.key_person_crud=this.key_person_crud+1
+                                    this.dialog_person_crud=true
+                                }.bind(this),
                             },
                             {
                                 name: this.$t("Generate QR"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    const vCard=this_.generateVcardObject(this_.person)
+                                code: function(){
+                                    const vCard=this.generateVcardObject(this.person)
                                     console.log(vCard.getFormattedString())
-                                    this_.qr=vCard.getFormattedString()
-                                    this_.dialog_qr=true
-                                },
+                                    this.qr=vCard.getFormattedString()
+                                    this.dialog_qr=true
+                                }.bind(this),
                             },
                             {
                                 name: this.$t("Generate VCard"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    var blob = new Blob([this_.generateVcardObject(this_.person).getFormattedString()], { type: 'text/vcard' })
+                                code: function(){
+                                    var blob = new Blob([this.generateVcardObject(this.person).getFormattedString()], { type: 'text/vcard' })
                                     var link = window.document.createElement('a')
                                     link.href = window.URL.createObjectURL(blob)
-                                    link.download = `${this_.person.fullname}.vcf`
+                                    link.download = `${this.person.fullname}.vcf`
                                     document.body.appendChild(link)
                                     link.click()
                                     document.body.removeChild(link)
-                                },
+                                }.bind(this),
                             },
                             {
                                 name: this.$t("Show search string"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    let searchString=this_.$t("Problems with search string")
-                                    if (this_.person.search.length==1){
-                                        searchString=this_.person.search[0].string
+                                code: function(){
+                                    let searchString=this.$t("Problems with search string")
+                                    if (this.person.search.length==1){
+                                        searchString=this.person.search[0].string
                                     }
                                     alert(searchString)
-                                },
+                                }.bind(this),
                             },
                         ]
                     },

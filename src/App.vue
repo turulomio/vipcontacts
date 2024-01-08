@@ -3,7 +3,6 @@
         <v-navigation-drawer v-model="drawer" absolute temporary>
             <v-card class="mx-auto" width="300">
                 <v-list>
-                
                     <v-list-item>
                             <v-list-item-title class="title">Vip Contacts</v-list-item-title>
                             <v-list-item-subtitle>{{ useStore().version }}</v-list-item-subtitle>
@@ -12,8 +11,7 @@
                     <v-divider></v-divider>
                 
 <!--                     HOME -->
-                    <v-list-item link router :to="{ name: 'home'}" prepend-icon="mdi-home" :title="$t('Home')">
-                    </v-list-item>
+                    <v-list-item data-test="LateralHome" link router :to="{ name: 'home'}" prepend-icon="mdi-home" :title="$t('Home')"></v-list-item>
 
 <!--                     CONTACTS -->
                     <v-list-group value="Contacts" prepend-icon="mdi-account-circle" v-if="useStore().logged">
@@ -81,7 +79,7 @@
         </v-navigation-drawer>
         
         <v-app-bar color="primary" dark  fixed fill-height app >
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon data-test="LateralIcon" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-btn color="primary" :to="{ name: 'home'}"><v-icon dark>mdi-home</v-icon></v-btn>
             <v-spacer />
             <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
