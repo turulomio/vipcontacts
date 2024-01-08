@@ -19,7 +19,7 @@
         <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit group") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add group") }}</v-card-title>
-            <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" />
+            <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${this.useStore().apiroot}/api/groups/`" field="name" />
 
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -35,6 +35,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudGroup',
@@ -59,19 +60,20 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     name: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                 };
                 this.dialog=true;
                 this.isEdition=false;
             },
             acceptAddition(){
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/group/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id

@@ -22,11 +22,11 @@
                 <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit address") }}</v-card-title>
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add address") }}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>
-                    <v-select :items="this.$store.state.addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value" required />
+                    <v-select :items="useStore().addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value" required />
                     <v-text-field v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesString(300,true)"  />
                     <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesString(10,false)" />
                     <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesString(100,true)"/>
-                    <v-autocomplete :items="this.$store.state.countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value" required/>
+                    <v-autocomplete :items="useStore().countries" v-model="selected.country" :label="$t('Select a country')" item-text="display_name" item-value="value" required/>
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -42,6 +42,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     import { jsPDF } from "jspdf";
     export default {
         props: ['person','obsolete'],
@@ -68,6 +69,7 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     address: "",
@@ -76,7 +78,7 @@
                     country: this.$i18n.locale.toUpperCase(), //To use locale country
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                     retypes: 0,
                 };
                 this.dialog=true;
@@ -86,7 +88,7 @@
             acceptAddition(){
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/address/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/address/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id

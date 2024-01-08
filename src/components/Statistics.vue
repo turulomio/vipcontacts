@@ -1,5 +1,5 @@
 <template>
-    <div v-show="this.$store.state.logged">
+    <div v-show="useStore().logged">
         <div class="pa-3">
             <h1>{{ $t("Statistics") }}</h1>
 
@@ -45,6 +45,7 @@
 
 <script>
     import ChartPie from './reusing/ChartPie.vue'
+    import { useStore } from '@/store';
     import axios from "axios"
     export default {
         name: 'Statistics',
@@ -59,8 +60,9 @@
             }
         },
         methods: {
+            useStore,
             getStatistics(){
-                axios.get(`${this.$store.state.apiroot}/api/statistics/`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/statistics/`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     this.statistics=response.data 

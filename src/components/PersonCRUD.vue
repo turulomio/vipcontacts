@@ -1,5 +1,5 @@
 <template>
-    <div v-show="this.$store.state.logged">
+    <div v-show="useStore().logged">
             <h1>{{ title() }}</h1>
             <v-card class="pa-4 ma-3">
                 <v-text-field v-model="newperson.name"  :readonly="mode=='D'" type="text" :counter="75"  v-bind:label="$t('Name')" v-bind:placeholder="$t('Enter name')" ></v-text-field>
@@ -11,7 +11,7 @@
                     <MyDatePicker v-model="newperson.death" :readonly="mode=='D'" :label="$t('Death date')"></MyDatePicker>
                     <v-spacer></v-spacer>           
                 </v-row>
-                <v-select :items="this.$store.state.persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
+                <v-select :items="useStore().persongender" :readonly="mode=='D'" v-model="newperson.gender" :label="$t('Select a gender')" item-text="display_name" item-value="value" ></v-select>
 
                 <v-card-actions> 
                     <v-spacer></v-spacer>
@@ -23,6 +23,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     import MyDatePicker from './reusing/MyDatePicker.vue'
     export default {  
         components: {
@@ -45,6 +46,7 @@
             }
         },
         methods: {
+            useStore,
             title(){
                 if (this.mode=="D"){
                     return this.$t("Deleting a contact")
@@ -65,7 +67,7 @@
             },
             accept_dialog(){             
                 if (this.mode=="C"){
-                    axios.post(`${this.$store.state.apiroot}/api/person/`, this.newperson, this.myheaders())
+                    axios.post(`${this.useStore().apiroot}/api/person/`, this.newperson, this.myheaders())
                     .then((response) => {
                         this.$emit("cruded")
                         console.log(response.data)
@@ -75,7 +77,7 @@
                 }
                 else if (this.mode=="U"){
                     this.newperson.dt_update=new Date()
-                    axios.put(`${this.$store.state.apiroot}/api/person/${this.newperson.id}/`, this.newperson, this.myheaders())
+                    axios.put(`${this.useStore().apiroot}/api/person/${this.newperson.id}/`, this.newperson, this.myheaders())
                     .then(() => {
                         this.$emit("cruded")
                     }, (error) => {
@@ -91,7 +93,7 @@
                     if(r == false) {
                         return
                     } 
-                    axios.delete(`${this.$store.state.apiroot}/api/person/${this.newperson.id}`, this.myheaders())
+                    axios.delete(`${this.useStore().apiroot}/api/person/${this.newperson.id}`, this.myheaders())
                     .then(() => {
                         this.$router.push({name:'home'})
                     }, (error) => {

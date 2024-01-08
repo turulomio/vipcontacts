@@ -18,6 +18,7 @@
 </template>
 <script>
   import axios from 'axios'
+  import { useStore } from '@/store';
   export default {
     name:"SelectPersons",
     props: {
@@ -52,7 +53,7 @@
 
         this.isLoading = true
 
-        axios.get(`${this.$store.state.apiroot}/api/person/?search=${val}`, this.myheaders())
+        axios.get(`${this.useStore().apiroot}/api/person/?search=${val}`, this.myheaders())
         .then((response) => {
             this.entries=response.data 
             this.canclick=true;
@@ -70,6 +71,9 @@
         this.localValue = newValue
         //console.log(`value changed to ${newValue}`)
       }
+    },
+    methods:{
+      useStore,
     },
     mounted(){
       //console.log(this.$attrs)

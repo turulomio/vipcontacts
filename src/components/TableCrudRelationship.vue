@@ -25,7 +25,7 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit relationship") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add relationship") }}</v-card-title>
             
-            <v-select :items="this.$store.state.relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+            <v-select :items="useStore().relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
             
             <SelectPersons v-model="selected.destiny"></SelectPersons>
             
@@ -44,6 +44,7 @@
 <script>
     import axios from 'axios'
     import SelectPersons from './SelectPersons.vue'
+    import { useStore } from '@/store';
     export default {
         name: 'TableCrudRelationship',
         components: {
@@ -69,12 +70,13 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     destiny: null,
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                     retypes: 0,
                 };
                 this.dialog=true;
@@ -86,7 +88,7 @@
                 console.log(this.selected.destiny)
                 console.log("ADDTITON")
                 console.log(this.selected)
-                axios.post(`${this.$store.state.apiroot}/api/relationship/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/relationship/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.selected=response.data; //To get id
                     this.tableData.push(this.selected);
@@ -167,7 +169,7 @@
                 console.log(`Updating TableCrudRelationship RefreshKey to ${this.refreshKey}`)
             },
             showRelationShipName(item){
-                const o = this.relationship_names.filter(x => `${this.$store.state.apiroot}/api/person/${x.id}/`==item.destiny)
+                const o = this.relationship_names.filter(x => `${this.useStore().apiroot}/api/person/${x.id}/`==item.destiny)
                 if (o.length>0){
                     return o[0].name
                 }
@@ -177,7 +179,7 @@
             
             },
             updateRelationshipNames(){
-                axios.get(`${this.$store.state.apiroot}/api/find/relationship/${this.$route.params.id}`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/find/relationship/${this.$route.params.id}`, this.myheaders())
                 .then((response) => {
                     this.relationship_names= response.data;         
                     console.log(this.relationship_names)

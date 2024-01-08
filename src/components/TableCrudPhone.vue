@@ -23,7 +23,7 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add phone") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="this.$store.state.phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
+                <v-select :items="this.useStore().phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
                 <v-text-field v-if="[7,8].includes(selected.retypes)" v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesString(50,true)"/>
                 <vue-tel-input defaultCountry="es" @validate="on_phone_validate" v-if="![7,8].includes(selected.retypes)" v-model="selected.phone" showDialCode mode="international"></vue-tel-input>
             </v-form>
@@ -42,6 +42,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -66,12 +67,13 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     phone: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                     retypes: 0,
                 };
                 this.dialog=true;
@@ -84,7 +86,7 @@
                 }
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/phone/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/phone/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id

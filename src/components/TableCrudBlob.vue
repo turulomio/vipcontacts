@@ -27,7 +27,7 @@
                 <h1 class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</h1>
                 <v-form ref="form" v-model="form_valid" lazy-validation >
                     <v-file-input v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
-                    <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                    <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${useStore().apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -44,7 +44,7 @@
             <v-card  class="pa-3">
                 <h1 v-if="isEdition==false">{{ $t("Paste image") }}</h1>
                 <v-form ref="form_paste" v-model="form_paste_valid" lazy-validation >
-                   <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${$store.state.apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                   <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${useStore().apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
                    <PasteImage v-model="pasted_image" :rules="RulesSelection(true)" :key="key"  />
                 </v-form>
                 <br>
@@ -76,6 +76,7 @@
     import axios from 'axios'
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     import PasteImage from './PasteImage.vue'
+    import { useStore } from '@/store';
     import {empty_blob} from '../empty_objects.js'
     export default {
         name: 'TableCrudBlob',
@@ -112,6 +113,7 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected=empty_blob()
                 this.isEdition=false;
@@ -134,8 +136,8 @@
 
                 this.selected.mime=this.pasted_image.mime
                 this.selected.blob=this.pasted_image.image
-                this.selected.person=`${this.$store.state.apiroot}/api/person/${this.person.id}/`
-                axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
+                this.selected.person=`${this.useStore().apiroot}/api/person/${this.person.id}/`
+                axios.post(`${this.useStore().apiroot}/api/blob/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     this.$emit('person')
@@ -151,8 +153,8 @@
                 var image= await this.getBase64(this.file_input)
                 this.selected.mime=image.mime
                 this.selected.blob=image.image
-                this.selected.person=`${this.$store.state.apiroot}/api/person/${this.person.id}/`
-                axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
+                this.selected.person=`${this.useStore().apiroot}/api/person/${this.person.id}/`
+                axios.post(`${this.useStore().apiroot}/api/blob/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     this.$emit('person')

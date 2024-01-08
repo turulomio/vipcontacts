@@ -2,7 +2,7 @@
     <div>
         <h1>{{ $t('Last contacts edited') }}</h1>
         <br>
-        <div v-show="this.$store.state.logged" class="padding">
+        <div v-show="useStore().logged" class="padding">
             <TablePersons :data="data" orderby=""></TablePersons>
         </div>
     </div>
@@ -10,6 +10,7 @@
 <script>
     import axios from 'axios'  
     import TablePersons from './TablePersons.vue'
+    import { useStore } from '@/store';
     export default {
         name: 'home',
         components: {
@@ -21,12 +22,13 @@
             }
         },
         methods: {
+            useStore,
             on_search_change(){
 
             },
         },
         created(){
-            axios.get(`${this.$store.state.apiroot}/api/person/?last_editions=30`, this.myheaders())
+            axios.get(`${this.useStore().apiroot}/api/person/?last_editions=30`, this.myheaders())
             .then((response) => {
                 this.parseResponse(response)
                 console.log(response.data)

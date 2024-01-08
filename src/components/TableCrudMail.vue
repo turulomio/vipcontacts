@@ -23,7 +23,7 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add mail") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="this.$store.state.mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+                <v-select :items="useStore().mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
                 <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail(true)" />
             </v-form>
                         
@@ -41,6 +41,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -63,12 +64,13 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     mail: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                     retypes: 0,
                 };
                 this.dialog=true;
@@ -77,7 +79,7 @@
             acceptAddition(){
                 if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/mail/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/mail/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id

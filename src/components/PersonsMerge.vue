@@ -17,6 +17,7 @@
 <script>
     import axios from 'axios'
     import {empty_persons_merge} from '../empty_objects.js'
+    import { useStore } from '@/store';
     import SelectPersons from './SelectPersons.vue'
     export default {
         components: {
@@ -37,13 +38,14 @@
         },
         methods: {
             empty_persons_merge,
+            useStore,
             merge(){    
                 if( this.$refs.form.validate()==false) return
                 if (this.new_pm.from==this.new_pm.to){
                     alert(this.$t("You can merge the same contact"))
                     return
                 }      
-                axios.post(`${this.$store.state.apiroot}/persons/merge/`, this.new_pm,  this.myheaders())
+                axios.post(`${this.useStore().apiroot}/persons/merge/`, this.new_pm,  this.myheaders())
                 .then((response) => {
                     console.log(response.data)
                     if (response.data==true){

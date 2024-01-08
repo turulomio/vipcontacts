@@ -19,6 +19,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -42,15 +43,16 @@
             }
         },
         methods:{
+            useStore,
             addAlias(){
                 var alias={
                     name:null,
                     dt_update:new Date(),
                     dt_obsolete:null,
-                    person:`${this.$store.state.apiroot}/api/person/${this.person.id}/`,                    
+                    person:`${this.useStore().apiroot}/api/person/${this.person.id}/`,                    
                 }
                 alias.name=prompt(this.$t("Add a alias"), "")
-                axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/alias/`, alias, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.tableData.push(response.data);

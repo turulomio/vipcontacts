@@ -1,5 +1,5 @@
 import { login_test_User } from "./commons"
-describe('e2e Accounts List', () => {
+describe('e2e ', () => {
   it('Accounts List', () => {    
 
     login_test_User(cy)

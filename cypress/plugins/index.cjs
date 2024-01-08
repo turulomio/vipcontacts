@@ -7,4 +7,3 @@ module.exports = (on, config) => {
 };
 
   
-  console.log("PLGUINS INDEX:CJJS")

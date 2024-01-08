@@ -1,6 +1,6 @@
 <template>
-    <div v-show="this.$store.state.logged">
-        <h1>{{ this.fullNameWithAge }}
+    <div v-show="useStore().logged">
+        <h1>{{ fullNameWithAge }}
                 <MyMenuInline :items="menuinline_items" :context="this"></MyMenuInline>
         </h1>
 
@@ -101,6 +101,7 @@
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
     import {age_today, age_in_a_date, generateVcardObject} from '../functions.js'
+    import { useStore } from '@/store';
     import QrcodeVue from 'qrcode.vue'
     export default {
         name: 'PersonView',    
@@ -210,6 +211,7 @@
             }
         },        
         methods: {
+            useStore,
             displayvalues(){
                 var r=[
                     {title:this.$t('Gender'), value: this.$store.getters.getObjectPropertyByValue("persongender",this.person.gender,"display_name")},
@@ -233,7 +235,7 @@
                     this.$router.push({ name: 'home'})
                     return
                 }
-                axios.get(`${this.$store.state.apiroot}/api/person/${this.$route.params.id}/`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/person/${this.$route.params.id}/`, this.myheaders())
                 .then((response) => {
                     this.person= response.data
                     console.log(this.person)

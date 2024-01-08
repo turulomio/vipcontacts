@@ -19,10 +19,10 @@
         <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
-            <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.$store.state.apiroot}/api/professions/`" field="profession" />
-            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" canadd :apiurl="`${this.$store.state.apiroot}/api/organizations/`" field="organization" />
-            <AutoCompleteApiOneField v-model="selected.department" v-bind:label="$t('Department')" v-bind:placeholder="$t('Enter a department')" canadd :apiurl="`${this.$store.state.apiroot}/api/departments/`" field="department" />
-            <AutoCompleteApiOneField v-model="selected.title" v-bind:label="$t('Title')" v-bind:placeholder="$t('Enter a title')" canadd :apiurl="`${this.$store.state.apiroot}/api/titles/`" field="title" />   
+            <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.useStore().apiroot}/api/professions/`" field="profession" />
+            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" canadd :apiurl="`${this.useStore().apiroot}/api/organizations/`" field="organization" />
+            <AutoCompleteApiOneField v-model="selected.department" v-bind:label="$t('Department')" v-bind:placeholder="$t('Enter a department')" canadd :apiurl="`${this.useStore().apiroot}/api/departments/`" field="department" />
+            <AutoCompleteApiOneField v-model="selected.title" v-bind:label="$t('Title')" v-bind:placeholder="$t('Enter a title')" canadd :apiurl="`${this.useStore().apiroot}/api/titles/`" field="title" />   
 
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -38,6 +38,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableCrudJob',
@@ -65,6 +66,7 @@
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     profession: "",
@@ -73,14 +75,14 @@
                     title: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                 };
                 this.dialog=true;
                 this.isEdition=false;
             },
             acceptAddition(){
                 this.selected.dt_update=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/job/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/job/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id

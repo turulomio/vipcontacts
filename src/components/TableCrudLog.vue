@@ -41,6 +41,7 @@
 
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
     export default {
         name: 'TableCrudLog',
         props: ['person','obsolete'],
@@ -71,17 +72,18 @@
                 isEdition: true,
                 dialog: false,
                 selected: {},
-                nonAutomaticTypes: this.$store.state.logtype.filter( x=> x.value>=100),
+                nonAutomaticTypes: this.useStore().logtype.filter( x=> x.value>=100),
                 
                 form_valid:false,
             }
         },
         methods:{
+            useStore,
             addItem(){
                 this.selected={
                     text: "",
                     datetime: new Date(),
-                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
+                    person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                     retypes: 100,
                 };
                 this.dialog=true;
@@ -90,7 +92,7 @@
             acceptAddition(){
                 if (this.$refs.form.validate()==false) return
                 this.selected.datetime=new Date();
-                axios.post(`${this.$store.state.apiroot}/api/log/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/log/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id

@@ -3,7 +3,7 @@
         <h1>{{ $t("Group members") }}</h1>
         <v-card class="mx-auto padding" max-width="40%">
             <v-card-title>{{ $t("Select your group members")}}</v-card-title>
-            <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" @input="refresh_members" />
+            <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.useStore().apiroot}/api/groups/`" field="name" @input="refresh_members" />
             <v-switch v-model="members_switch" :label="$t('Show group members')" @change="refresh_members"/>
         </v-card> 
         <br>
@@ -58,6 +58,8 @@
     import axios from 'axios'
     import {createEvents} from 'ics'
     import {age_in_a_date, generateVcardObject} from '../functions.js'
+    import { myheaders,parseResponseError,parseResponse } from '@/functions'
+    import { useStore } from '@/store';
     export default {
         name: 'GroupMembers',
         components: {
@@ -85,12 +87,14 @@
         },          
         methods: {
             age_in_a_date,
+            useStore,
+            myheaders, parseResponse,parseResponseError,
             generateVcardObject,
             refresh_members: function() {
                 if (this.group=="") return
                 this.loaded=false
                 console.log("refresh_members")
-                axios.get(`${this.$store.state.apiroot}/api/groups/members/full/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/groups/members/full/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
                 .then((response) => {
                     this.data= response.data
                     this.loaded=true
@@ -104,7 +108,7 @@
                     return;
                 }  
                 console.log(item)
-                axios.delete(`${this.$store.state.apiroot}/api/groups/deletebyname/?url=${item.url}&name=${this.group}`, this.myheaders())
+                axios.delete(`${this.useStore().apiroot}/api/groups/deletebyname/?url=${item.url}&name=${this.group}`, this.myheaders())
                 .then((response) => {
                     console.log(response)
                     this.refresh_members()
@@ -124,7 +128,7 @@
                     dt_update: new Date(),
                     person: this.newmember,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected,  this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/group/`, this.selected,  this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.dlgAddMembers=false;
@@ -142,7 +146,7 @@
                     dt_update: new Date(),
                     person: item.url,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/group/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data)
                     this.refresh_members()

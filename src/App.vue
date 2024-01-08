@@ -102,7 +102,7 @@
 import BtnLogIn from './components/reusing/BtnLogIn';
 import BtnLogOut from './components/reusing/BtnLogOut';
 import BtnSwitchLanguages from './components/reusing/BtnSwitchLanguages.vue';
-import { useStore } from './store';
+import { useStore } from '@/store';
 export default {
     name: 'App',
 

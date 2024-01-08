@@ -1,5 +1,5 @@
 <template>
-    <div v-show="this.$store.state.logged">
+    <div v-show="useStore().logged">
         <div  class="pa-3">
             <h1>{{ $t("Settings") }}</h1>
             
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import { useStore } from '@/store';
     export default {
         name: 'Settings',
         data () {
@@ -35,6 +36,7 @@
             }
         },
         methods: {
+            useStore,
             save_settings(){
             if (this.$refs.form.validate()==false) return
                 localStorage.envelope_height=this.envelope_height
