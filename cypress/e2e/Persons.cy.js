@@ -3,9 +3,6 @@ describe('e2e Home', () => {
   it('Home List', () => {    
 
     login_test_User(cy)
-    //Open lateral menu
-    // cy.getDataTest('LateralIcon').click()
-    // cy.getDataTest('LateralHome').click()
 
 
     // Add new person
@@ -17,6 +14,13 @@ describe('e2e Home', () => {
     cy.getDataTest('PersonCRUD_Button').click()
     cy.getDataTest('Home_Search').type("Elvis")
     cy.getDataTest('Home_Button').click()
+
+
+    // Last edited
+    cy.getDataTest('LateralIcon').click()
+    cy.getDataTest('LateralContacts').click()
+    cy.getDataTest('LateralLastEdited').click()
+    
   })
 
   

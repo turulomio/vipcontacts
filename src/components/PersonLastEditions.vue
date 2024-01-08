@@ -11,6 +11,7 @@
     import axios from 'axios'  
     import TablePersons from './TablePersons.vue'
     import { useStore } from '@/store';
+    import { myheaders,parseResponse,parseResponseError } from '@/functions';
     export default {
         name: 'home',
         components: {
@@ -23,6 +24,7 @@
         },
         methods: {
             useStore,
+            myheaders,parseResponse,parseResponseError,
             on_search_change(){
 
             },

@@ -18,7 +18,7 @@
         :placeholder="$t('Add a string to filter table')"
       ></v-text-field>
     </v-card-title>
-        <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1 padding" enabled="i" 
+        <v-data-table :headers="headers" :items="data"  :sort-by="[{key:'name',order:'asc'}]" class="elevation-1 padding" enabled="i" 
       :search="search" :no-data-text="$t('No records found')">
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="deleteItem(item)" v-show="members_switch && loaded" >mdi-minus</v-icon>

@@ -14,12 +14,12 @@
                     <v-list-item data-test="LateralHome" link router :to="{ name: 'home'}" prepend-icon="mdi-home" :title="$t('Home')"></v-list-item>
 
 <!--                     CONTACTS -->
-                    <v-list-group value="Contacts" prepend-icon="mdi-account-circle" v-if="useStore().logged">
+                    <v-list-group data-test="LateralContacts" value="Contacts" prepend-icon="mdi-account-circle" v-if="useStore().logged">
                         <template v-slot:activator="{props}">
                             <v-list-item v-bind="props" prepend-icon="mdi-account-circle" :title="$t('Contacts')" />
                         </template>
 
-                        <v-list-item link  router :to="{ name: 'person_last_edited'}">
+                        <v-list-item data-test="LateralLastEdited" link  router :to="{ name: 'person_last_edited'}">
                             <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
                         </v-list-item>
                         <v-list-item link  router :to="{ name: 'persons_merge'}">
@@ -28,27 +28,26 @@
                     </v-list-group>
 
 <!--                     GROUP -->
-                    <v-list-group value="Group" v-if="useStore().logged">
+                    <v-list-group data-test="LateralGroup" value="Group" v-if="useStore().logged">
                         <template v-slot:activator="{props}">
                             <v-list-item v-bind="props" prepend-icon="mdi-account-supervisor-circle" :title="$t('Groups')" />
                         </template>
 
-                        <v-list-item link  router :to="{ name: 'group_members'}">
+                        <v-list-item data-test="LateralMembers" link  router :to="{ name: 'group_members'}">
                             <v-list-item-title class="mr-7">{{ $t("Members") }}</v-list-item-title>
                         </v-list-item>
                     </v-list-group>
                     
 <!--                     SETTINGS -->
-<!--                     ADMINISTRACION -->
-                    <v-list-group value="Settings" v-if="useStore().logged">
+                    <v-list-group data-test="LateralSettingsGroup" value="Settings" v-if="useStore().logged">
                         <template v-slot:activator="{props}">
                             <v-list-item v-bind="props" prepend-icon="mdi-cog" :title="$t('Settings')" />
                         </template>
 
-                        <v-list-item link router :to="{ name: 'settings'}" v-if="useStore().logged">
+                        <v-list-item data-test="LateralSettings" link router :to="{ name: 'settings'}" v-if="useStore().logged">
                             <v-list-item-title>{{ $t("Your settings") }}</v-list-item-title>
                         </v-list-item>
-                        <v-list-item link  router :to="{ name: 'administration_types'}">
+                        <v-list-item data-test="LateralTypes" link  router :to="{ name: 'administration_types'}">
                             <v-list-item-title>{{ $t("Types") }}</v-list-item-title>
                         </v-list-item>
                     </v-list-group>
