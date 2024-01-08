@@ -74,7 +74,7 @@
                     destiny: null,
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
+                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
                     retypes: 0,
                 };
                 this.dialog=true;
@@ -167,7 +167,7 @@
                 console.log(`Updating TableCrudRelationship RefreshKey to ${this.refreshKey}`)
             },
             showRelationShipName(item){
-                const o = this.relationship_names.filter(x => `${this.$store.state.apiroot}/api/persons/${x.id}/`==item.destiny)
+                const o = this.relationship_names.filter(x => `${this.$store.state.apiroot}/api/person/${x.id}/`==item.destiny)
                 if (o.length>0){
                     return o[0].name
                 }

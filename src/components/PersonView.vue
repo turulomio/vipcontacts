@@ -233,7 +233,7 @@
                     this.$router.push({ name: 'home'})
                     return
                 }
-                axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, this.myheaders())
+                axios.get(`${this.$store.state.apiroot}/api/person/${this.$route.params.id}/`, this.myheaders())
                 .then((response) => {
                     this.person= response.data
                     console.log(this.person)

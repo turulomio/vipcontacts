@@ -134,7 +134,7 @@
 
                 this.selected.mime=this.pasted_image.mime
                 this.selected.blob=this.pasted_image.image
-                this.selected.person=`${this.$store.state.apiroot}/api/persons/${this.person.id}/`
+                this.selected.person=`${this.$store.state.apiroot}/api/person/${this.person.id}/`
                 axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
@@ -151,7 +151,7 @@
                 var image= await this.getBase64(this.file_input)
                 this.selected.mime=image.mime
                 this.selected.blob=image.image
-                this.selected.person=`${this.$store.state.apiroot}/api/persons/${this.person.id}/`
+                this.selected.person=`${this.$store.state.apiroot}/api/person/${this.person.id}/`
                 axios.post(`${this.$store.state.apiroot}/api/blob/`, this.selected, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)

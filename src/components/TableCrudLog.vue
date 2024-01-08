@@ -81,7 +81,7 @@
                 this.selected={
                     text: "",
                     datetime: new Date(),
-                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
+                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
                     retypes: 100,
                 };
                 this.dialog=true;

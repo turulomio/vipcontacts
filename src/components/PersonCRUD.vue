@@ -65,7 +65,7 @@
             },
             accept_dialog(){             
                 if (this.mode=="C"){
-                    axios.post(`${this.$store.state.apiroot}/api/persons/`, this.newperson, this.myheaders())
+                    axios.post(`${this.$store.state.apiroot}/api/person/`, this.newperson, this.myheaders())
                     .then((response) => {
                         this.$emit("cruded")
                         console.log(response.data)
@@ -75,7 +75,7 @@
                 }
                 else if (this.mode=="U"){
                     this.newperson.dt_update=new Date()
-                    axios.put(`${this.$store.state.apiroot}/api/persons/${this.newperson.id}/`, this.newperson, this.myheaders())
+                    axios.put(`${this.$store.state.apiroot}/api/person/${this.newperson.id}/`, this.newperson, this.myheaders())
                     .then(() => {
                         this.$emit("cruded")
                     }, (error) => {
@@ -91,7 +91,7 @@
                     if(r == false) {
                         return
                     } 
-                    axios.delete(`${this.$store.state.apiroot}/api/persons/${this.newperson.id}`, this.myheaders())
+                    axios.delete(`${this.$store.state.apiroot}/api/person/${this.newperson.id}`, this.myheaders())
                     .then(() => {
                         this.$router.push({name:'home'})
                     }, (error) => {

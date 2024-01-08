@@ -64,7 +64,7 @@
                     name: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
-                    person: `${this.$store.state.apiroot}/api/persons/${this.person.id}/`,
+                    person: `${this.$store.state.apiroot}/api/person/${this.person.id}/`,
                 };
                 this.dialog=true;
                 this.isEdition=false;

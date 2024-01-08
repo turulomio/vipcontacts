@@ -47,7 +47,7 @@
                     name:null,
                     dt_update:new Date(),
                     dt_obsolete:null,
-                    person:`${this.$store.state.apiroot}/api/persons/${this.person.id}/`,                    
+                    person:`${this.$store.state.apiroot}/api/person/${this.person.id}/`,                    
                 }
                 alias.name=prompt(this.$t("Add a alias"), "")
                 axios.post(`${this.$store.state.apiroot}/api/alias/`, alias, this.myheaders())

@@ -26,7 +26,7 @@
             },
         },
         created(){
-            axios.get(`${this.$store.state.apiroot}/api/persons/?last_editions=30`, this.myheaders())
+            axios.get(`${this.$store.state.apiroot}/api/person/?last_editions=30`, this.myheaders())
             .then((response) => {
                 this.parseResponse(response)
                 console.log(response.data)

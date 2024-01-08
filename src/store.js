@@ -35,7 +35,7 @@ export const useStore = defineStore('global', {
     },
     updateOptions() {
         var start=new Date()
-        return axios.options(`${this.apiroot}/api/persons/`, myheaders())
+        return axios.options(`${this.apiroot}/api/person/`, myheaders())
         .then((response) => {
             this.persongender= sortObjectsArray(response.data.actions.POST.gender.choices, "display_name")
             this.countries= sortObjectsArray(response.data.actions.POST.address.child.children.country.choices, "display_name")
