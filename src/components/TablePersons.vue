@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <v-data-table :headers="headers" :items="data" :sort-by="[{key:orderby,order:'asc'}]" class="elevation-1" @click:row="viewItem">
+        <v-data-table :headers="headers" :items="data" :sort-by="sorting" class="elevation-1" @click:row="viewItem">
             <template v-slot:[`item.name`]="{ item }">
                 <v-icon small class="mr-2" >{{person_icon(item)}}</v-icon>
                 <div :data-test="`TablePersons_Item${item.id}`">{{item.name}}</div>
@@ -34,8 +34,8 @@
         props: {
             data: {
             },
-            orderby: {
-                default: "name"
+            sorting: {
+                default: [{key:"name",order:'asc'}]
             }
         },
         data(){ 
@@ -45,11 +45,11 @@
                 key:0,
 
                 headers: [
-                    { text: this.$t('Name'), align: 'start', sortable: true, value: 'name', width:"15%"},
-                    { text: this.$t('Surname'), value: 'surname', width:"15%" },
-                    { text: this.$t('Second surname'), value: 'surname2', width:"15%"},
-                    { text: this.$t('Birth date'), value: 'birth' ,width:"10%"},
-                    { text: this.$t('Information'), value: 'information', sortable: false,  width: "45%"  },
+                    { title: this.$t('Name'), align: 'start', sortable: true, value: 'name', width:"15%"},
+                    { title: this.$t('Surname'), value: 'surname', width:"15%" },
+                    { title: this.$t('Second surname'), value: 'surname2', width:"15%"},
+                    { title: this.$t('Birth date'), value: 'birth' ,width:"10%"},
+                    { title: this.$t('Information'), value: 'information', sortable: false,  width: "45%"  },
                     ],
             }
         },
