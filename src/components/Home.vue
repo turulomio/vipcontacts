@@ -29,7 +29,7 @@
         <!-- DIALOG PERSONCRUD -->
         <v-dialog v-model="dialog_person_crud" width="50%">
             <v-card class="pa-4">
-                <PersonCRUD :person="person" :deleting="person_deleting" :key="key_person_crud" @cruded="on_PersonCRUD_cruded()"></PersonCRUD>
+                <PersonCRUD :person="person" :deleting="person_deleting" :key="key" @cruded="on_PersonCRUD_cruded()"></PersonCRUD>
             </v-card>
         </v-dialog>
         <!-- DIALOG NEST IMPORTANT DATES -->
@@ -67,7 +67,7 @@
                                 icon: "mdi-plus",
                                 code: function(){
                                     this.person=this.empty_person()
-                                    this.key_person_crud=this.key_person_crud+1
+                                    this.key=this.key+1
                                     this.dialog_person_crud=true
                                 }.bind(this),
                             },
@@ -88,7 +88,7 @@
                 dialog_person_crud:false,
                 person: null,
                 person_deleting: false,
-                key_person_crud:0,
+                key:0,
             }
         },
         methods: {

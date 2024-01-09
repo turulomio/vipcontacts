@@ -6,9 +6,9 @@
             </template>            
             <template v-slot:[`item.retypes`]="{ item }">{{getObjectPropertyByValue("mailtype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableCrudMail_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableCrudMail_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableCrudMail_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
                 <v-icon small class="mr-2" @click="mail_link(item)">mdi-mail</v-icon>
             </template>
         </v-data-table>            
@@ -70,6 +70,11 @@
                 this.mode="U"
                 this.dialog=true;
             },
+            deleteItem(item){
+                this.mail=item
+                this.mode="D"
+                this.dialog=true;
+            },
             obsoleteItem(item){
                 if (item.dt_obsolete == null){
                     item.dt_obsolete=this.localtime(new Date());
@@ -100,5 +105,3 @@
         },
     }
 </script>
-<style scoped>
-</style>

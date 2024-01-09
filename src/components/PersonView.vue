@@ -76,12 +76,6 @@
              <QrcodeVue :value="qr" :size="800" ></QrcodeVue>
         </v-dialog>
 
-        <!-- DIALOG PERSONCRUD -->
-        <v-dialog v-model="dialog_person_crud" width="35%">
-            <v-card class="pa-4">
-                <PersonCRUD :person="person" :deleting="person_deleting" :key="key_person_crud" @cruded="on_PersonCRUD_cruded()"></PersonCRUD>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
@@ -96,7 +90,6 @@
     import TableCrudMail from './TableCrudMail'
     import TableCrudPhone from './TableCrudPhone'
     import TableCrudRelationship from './TableCrudRelationship'
-    import PersonCRUD from './PersonCRUD.vue'
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
     import {age_today, age_in_a_date, generateVcardObject,getObjectPropertyByValue,myheaders,parseResponseError} from '../functions.js'
@@ -118,7 +111,6 @@
             QrcodeVue,
             MyMenuInline,
             DisplayValues,
-            PersonCRUD,
         },
         props: {
             person_url: { //url
@@ -131,24 +123,7 @@
                     {
                         subheader: this.$t("Contact options"),
                         children: [
-                            {
-                                name: this.$t("Edit contact"),
-                                icon: "mdi-plus",
-                                code: function(){
-                                    this.person_deleting=false
-                                    this.key_person_crud=this.key_person_crud+1
-                                    this.dialog_person_crud=true
-                                    .bind(this)},
-                            },
-                            {
-                                name: this.$t("Delete contact"),
-                                icon: "mdi-plus",
-                                code: function(){
-                                    this.person_deleting=true
-                                    this.key_person_crud=this.key_person_crud+1
-                                    this.dialog_person_crud=true
-                                }.bind(this),
-                            },
+
                             {
                                 name: this.$t("Generate QR"),
                                 icon: "mdi-plus",
@@ -183,6 +158,14 @@
                                     alert(searchString)
                                 }.bind(this),
                             },
+                            {
+                                
+                                name: this.$t("Exit"),
+                                icon: "mdi-exit",
+                                code: function(){
+                                    this.$emit("exited")
+                                }.bind(this),
+                            }
                         ]
                     },
                 ],
@@ -193,11 +176,6 @@
                 dialog_qr: false,
                 key:0,
 
-
-                // DIALOG PERSONCRUD
-                dialog_person_crud:false,
-                person_deleting: false,
-                key_person_crud:0,
             }
         },
         computed: {
@@ -272,10 +250,6 @@
                 } catch (error) {
                     return 0
                 }
-            },
-            on_PersonCRUD_cruded(){
-                this.dialog_person_crud=false
-                this.get_person()
             },
         },
 

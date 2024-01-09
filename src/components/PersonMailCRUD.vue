@@ -4,8 +4,8 @@
             <v-card-title class="headline" >{{ title() }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="useStore().mailtype" v-model="new_mail.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"  ></v-select>  
-                <v-text-field data-test="PersonMailCRUD_Mail" v-model="new_mail.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail(true)" />
+                <v-select :readonly="mode=='D'" :items="useStore().mailtype" v-model="new_mail.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"  ></v-select>  
+                <v-text-field :readonly="mode=='D'" data-test="PersonMailCRUD_Mail" v-model="new_mail.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail(true)" />
             </v-form>
                         
             <v-card-actions>

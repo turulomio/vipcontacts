@@ -18,3 +18,11 @@ export function add_person_from_Home(cy,name,surname,surname2){
         cy.getDataTest('PersonCRUD_Button').click()
     
 }
+
+
+export function delete_person_from_Home(cy,person_id){
+    // Add new person
+    cy.getDataTest(`TablePersons_ButtonDelete${person_id}`).click()
+    cy.getDataTest('PersonCRUD_Button').click()
+
+}

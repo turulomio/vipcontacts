@@ -80,7 +80,7 @@
                 }
                 else if (this.mode=="U"){
                     this.newperson.dt_update=new Date()
-                    axios.put(`${this.useStore().apiroot}/api/person/${this.newperson.id}/`, this.newperson, this.myheaders())
+                    axios.put(this.newperson.url, this.newperson, this.myheaders())
                     .then(() => {
                         this.$emit("cruded")
                     }, (error) => {
@@ -96,9 +96,9 @@
                     if(r == false) {
                         return
                     } 
-                    axios.delete(`${this.useStore().apiroot}/api/person/${this.newperson.id}`, this.myheaders())
+                    axios.delete(this.newperson.url, this.myheaders())
                     .then(() => {
-                        this.$router.push({name:'home'})
+                        this.$emit("cruded")
                     }, (error) => {
                         this.parseResponseError(error)
                     });
