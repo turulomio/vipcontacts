@@ -4,7 +4,7 @@
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>            
-            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("mailtype",item.retypes,"display_name") }}</template>
+            <template v-slot:[`item.retypes`]="{ item }">{{getObjectPropertyByValue("mailtype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -42,6 +42,7 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -65,6 +66,7 @@
         },
         methods:{
             useStore,
+            getObjectPropertyByValue,myheaders,parseResponseError,
             addItem(){
                 this.selected={
                     mail: "",

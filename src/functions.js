@@ -1,5 +1,4 @@
 import vCardsJS from 'vcards-js'
-import { my_round } from 'vuetify_rules';
 import { useStore}  from '@/store'
 
 // Function to use "{0} {1}".format(a, b) style
@@ -138,65 +137,8 @@ export function arrayobjects_to_stringofstrings(l, key){
 }
 
 
-export function arrayofintegers_to_stringofintegers(l){
-    var s=""
-    l.forEach(o => s=s+o.toString() + ", ")
-    return s.slice(0,-2)
-}
-
-
-export function stringofintegers_to_arrayofintegers(s,separator=", "){
-    var l=[]
-    s.split(separator).forEach(o => l.push(parseInt(o)))
-    return l
-}
-
-
-export function arrayobjects_to_array(l, key){
-    var s=[]
-    l.forEach(o => s.push(o[key]))
-    return s
-}
-
-export function percentage_generic_string(num, locale, decimals=2){
-    if (num==null) return "- - - %"
-    return `${my_round(num*100,decimals).toLocaleString(locale,{ minimumFractionDigits: decimals,  })} %`
-}
-
-export function percentage_generic_html(num, locale, decimals=2){
-    if (num==null){
-        return percentage_generic_string(num,locale,decimals)
-    }
-
-    if (num>=0){
-        return `<span>${percentage_generic_string(num, locale, decimals)}</span>`
-    } else {
-        return `<span class='vuered'>${percentage_generic_string(num, locale, decimals)}</span>`
-    }
-}
-
 export function listobjects_sum(lo,key){
     return lo.reduce((accum,item) => accum + item[key], 0)
-}
-
-export function listobjects_average_ponderated(lo,key1, key2){
-    var prod=0;
-    var total=0;
-    var i;
-    for (i = 0; i < lo.length; i++) {
-        prod=prod+lo[i][key1]*lo[i][key2]
-        total=total+lo[i][key2]
-    } 
-    return prod/total
-}
-
-export function get_current_monthpicker_string(){
-    return `${new Date().getFullYear()}-${(new Date().getMonth()+1).toString().padStart(2,'0')}`
-}
-
-export function ifnullempty(value){
-    if (value==null) return ""
-    return value
 }
 
 
@@ -285,4 +227,57 @@ export function generateVcardObject(person){
         return o.mail
     });
     return vCard
+}
+
+export function getObjectByUrl(catalog,url,default_=null)  {
+    var r=useStore()[catalog].find(o => o.url==url)
+    if (r==null){
+        return default_
+    } else {
+        return r
+    }
+}
+
+export function getObjectById(catalog,id,default_=null) {
+    var r=useStore()[catalog].find(o => o.id==id)
+    if (r==null){
+        return default_
+    } else {
+        return r
+    }
+}
+//Dv Value (for options catalogs)
+export function getObjectByValue(catalog,v,default_=null) {
+    var r=useStore()[catalog].find(o => o.value==v)
+    if (r==null){
+        return default_
+    } else {
+        return r
+    }
+}
+export function getObjectPropertyByValue(catalog,v,property,default_=null) {
+    var r=getObjectByValue(catalog,v)
+    if (r==null){
+        return default_
+    } else {
+        return r[property]
+    }
+}
+
+export function getObjectPropertyByUrl(catalog,url,property,default_=null){
+    var r=getObjectByUrl(catalog,url)
+    if (r==null){
+        return default_
+    } else {
+        return r[property]
+    }
+}
+
+export function getObjectPropertyById(catalog,id,property,default_=null) {
+    var r=getObjectById(catalog,id)
+    if (r==null){
+        return default_
+    } else {
+        return r[property]
+    }
 }

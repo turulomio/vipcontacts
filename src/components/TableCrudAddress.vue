@@ -2,8 +2,8 @@
     <div>
         <v-data-table :headers="tableHeaders" :items="tableData" :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="refreshKey" >
             <template v-slot:[`item.dt_update`]="{ item }">{{ localtime(item.dt_update) }}</template>
-            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("addresstype",item.retypes,"display_name") }}</template>
-            <template v-slot:[`item.country`]="{ item }">{{ $store.getters.getObjectPropertyByValue("countries",item.country,"display_name") }}</template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("addresstype",item.retypes,"display_name") }}</template>
+            <template v-slot:[`item.country`]="{ item }">{{ getObjectPropertyByValue("countries",item.country,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -44,6 +44,7 @@
     import axios from 'axios'
     import { useStore } from '@/store';
     import { jsPDF } from "jspdf";
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -70,6 +71,8 @@
         },
         methods:{
             useStore,
+            getObjectPropertyByValue,
+            myheaders,parseResponseError,
             addItem(){
                 this.selected={
                     address: "",
@@ -174,7 +177,7 @@
                 centeredText(this.person.fullname, height*6/11);
                 centeredText(item.address, height*7/11);
                 centeredText(`${item.code} ${item.city}`, height*8/11)
-                centeredText(this.$store.getters.getObjectPropertyByValue("countries",item.country,"display_name"), height*9/11)
+                centeredText(getObjectPropertyByValue("countries",item.country,"display_name"), height*9/11)
                 doc.save(`${this.person.fullname}.pdf`);
             },
             googleMaps(item){

@@ -100,7 +100,7 @@
     import PersonCRUD from './PersonCRUD.vue'
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
-    import {age_today, age_in_a_date, generateVcardObject} from '../functions.js'
+    import {age_today, age_in_a_date, generateVcardObject,getObjectPropertyByValue} from '../functions.js'
     import { useStore } from '@/store';
     import QrcodeVue from 'qrcode.vue'
     export default {
@@ -212,9 +212,10 @@
         },        
         methods: {
             useStore,
+            getObjectPropertyByValue,
             displayvalues(){
                 var r=[
-                    {title:this.$t('Gender'), value: this.$store.getters.getObjectPropertyByValue("persongender",this.person.gender,"display_name")},
+                    {title:this.$t('Gender'), value: getObjectPropertyByValue("persongender",this.person.gender,"display_name")},
                     {title:this.$t('Birth date'), value: this.person.birth},
                 ]
                 if (this.person.death!=null){

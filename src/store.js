@@ -23,7 +23,6 @@ export const useStore = defineStore('global', {
         mimetype:[],
     }
   },
-
   actions: {
     setToken(token){
       this.token=token

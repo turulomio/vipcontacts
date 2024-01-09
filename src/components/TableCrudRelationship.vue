@@ -4,7 +4,7 @@
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
-            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("relationshiptype",item.retypes,"display_name") }}</template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("relationshiptype",item.retypes,"display_name") }}</template>
 
               <template v-slot:[`item.destiny`]="{ item }">
                 <span>{{ showRelationShipName(item) }}</span>
@@ -45,6 +45,9 @@
     import axios from 'axios'
     import SelectPersons from './SelectPersons.vue'
     import { useStore } from '@/store';
+    import { localtime } from 'vuetify_rules';
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
+
     export default {
         name: 'TableCrudRelationship',
         components: {
@@ -70,6 +73,8 @@
             }
         },
         methods:{
+            localtime,
+            getObjectPropertyByValue,myheaders,parseResponseError,
             useStore,
             addItem(){
                 this.selected={

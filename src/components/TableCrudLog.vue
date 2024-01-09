@@ -4,7 +4,7 @@
               <template v-slot:[`item.datetime`]="{ item }">
                 <span>{{ localtime(item.datetime) }}</span>
             </template>
-            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("logtype",item.retypes,"display_name") }}</template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("logtype",item.retypes,"display_name") }}</template>
 
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -42,6 +42,7 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
         name: 'TableCrudLog',
         props: ['person','obsolete'],
@@ -79,6 +80,8 @@
         },
         methods:{
             useStore,
+            getObjectPropertyByValue,
+            myheaders,parseResponseError,
             addItem(){
                 this.selected={
                     text: "",

@@ -4,7 +4,7 @@
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>            
-            <template v-slot:[`item.retypes`]="{ item }">{{ $store.getters.getObjectPropertyByValue("phonetype",item.retypes,"display_name") }}</template>
+            <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("phonetype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -43,6 +43,8 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
+    import { localtime } from 'vuetify_rules';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -68,6 +70,8 @@
         },
         methods:{
             useStore,
+            localtime,
+            getObjectPropertyByValue,myheaders,parseResponseError,
             addItem(){
                 this.selected={
                     phone: "",
