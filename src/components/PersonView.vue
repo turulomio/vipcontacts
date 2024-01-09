@@ -158,14 +158,7 @@
                                     alert(searchString)
                                 }.bind(this),
                             },
-                            {
-                                
-                                name: this.$t("Exit"),
-                                icon: "mdi-exit",
-                                code: function(){
-                                    this.$emit("exited")
-                                }.bind(this),
-                            }
+
                         ]
                     },
                 ],

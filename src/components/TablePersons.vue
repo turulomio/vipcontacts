@@ -16,14 +16,14 @@
                 <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
             </template>            
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon :data-test="`TablePersons_ButtonEdit${item.id}`" small class="mr-2" @click="editPerson(item)">mdi-pencil</v-icon>
-                <v-icon :data-test="`TablePersons_ButtonDelete${item.id}`" small class="mr-2" @click="deletePerson(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TablePersons_ButtonEdit${item.id}`" small class="mr-2" @click.stop="editPerson(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TablePersons_ButtonDelete${item.id}`" small class="mr-2" @click.stop="deletePerson(item)">mdi-delete</v-icon>
             </template>
         </v-data-table>
         <!-- DIALOG PERSONVIEW -->
         <v-dialog v-model="dialog_person_view" width="100%">
             <v-card class="pa-4">
-                <PersonView :person_url="person_url" :key="key"  @exited="on_PersonView_exited" />
+                <PersonView :person_url="person_url" :key="key"/>
             </v-card>
         </v-dialog>
         <!-- DIALOG PERSONCRUD -->
