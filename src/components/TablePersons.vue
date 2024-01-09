@@ -4,7 +4,7 @@
         <v-data-table :headers="headers" :items="data" :sort-by="[{key:orderby,order:'asc'}]" class="elevation-1" @click:row="viewItem">
             <template v-slot:[`item.name`]="{ item }">
                 <v-icon small class="mr-2" >{{person_icon(item)}}</v-icon>
-                {{item.name}}
+                <div :data-test="`TablePersons_Item${item.id}`">{{item.name}}</div>
             </template>
             <template v-slot:[`item.birth`]="{ item }">
                 <div class="text-no-wrap">
@@ -15,9 +15,6 @@
             <template v-slot:[`item.information`]="{ item }">
                     <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
             </template>
-            <!-- <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="viewItem(item)">mdi-eye</v-icon>
-            </template> -->
         </v-data-table>
     </div>
 </template>
@@ -40,7 +37,6 @@
                     { text: this.$t('Second surname'), value: 'surname2', width:"15%"},
                     { text: this.$t('Birth date'), value: 'birth' ,width:"10%"},
                     { text: this.$t('Information'), value: 'information', sortable: false,  width: "45%"  },
-                    // { text: this.$t('Actions'), value: 'actions', sortable: false , width: "7%"},
                     ],
             }
         },
