@@ -3,7 +3,7 @@
     <div>
         <h1>{{ $t('Auxiliar tables management') }}</h1>
         <br>
-        <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-text="name"  return-object ></v-select>
+        <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-title="name"  return-object ></v-select>
         <v-card class="padding">
             <v-text-field v-model="search" append-icon="mdi-magnify" label="Bucar en tabla" single-line></v-text-field>
             <v-data-table dense v-model="items_selected" :headers="headers" :items="items"  :sort-by="[{key:'count',order:'asc'}]" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>

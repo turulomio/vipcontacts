@@ -14,6 +14,14 @@ describe('e2e Home', () => {
       var person_id=interception.response.body.id
       console.log("Person clicked", person_id)
       cy.getDataTest(`TablePersons_Item${person_id}`).click()
+      cy.getDataTest(`PersonView_TabMails`).click()
+      cy.getDataTest(`TableCrudMail_Add`).click()
+      cy.getDataTest(`TableCrudMail_Mail`).type("elvis@presley.com")
+      cy.getDataTest(`TableCrudMail_ButtonAdd`).click()
+
+
+      
+      
 
 
       

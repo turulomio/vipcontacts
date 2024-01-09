@@ -22,7 +22,7 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add log") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
+                <v-select :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"/>
                 <v-textarea v-model="selected.text" type="text" :counter="1000" :label="$t('Log')" required :placeholder="$t('Enter a log')" :rules="RulesString(1000,true)" />
             </v-form>
                         

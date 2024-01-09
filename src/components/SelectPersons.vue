@@ -4,7 +4,7 @@
         :items="items"
         :loading="isLoading"
         :search-input.sync="search"
-        item-text="name"
+        item-title="name"
         item-value="url"
         :no-data-text="$t('You must select a item')"
         hide-selected

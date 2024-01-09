@@ -10,7 +10,7 @@
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addAlias()" >{{ $t('Add alias') }}</v-btn>
+        <v-btn data-test="TableCrudAlias_Add" color="primary" @click="addAlias()" >{{ $t('Add alias') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
     </div>
@@ -20,6 +20,7 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { myheaders, parseResponseError } from '@/functions';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -44,6 +45,8 @@
         },
         methods:{
             useStore,
+            myheaders,
+            parseResponseError,
             addAlias(){
                 var alias={
                     name:null,

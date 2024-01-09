@@ -23,7 +23,7 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add phone") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="this.useStore().phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"/>
+                <v-select :items="this.useStore().phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"/>
                 <v-text-field v-if="[7,8].includes(selected.retypes)" v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesString(50,true)"/>
                 <vue-tel-input defaultCountry="es" @validate="on_phone_validate" v-if="![7,8].includes(selected.retypes)" v-model="selected.phone" showDialCode mode="international"></vue-tel-input>
             </v-form>

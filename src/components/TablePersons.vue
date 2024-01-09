@@ -13,7 +13,7 @@
                 </div>
             </template>
             <template v-slot:[`item.information`]="{ item }">
-                    <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
+                <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
             </template>
         </v-data-table>
         <!-- DIALOG PERSONVIEW -->
@@ -54,8 +54,8 @@
             }
         },
         methods: {
-            viewItem (item) {
-                this.person_url=item.url
+            viewItem (event,object) {
+                this.person_url=object.item.url
                 this.key=this.key+1
                 this.dialog_person_view=true
             },

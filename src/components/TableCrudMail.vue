@@ -12,7 +12,7 @@
                 <v-icon small class="mr-2" @click="mail(item)">mdi-mail</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
+        <v-btn data-test="TableCrudMail_Add" color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         
@@ -23,14 +23,14 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add mail") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="useStore().mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
-                <v-text-field v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail(true)" />
+                <v-select :items="useStore().mailtype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"  ></v-select>  
+                <v-text-field data-test="TableCrudMail_Mail" v-model="selected.mail" type="text" :counter="75"  v-bind:label="$t('Mail')" required v-bind:placeholder="$t('Enter a mail')" :rules="RulesEmail(true)" />
             </v-form>
                         
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
+                <v-btn data-test="TableCrudMail_ButtonAdd" color="primary" @click.native="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -42,6 +42,7 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { RulesEmail, localtime } from 'vuetify_rules';
     import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
         props: ['person','obsolete'],
@@ -49,11 +50,11 @@
             return {
                 refreshKey:0,
                 tableHeaders: [
-                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
-                    { text: this.$t('Mail'),  sortable: true, value: 'mail'},
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Last update'), value: 'dt_update',sortable: true },
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
+                    { title: this.$t('Type'),  sortable: true, value: 'retypes'},
+                    { title: this.$t('Mail'),  sortable: true, value: 'mail'},
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.mail,
                 vShowObsolete:false,
@@ -67,6 +68,8 @@
         methods:{
             useStore,
             getObjectPropertyByValue,myheaders,parseResponseError,
+            RulesEmail,
+            localtime,
             addItem(){
                 this.selected={
                     mail: "",

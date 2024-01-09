@@ -25,7 +25,7 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit relationship") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add relationship") }}</v-card-title>
             
-            <v-select :items="useStore().relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-text="display_name" item-value="value"  ></v-select>  
+            <v-select :items="useStore().relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"  ></v-select>  
             
             <SelectPersons v-model="selected.destiny"></SelectPersons>
             
