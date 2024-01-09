@@ -28,3 +28,13 @@ export function empty_blob(){
         photocontact: false,
     }
 }
+
+export function empty_person_mail(){
+    return {
+        mail: "",
+        dt_obsolete: null,
+        dt_update: new Date(),
+        person: null,
+        retypes: 0,
+    };
+}

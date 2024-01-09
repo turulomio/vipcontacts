@@ -16,8 +16,8 @@ describe('e2e Home', () => {
       cy.getDataTest(`TablePersons_Item${person_id}`).click()
       cy.getDataTest(`PersonView_TabMails`).click()
       cy.getDataTest(`TableCrudMail_Add`).click()
-      cy.getDataTest(`TableCrudMail_Mail`).type("elvis@presley.com")
-      cy.getDataTest(`TableCrudMail_ButtonAdd`).click()
+      cy.getDataTest(`PersonMailCRUD_Mail`).type("elvis@presley.com")
+      cy.getDataTest(`PersonMailCRUD_Button`).click()
 
 
       
