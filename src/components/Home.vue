@@ -114,8 +114,9 @@
                 
                 axios.get(`${this.useStore().apiroot}/api/person/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
+                    console.log(response.data)
                     this.parseResponse(response)
-                    this.data= response.data;
+                    this.data= response.data
                     this.loading=false
                 }, (error) => {
                     this.parseResponseError(error)

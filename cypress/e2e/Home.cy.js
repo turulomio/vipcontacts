@@ -6,7 +6,7 @@ describe('e2e Home', () => {
 
 
     // Add new person
-    add_person_from_Home("Elvis","Presley","The King")
+    add_person_from_Home(cy,"Elvis","Presley","The King")
     cy.getDataTest('Home_Search').type("Elvis")
     cy.getDataTest('Home_Button').click()
 

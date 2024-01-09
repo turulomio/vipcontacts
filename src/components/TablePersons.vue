@@ -16,11 +16,21 @@
                     <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
             </template>
         </v-data-table>
+        <!-- DIALOG PERSONVIEW -->
+        <v-dialog v-model="dialog_person_view" width="100%">
+            <v-card class="pa-4">
+                <PersonView :person_url="person_url" :key="key" />
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
+    import PersonView from '@/components/PersonView.vue'
     export default {
         name: 'home',
+        components: {
+            PersonView,
+        },
         props: {
             data: {
             },
@@ -30,7 +40,10 @@
         },
         data(){ 
             return{
-                dialog:false,
+                dialog_person_view:false,
+                person_url:null,
+                key:0,
+
                 headers: [
                     { text: this.$t('Name'), align: 'start', sortable: true, value: 'name', width:"15%"},
                     { text: this.$t('Surname'), value: 'surname', width:"15%" },
@@ -42,7 +55,9 @@
         },
         methods: {
             viewItem (item) {
-                this.$router.replace({ name: 'person_edit', params: { "id": item.id }})
+                this.person_url=item.url
+                this.key=this.key+1
+                this.dialog_person_view=true
             },
 
             person_icon(item){
