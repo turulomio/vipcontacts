@@ -24,7 +24,7 @@
                 </v-btn>    
             </v-row>
             <br>
-            <TablePersons :data="data" @chipClicked="on_chip_clicked"></TablePersons>
+            <TablePersons :data="data" @chipClicked="on_chip_clicked" @cruded="on_PersonCRUD_cruded"></TablePersons>
         </div>
         <!-- DIALOG PERSONCRUD -->
         <v-dialog v-model="dialog_person_crud" width="50%">

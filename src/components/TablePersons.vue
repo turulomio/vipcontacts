@@ -44,7 +44,18 @@
             PersonCRUD,
         },
         props: {
-            data: {                
+            data: {         
+                required:true,    
+            },
+            sorting: {
+                default: [{key:"name",order:'asc'}]
+            }
+        },
+        data(){ 
+            return{
+                person_url:null,
+                key:0,
+   
                 //DIALOG PERSONVIEW
                 dialog_person_view:false,
 
@@ -53,18 +64,7 @@
                 dialog_person_crud:false,
                 person: null,
                 person_deleting: false,
-                key:0,
-            },
-            sorting: {
-                default: [{key:"name",order:'asc'}]
-            }
-        },
-        data(){ 
-            return{
-                dialog_person_view:false,
-                person_url:null,
-                key:0,
-
+                
                 headers: [
                     { title: this.$t('Name'), align: 'start', sortable: true, value: 'name', width:"15%"},
                     { title: this.$t('Surname'), value: 'surname', width:"15%" },
@@ -112,6 +112,7 @@
             },
             on_PersonCRUD_cruded(){
                 this.dialog_person_crud=false
+                this.$emit("cruded")
             }
         },
     }
