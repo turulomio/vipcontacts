@@ -38,3 +38,12 @@ export function empty_person_mail(){
         retypes: 0,
     };
 }
+
+export function empty_person_alias(){
+    return {
+        alias: "",
+        dt_obsolete: null,
+        dt_update: new Date(),
+        person: null,
+    };
+}
