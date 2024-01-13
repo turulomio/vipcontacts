@@ -1,30 +1,30 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="refreshKey" >
+        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="key" >
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableGroup_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableGroup_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableGroup_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add group') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn data-test="TableGroup_Add" color="primary" @click="addItem()" >{{ $t('Add group') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+
 
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
         <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit group") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add group") }}</v-card-title>
-            <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${this.useStore().apiroot}/api/groups/`" field="name" />
+            <AutoCompleteApiOneField data-test="TableGroup_Name" v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${this.useStore().apiroot}/api/groups/`" field="name" />
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn data-test="TableGroup_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                <v-btn data-test="TableGroup_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -36,7 +36,9 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
-    import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
+    import { localtime } from 'vuetify_rules'
+    import { parseResponseError, myheaders } from '@/functions'
+    import AutoCompleteApiOneField from '@/components/reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableGroup',
         components: {
@@ -45,7 +47,7 @@
         props: ['person','obsolete'],
         data () {
             return {
-                refreshKey:0,
+                key:0,
                 tableHeaders: [
                     { title: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
@@ -60,6 +62,9 @@
             }
         },
         methods:{
+            localtime,
+            myheaders,
+            parseResponseError,
             useStore,
             addItem(){
                 this.selected={
@@ -79,7 +84,6 @@
                     this.selected=response.data; //To get id
                     this.tableData.push(this.selected)
                     this.dialog=false;
-                    this.TableGroup_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -98,7 +102,6 @@
                     console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableGroup_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -118,7 +121,6 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableGroup_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -134,7 +136,6 @@
                 axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
-                    this.TableGroup_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -143,10 +144,6 @@
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
-            },
-            TableGroup_refreshKey(){
-                this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableGroup RefreshKey to ${this.refreshKey}`)
             },
         },
     }
