@@ -1,12 +1,12 @@
 import { createRouter,createWebHistory } from "vue-router";
-import About from './components/about'
-import Home from './components/Home'
-import GroupMembers from './components/GroupMembers'
-import PersonLastEditions from './components/PersonLastEditions'
-import PersonsMerge from './components/PersonsMerge.vue'
-import Settings from './components/Settings'
-import Statistics from './components/Statistics'
-import TableTypes from './components/TableTypes.vue'
+import About from '@/components/about'
+import Home from '@/components/Home'
+import GroupMembers from '@/components/GroupMembers'
+import PersonLastEditions from '@/components/PersonLastEditions'
+import PersonsMerge from '@/components/PersonsMerge.vue'
+import Settings from '@/components/Settings'
+import Statistics from '@/components/Statistics'
+import TableTypes from '@/components/TableTypes.vue'
 
 export const router = createRouter({
   history: createWebHistory(),

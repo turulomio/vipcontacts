@@ -105,16 +105,16 @@ export function parseResponseError(error){
 //       console.log(error.response.status);
 //       console.log(error.response.headers);
         if (error.response.status == 401){
-            alert (this.$t("You aren't authorized to do this request"))
+            alert ("You aren't authorized to do this request")
             useStore().token=null;
             useStore().logged=false;
-            if (this.$router.currentRoute.name != "home") this.$router.push("home")
+            if (this.$router.currentRoute.name != "home") this.$router.push({name:"home"})
             console.log(error.response)
         } else if (error.response.status == 400){ // Used for developer or app errors
-            alert (this.$t("Something wrong with your request"))
+            alert ("Something wrong with your request")
             console.log(error.response)
         } else if (error.response.status == 500){
-            alert (this.$t("There is a server error"))
+            alert ("There is a server error")
             console.log(error.response)
         }
         
