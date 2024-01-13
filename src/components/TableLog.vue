@@ -7,11 +7,11 @@
             <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("logtype",item.retypes,"display_name") }}</template>
 
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableLog_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableLog_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add log') }}</v-btn>
+        <v-btn data-test="TableLog_Add" color="primary" @click="addItem()" >{{ $t('Add log') }}</v-btn>
         <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==false">{{ $t('Show automatic logs') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==true">{{ $t('Hide automatic logs') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         
@@ -22,14 +22,14 @@
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add log") }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"/>
-                <v-textarea v-model="selected.text" type="text" :counter="1000" :label="$t('Log')" required :placeholder="$t('Enter a log')" :rules="RulesString(1000,true)" />
+                <v-select data-test="TableLog_Retypes" :items="nonAutomaticTypes" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"/>
+                <v-textarea data-test="TableLog_Text" v-model="selected.text" type="text" :counter="1000" :label="$t('Log')" required :placeholder="$t('Enter a log')" :rules="RulesString(1000,true)" />
             </v-form>
                         
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
+                <v-btn data-test="TableLog_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
+                <v-btn data-test="TableLog_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click="
                 dialog = false">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
@@ -43,6 +43,7 @@
     import axios from 'axios'
     import { useStore } from '@/store';
     import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
+    import { localtime, RulesString } from 'vuetify_rules';
     export default {
         name: 'TableLog',
         props: ['person','obsolete'],
@@ -79,7 +80,9 @@
             }
         },
         methods:{
+            localtime,
             useStore,
+            RulesString,
             getObjectPropertyByValue,
             myheaders,parseResponseError,
             addItem(){
