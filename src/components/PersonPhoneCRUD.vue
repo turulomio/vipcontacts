@@ -104,9 +104,6 @@
             },
             on_phone_validate(phone){
                 this.phone_object=phone
-                if (phone.valid==true){
-                    this.new_phone.phone=phone.formatted
-                }
             },
 
             on_phone_assignation(){
@@ -114,6 +111,7 @@
                     this.new_phone.phone=this.phone_text
                     return true
                 } else {
+                    console.log(this.phone_object)
                     if (this.phone_object.valid) {
                         this.new_phone.phone=this.phone_object.formatted
                         return true

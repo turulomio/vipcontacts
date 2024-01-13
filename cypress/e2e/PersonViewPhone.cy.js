@@ -4,7 +4,7 @@ import {
   delete_person_from_Home
 } from "./commons"
 
-describe('e2e Home', () => {
+describe('e2e Person Phone', () => {
   it('Home List', () => {    
 
     login_test_User(cy)
@@ -23,7 +23,7 @@ describe('e2e Home', () => {
       
       cy.getDataTest(`TablePhone_Add`).click()
       cy.getDataTest(`PersonPhoneCRUD_Phonetype`).type("Home{downArrow}{enter}")
-      cy.getDataTest(`PersonPhoneCRUD_Phone`).type("656565655")
+      cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("656565655")
       cy.intercept('POST', '/api/phone/').as("post_phone")
       cy.getDataTest(`PersonPhoneCRUD_Button`).click()
 
@@ -33,7 +33,7 @@ describe('e2e Home', () => {
         console.log("Phone", phone_id)
         //Update
         cy.getDataTest(`TablePhone_ButtonEdit${phone_id}`).click()
-        cy.getDataTest(`PersonPhoneCRUD_Phone`).type("999999999")
+        cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("999999999")
         cy.getDataTest(`PersonPhoneCRUD_Button`).click()
         //Delete
         cy.getDataTest(`TablePhone_ButtonDelete${phone_id}`).click()

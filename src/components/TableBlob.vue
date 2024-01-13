@@ -8,16 +8,15 @@
                 <img contain :src="`data:${item.mime};base64,${item.blob}`" width="24" height="24" v-if="canBeViewed(item)" @click="showCarrusel" />
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableBlob_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableBlob_ButtonEdit${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableBlob_ButtonEdit${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
                 <v-icon small class="mr-2" @click="downloadItem(item)">mdi-cloud-download</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
+        <v-btn data-test="TableBlob_Add" color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
         <v-btn color="primary" @click="pasteItem()" >{{ $t('Paste blob') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showCarrusel()" >{{ $t('Carrusel') }}</v-btn>
         
         <!-- DIALOG CRUD -->
@@ -26,13 +25,13 @@
                 <h1 class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</h1>
                 <h1 class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</h1>
                 <v-form ref="form" v-model="form_valid" lazy-validation >
-                    <v-file-input v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
-                    <AutoCompleteApiOneField v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${useStore().apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                    <v-file-input data-test="TableBlob_File" v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
+                    <AutoCompleteApiOneField data-test="TableBlob_Name" v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${useStore().apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                    <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                    <v-btn data-test="TableBlob_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                    <v-btn data-test="TableBlob_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
                     <v-btn color="error" @click="dialog = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
@@ -78,6 +77,8 @@
     import PasteImage from './PasteImage.vue'
     import { useStore } from '@/store';
     import {empty_blob} from '../empty_objects.js'
+    import { localtime, RulesSelection } from 'vuetify_rules';
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
         name: 'TableBlob',
         components: {
@@ -114,6 +115,11 @@
         },
         methods:{
             useStore,
+            RulesSelection,
+            localtime,
+            parseResponseError,
+            getObjectPropertyByValue,
+            myheaders,
             addItem(){
                 this.selected=empty_blob()
                 this.isEdition=false;
