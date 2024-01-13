@@ -1,11 +1,9 @@
 <template>
       <v-autocomplete
-        v-model="localValue"
-        :items="items"
+        v-model="new_value"
+        :items="entries"
         :loading="isLoading"
-        :search-input.sync="search"
-        item-title="name"
-        item-value="url"
+        v-model:search="search"
         :no-data-text="$t('You must select a item')"
         hide-selected
         outlined
@@ -19,10 +17,11 @@
 <script>
   import axios from 'axios'
   import { useStore } from '@/store';
+  import { myheaders,parseResponseError } from '@/functions';
   export default {
     name:"SelectPersons",
     props: {
-        value: {
+        modelValue: {
             required: true
         }
     },
@@ -31,22 +30,15 @@
           descriptionLimit: 60,
           entries: [],
           isLoading: false,
-          search: null,
-          localValue: null
+          search: "",
+          new_value: null
         }
     },
 
-    computed: {
-      items () {
-        let r=[]
-        this.entries.forEach(entry => r.push({"url": entry.url, "name":entry.fullname}))
-        return r
-      },
-    },
     watch: {
       search (val) {
-        // Items have already been loaded
-        if (this.items.length > 0) return
+        console.log("search",val)
+        if (this.search.length==0) return
 
         // Items have already been requested
         if (this.isLoading) return
@@ -55,7 +47,8 @@
 
         axios.get(`${this.useStore().apiroot}/api/person/?search=${val}`, this.myheaders())
         .then((response) => {
-            this.entries=response.data 
+            this.entries=[]
+            response.data.forEach(o => this.entries.push({"value": o.url, "title":o.fullname}))
             this.canclick=true;
         }, (error) => {
             this.parseResponseError(error)
@@ -63,20 +56,27 @@
         })
           .finally(() => (this.isLoading = false));
       },
-      localValue (newValue) {
-        this.$emit('input', newValue)
+      new_value (newValue) {
+        this.$emit('update:modelValue', newValue)
         console.log(`LocalValue changed and emited input to ${newValue}`)
       },
-      value (newValue) {
-        this.localValue = newValue
-        //console.log(`value changed to ${newValue}`)
-      }
     },
     methods:{
       useStore,
+      myheaders,
+      parseResponseError,
     },
-    mounted(){
-      //console.log(this.$attrs)
+    created(){
+      if (this.modelValue!=null){
+        axios.get(this.modelValue, this.myheaders())
+        .then((response) => {
+            this.entries.push({"value": response.data.url, "title":response.data.fullname})
+        }, (error) => {
+            this.parseResponseError(error)
+        })
+      }
+      this.new_value=this.modelValue
+
     }
   }
 </script>

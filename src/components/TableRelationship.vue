@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="refreshKey" >
+        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="key" >
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
@@ -10,29 +10,28 @@
                 <span>{{ showRelationShipName(item) }}</span>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableRelationship_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableRelationship_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableRelationship_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add relationship') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        
+        <v-btn data-test="TableRelationship_Add"  color="primary" @click="addItem()" >{{ $t('Add relationship') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
         <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit relationship") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add relationship") }}</v-card-title>
             
-            <v-select :items="useStore().relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"  ></v-select>  
+            <v-select data-test="TableRelationship_Retypes"  :items="useStore().relationshiptype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"  ></v-select>  
             
-            <SelectPersons v-model="selected.destiny"></SelectPersons>
+            <SelectPersons data-test="TableRelationship_Destiny"  v-model="selected.destiny"></SelectPersons>
             
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn data-test="TableRelationship_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                <v-btn data-test="TableRelationship_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -56,7 +55,7 @@
         props: ['person','obsolete'],
         data () {
             return {
-                refreshKey:0,
+                key:0,
                 tableHeaders: [
                     { title: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
@@ -99,7 +98,7 @@
                     this.tableData.push(this.selected);
                     this.$emit('person')
                     this.dialog=false;
-                    this.TableRelationship_refreshKey();
+                    this.key+=1
                     
                     this.updateRelationshipNames()     
                     this.$emit('cruded')
@@ -122,7 +121,7 @@
                     this.selected=response.data;
                     this.$emit("person")
                     this.dialog=false;
-                    this.TableRelationship_refreshKey();
+                    this.key+=1
                     this.updateRelationshipNames()    
                     this.$emit('cruded') 
                 }, (error) => {
@@ -143,7 +142,7 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableRelationship_refreshKey();
+                    this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -159,7 +158,7 @@
                 axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
-                    this.TableRelationship_refreshKey();
+                    this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -168,10 +167,6 @@
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
-            },
-            TableRelationship_refreshKey(){
-                this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableRelationship RefreshKey to ${this.refreshKey}`)
             },
             showRelationShipName(item){
                 const o = this.relationship_names.filter(x => `${this.useStore().apiroot}/api/person/${x.id}/`==item.destiny)
@@ -184,11 +179,11 @@
             
             },
             updateRelationshipNames(){
-                axios.get(`${this.useStore().apiroot}/api/find/relationship/${this.$route.params.id}`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/find/relationship/${this.person.id}/`, this.myheaders())
                 .then((response) => {
                     this.relationship_names= response.data;         
                     console.log(this.relationship_names)
-                    this.TableRelationship_refreshKey();
+                    this.key+=1
                 }, (error) => {
                     this.parseResponseError(error)
                 });

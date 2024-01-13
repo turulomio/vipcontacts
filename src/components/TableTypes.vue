@@ -59,7 +59,7 @@
         methods: {
             useStore,
             update(){
-                axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}/`, this.myheaders())
                 .then((response) => {
                     console.log(response.data)
                     this.items=response.data
@@ -75,7 +75,7 @@
                 find=find.slice(0, -1)
                 var replace=this.newname
 
-                axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}?${find}&replace=${replace}`,  this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}/?${find}&replace=${replace}`,  this.myheaders())
                 .then((response) => {
                         console.log(response.data)
                         this.items_selected=[]
