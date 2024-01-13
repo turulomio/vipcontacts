@@ -52,7 +52,7 @@
                         </v-list-item>
                     </v-list-group>
 <!--                     HELP -->
-                    <v-list-group value="Help">
+                    <v-list-group data-test="LateralHelpGroup" value="Help">
 
                         <template v-slot:activator="{props}">
                             <v-list-item v-bind="props" prepend-icon="mdi-lifebuoy" :title="$t('Help')" />
@@ -61,7 +61,7 @@
                             <v-list-item-title class="mr-7">{{ $t("About") }}</v-list-item-title>
                         </v-list-item>
                         
-                        <v-list-item link  router :to="{ name: 'statistics'}" v-if="useStore().logged">
+                        <v-list-item data-test="LateralStatistics" link  router :to="{ name: 'statistics'}" v-if="useStore().logged">
                             <v-list-item-title class="mr-7">{{ $t("Statistics") }}</v-list-item-title>
                         </v-list-item>
                         

@@ -4,7 +4,7 @@
         v-model="select"
         :items="items"
         :loading="isLoading"
-        :search-input.sync="search"
+        v-model:search="search"
         :no-data-text="$t('You can select or add an item')"
         background-color="#eeffee"
         outlined
@@ -17,7 +17,7 @@
         v-model="select"
         :items="items"
         :loading="isLoading"
-        :search-input.sync="search" 
+        v-model:search="search"
         :no-data-text="$t(`You can't select a item, search again`)"
         hide-selected
         background-color="#ffeeee"
@@ -31,6 +31,7 @@
 </template>
 <script>
     import axios from 'axios'
+    import {myheaders, parseResponse, parseResponseError} from '@/functions'
     export default {
         name: 'AutoCompleteApiOneField',
         props: {
@@ -75,14 +76,15 @@
             },
             select (newValue) {
                 this.$emit('update:modelValue', newValue)
-//                 console.log(`LocalValue changed and emited input to ${newValue}`)
             },
             value (newValue) {
                 this.select = newValue
-//                 console.log(`value changed to ${newValue}`)
             }
         },
         methods:{
+            myheaders,
+            parseResponse,
+            parseResponseError,
             get_data(){
                 if (this.search ==null || this.search=="") return
                 

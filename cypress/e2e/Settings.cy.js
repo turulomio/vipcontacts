@@ -7,6 +7,8 @@ describe('e2e Groups', () => {
     cy.getDataTest('LateralIcon').click()
     cy.getDataTest('LateralSettingsGroup').click()
     cy.getDataTest('LateralSettings').click()
+
+    cy.getDataTest("Settings_Button").click()
     
   })
 

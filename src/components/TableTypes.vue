@@ -3,7 +3,7 @@
     <div>
         <h1>{{ $t('Auxiliar tables management') }}</h1>
         <br>
-        <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-title="name"  return-object ></v-select>
+        <v-select data-test="TableTypes_Table" class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-title="name"  return-object ></v-select>
         <v-card class="padding">
             <v-text-field v-model="search" append-icon="mdi-magnify" label="Bucar en tabla" single-line></v-text-field>
             <v-data-table dense v-model="items_selected" :headers="headers" :items="items"  :sort-by="[{key:'count',order:'asc'}]" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
@@ -17,7 +17,7 @@
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="acceptDialog()" :disabled="!form_valid">{{ $t("Log in") }}</v-btn>
+                    <v-btn color="primary" @click="acceptDialog()" :disabled="!form_valid">{{ $t("Merge / Rename") }}</v-btn>
                     <v-btn color="error" @click="dialog = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
@@ -27,6 +27,7 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+    import { myheaders, parseResponseError,arrayobjects_to_stringofstrings } from '@/functions';
     export default {
         data(){ 
             return{
@@ -58,6 +59,9 @@
         },
         methods: {
             useStore,
+            myheaders,
+            parseResponseError,
+            arrayobjects_to_stringofstrings,
             update(){
                 axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}/`, this.myheaders())
                 .then((response) => {
