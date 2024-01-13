@@ -15,7 +15,7 @@
 
                 <v-card-actions> 
                     <v-spacer></v-spacer>
-                    <v-btn data-test="PersonCRUD_Button" color="primary" @click.native="accept_dialog()" >{{ button() }}</v-btn>
+                    <v-btn data-test="PersonCRUD_Button" color="primary" @click="accept_dialog()" >{{ button() }}</v-btn>
                 </v-card-actions>
             </v-card>
     </div>

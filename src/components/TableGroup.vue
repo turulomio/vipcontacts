@@ -23,9 +23,9 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
-                <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
+                <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn color="error" @click="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

@@ -30,10 +30,10 @@
         <v-row class="padding"> 
             <v-card-actions >
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members") }}</v-btn>
-                <v-btn color="primary" @click.native="generateBirthdayCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate birthday calendar") }}</v-btn>
-                <v-btn color="primary" @click.native="generateDeathCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate death day calendar") }}</v-btn>
-                <v-btn color="primary" @click.native="dlgAddMembers = true" :disabled="group=='' || !loaded">{{ $t("Add members to group") }}</v-btn>
+                <v-btn color="primary" @click="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members") }}</v-btn>
+                <v-btn color="primary" @click="generateBirthdayCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate birthday calendar") }}</v-btn>
+                <v-btn color="primary" @click="generateDeathCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate death day calendar") }}</v-btn>
+                <v-btn color="primary" @click="dlgAddMembers = true" :disabled="group=='' || !loaded">{{ $t("Add members to group") }}</v-btn>
             </v-card-actions>            
         </v-row>    
         <v-dialog v-model="dlgAddMembers" max-width="450">
@@ -42,8 +42,8 @@
                 <SelectPersons v-model="newmember"></SelectPersons>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click.native="add_member()" :disabled="newmember == ''">{{ $t("Add member") }}</v-btn>
-                    <v-btn color="error" @click.native="dlgAddMembers = false">{{ $t("Cancel") }}</v-btn>
+                    <v-btn color="primary" @click="add_member()" :disabled="newmember == ''">{{ $t("Add member") }}</v-btn>
+                    <v-btn color="error" @click="dlgAddMembers = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

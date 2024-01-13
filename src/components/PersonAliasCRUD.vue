@@ -9,7 +9,7 @@
                         
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn data-test="PersonAliasCRUD_Button" color="primary" @click.native="accept()" :disabled="!form_valid">{{ button() }}</v-btn>
+                <v-btn data-test="PersonAliasCRUD_Button" color="primary" @click="accept()" :disabled="!form_valid">{{ button() }}</v-btn>
             </v-card-actions>
         </v-card>
     </div>
