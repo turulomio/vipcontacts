@@ -34,7 +34,7 @@
     export default {
         name: 'AutoCompleteApiOneField',
         props: {
-            value: { //v-model
+            modelValue: { //v-model
                 required: true
             },
             apiurl: { //apiurl to query database
@@ -74,7 +74,7 @@
                 this.get_data()
             },
             select (newValue) {
-                this.$emit('input', newValue)
+                this.$emit('update:modelValue', newValue)
 //                 console.log(`LocalValue changed and emited input to ${newValue}`)
             },
             value (newValue) {
@@ -106,7 +106,7 @@
             }
         },
         created(){
-            this.select=this.value
+            this.select=this.modelValue
         }
     }
 </script>

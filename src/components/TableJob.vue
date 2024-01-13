@@ -5,29 +5,28 @@
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableJob_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableJob_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableJob_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add job') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn data-test="TableJob_Add" color="primary" @click="addItem()" >{{ $t('Add job') }}</v-btn>        
+        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
 
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
         <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
-            <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.useStore().apiroot}/api/professions/`" field="profession" />
-            <AutoCompleteApiOneField v-model="selected.organization" :label="$t('Organization')" :placeholder="$t('Enter a organization')" canadd :apiurl="`${this.useStore().apiroot}/api/organizations/`" field="organization" />
-            <AutoCompleteApiOneField v-model="selected.department" :label="$t('Department')" :placeholder="$t('Enter a department')" canadd :apiurl="`${this.useStore().apiroot}/api/departments/`" field="department" />
-            <AutoCompleteApiOneField v-model="selected.title" :label="$t('Title')" :placeholder="$t('Enter a title')" canadd :apiurl="`${this.useStore().apiroot}/api/titles/`" field="title" />   
+            <AutoCompleteApiOneField data-test="TableJob_Profession" v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${useStore().apiroot}/api/professions/`" field="profession" />
+            <AutoCompleteApiOneField data-test="TableJob_Organization" v-model="selected.organization" :label="$t('Organization')" :placeholder="$t('Enter a organization')" canadd :apiurl="`${useStore().apiroot}/api/organizations/`" field="organization" />
+            <AutoCompleteApiOneField data-test="TableJob_Department" v-model="selected.department" :label="$t('Department')" :placeholder="$t('Enter a department')" canadd :apiurl="`${useStore().apiroot}/api/departments/`" field="department" />
+            <AutoCompleteApiOneField data-test="TableJob_Title" v-model="selected.title" :label="$t('Title')" :placeholder="$t('Enter a title')" canadd :apiurl="`${useStore().apiroot}/api/titles/`" field="title" />   
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                <v-btn data-test="TableJob_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                <v-btn data-test="TableJob_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -39,6 +38,9 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
+
+    import { localtime } from 'vuetify_rules';
+    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
         name: 'TableJob',
@@ -66,6 +68,10 @@
             }
         },
         methods:{
+            localtime,
+            getObjectPropertyByValue,
+            myheaders,
+            parseResponseError,
             useStore,
             addItem(){
                 this.selected={
