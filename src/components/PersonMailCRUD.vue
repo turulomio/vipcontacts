@@ -63,7 +63,6 @@
                     this.new_mail.dt_update=new Date();
                     axios.post(`${this.useStore().apiroot}/api/mail/`, this.new_mail, this.myheaders())
                     .then((response) => {
-                        console.log(response.data);
                         this.new_mail=response.data; //To get id
                         this.$emit('cruded')
                     }, (error) => {
@@ -72,10 +71,8 @@
                 } else if (this.mode=="U"){
 
                     this.new_mail.dt_update=new Date();
-                    console.log(this.new_mail)
                     axios.put(this.new_mail.url, this.new_mail, this.myheaders())
                     .then((response) => {
-                        console.log(response.data);
                         this.new_mail=response.data;
                         this.$emit('cruded')
                     }, (error) => {
@@ -87,8 +84,7 @@
                         return;
                     }  
                     axios.delete(this.new_mail.url, this.myheaders())
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         this.$emit('cruded')
                     }, (error) => {
                         this.parseResponseError(error)

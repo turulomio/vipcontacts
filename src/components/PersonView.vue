@@ -250,7 +250,6 @@
         },
 
         created() {
-            console.log(this.person_url)
             this.get_person()
         }
     }

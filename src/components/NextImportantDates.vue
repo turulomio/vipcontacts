@@ -28,11 +28,8 @@
                 this.$router.replace({ name: 'person_edit', params: { "id": item.id }})
             },
             changeYear(item){
-                console.log("chasnge")
                 var o=new Date(item.date)
-                console.log(o)
                 var today=new Date()
-                console.log(today)
                 if (o.getMonth()>=today.getMonth()){
                     return new Date(today.getFullYear(),o.getMonth(),o.getDate()+1).toISOString().slice(0,10)
                 } else {

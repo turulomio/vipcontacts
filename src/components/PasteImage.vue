@@ -48,7 +48,6 @@
                 this.text=""
                 this.text_readonly=false
                 this.new_image=this.empty_image()
-                console.log("AHORA")
             },
             async pasteFunction(pasteEvent, callback){
 

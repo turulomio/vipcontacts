@@ -114,7 +114,6 @@
                 
                 axios.get(`${this.useStore().apiroot}/api/person/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
-                    console.log(response.data)
                     this.parseResponse(response)
                     this.data= response.data
                     this.loading=false
@@ -126,9 +125,7 @@
                 axios.get(`${this.useStore().apiroot}/next_important_dates/`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
-                    console.log(response.data)
                     this.next_important_dates= response.data
-                    console.log(this.next_important_dates)
                 }, (error) => {
                     this.parseResponseError(error)
                 });

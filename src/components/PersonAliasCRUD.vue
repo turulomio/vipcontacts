@@ -57,14 +57,12 @@ import axios from 'axios'
                 }
             },
             accept(){
-                console.log(this.new_alias)
                 if (this.$refs.form.validate()==false) return
 
                 if (this.mode=="C"){
                     this.new_alias.dt_update=new Date();
                     axios.post(`${this.useStore().apiroot}/api/alias/`, this.new_alias, this.myheaders())
                     .then((response) => {
-                        console.log(response.data);
                         this.new_alias=response.data; //To get id
                         this.$emit('cruded')
                     }, (error) => {
@@ -73,10 +71,8 @@ import axios from 'axios'
                 } else if (this.mode=="U"){
 
                     this.new_alias.dt_update=new Date();
-                    console.log(this.new_alias)
                     axios.put(this.new_alias.url, this.new_alias, this.myheaders())
                     .then((response) => {
-                        console.log(response.data);
                         this.new_alias=response.data;
                         this.$emit('cruded')
                     }, (error) => {
@@ -88,8 +84,7 @@ import axios from 'axios'
                         return;
                     }  
                     axios.delete(this.new_alias.url, this.myheaders())
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         this.$emit('cruded')
                     }, (error) => {
                         this.parseResponseError(error)

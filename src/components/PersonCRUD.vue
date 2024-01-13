@@ -71,9 +71,8 @@
             accept_dialog(){             
                 if (this.mode=="C"){
                     axios.post(`${this.useStore().apiroot}/api/person/`, this.newperson, this.myheaders())
-                    .then((response) => {
+                    .then(() => {
                         this.$emit("cruded")
-                        console.log(response.data)
                     }, (error) => {
                         this.parseResponseError(error)
                     });

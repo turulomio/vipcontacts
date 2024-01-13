@@ -67,18 +67,13 @@
                 }
             },
             accept(){
-                console.log(this.new_phone)
                 if (this.$refs.form.validate()==false) return
-
-
-
 
                 if (this.mode=="C"){
                     if (this.on_phone_assignation()==false) return
                     this.new_phone.dt_update=new Date();
                     axios.post(`${this.useStore().apiroot}/api/phone/`, this.new_phone, this.myheaders())
                     .then((response) => {
-                        console.log(response.data);
                         this.new_phone=response.data; //To get id
                         this.$emit('cruded')
                     }, (error) => {
@@ -87,10 +82,8 @@
                 } else if (this.mode=="U"){
                     if (this.on_phone_assignation()==false) return
                     this.new_phone.dt_update=new Date();
-                    console.log(this.new_phone)
                     axios.put(this.new_phone.url, this.new_phone, this.myheaders())
                     .then((response) => {
-                        console.log(response.data);
                         this.new_phone=response.data;
                         this.$emit('cruded')
                     }, (error) => {
@@ -102,8 +95,7 @@
                         return;
                     }  
                     axios.delete(this.new_phone.url, this.myheaders())
-                    .then((response) => {
-                        console.log(response);
+                    .then(() => {
                         this.$emit('cruded')
                     }, (error) => {
                         this.parseResponseError(error)
@@ -111,7 +103,6 @@
                 }
             },
             on_phone_validate(phone){
-                console.log(phone)
                 this.phone_object=phone
                 if (phone.valid==true){
                     this.new_phone.phone=phone.formatted
@@ -123,7 +114,6 @@
                     this.new_phone.phone=this.phone_text
                     return true
                 } else {
-                    console.log(this.phone_object)
                     if (this.phone_object.valid) {
                         this.new_phone.phone=this.phone_object.formatted
                         return true
