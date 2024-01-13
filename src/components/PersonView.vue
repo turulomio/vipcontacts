@@ -207,7 +207,6 @@
                 return r
             },
             after_crud: function() {
-                console.log("after_crud")
                 this.get_person()
             },
             get_person(){

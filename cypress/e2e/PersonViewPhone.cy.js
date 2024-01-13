@@ -33,7 +33,7 @@ describe('e2e Home', () => {
         console.log("Phone", phone_id)
         //Update
         cy.getDataTest(`TablePhone_ButtonEdit${phone_id}`).click()
-        cy.getDataTest(`PersonPhoneCRUD_Phone`).type(".edited.com")
+        cy.getDataTest(`PersonPhoneCRUD_Phone`).type("999999999")
         cy.getDataTest(`PersonPhoneCRUD_Button`).click()
         //Delete
         cy.getDataTest(`TablePhone_ButtonDelete${phone_id}`).click()

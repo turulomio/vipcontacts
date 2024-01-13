@@ -17,7 +17,7 @@
  
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
-            <PersonPhoneCRUD :phone="phone" :mode="mode" />
+            <PersonPhoneCRUD :phone="phone" :mode="mode" @cruded="on_PersonPhoneCRUD_cruded" />
         </v-dialog>
     </div>
 
@@ -76,29 +76,6 @@
                 this.mode="D"
                 this.dialog=true;
             },
-            acceptAddition(){
-                if (![7,8].includes(this.selected.retypes) && this.phone.valid==false) {
-                    alert(this.$t("Phone is not valid"))
-                    return
-                }
-                if (this.$refs.form.validate()==false) return
-                this.selected.dt_update=new Date();
-                axios.post(`${this.useStore().apiroot}/api/phone/`, this.selected, this.myheaders())
-                .then((response) => {
-                    console.log(response.data);
-                    this.selected=response.data; //To get id
-                    this.tableData.push(this.selected);
-                    this.dialog=false;
-                    this.key+=1
-                    this.$emit('cruded')
-                }, (error) => {
-                    this.parseResponseError(error)
-                });
-            },
-            cancelDialog(){
-                this.dialog = false;   
-                this.$emit('cruded')             
-            },
             obsoleteItem(item){
                 if (item.dt_obsolete == null){
                     item.dt_obsolete=this.localtime(new Date());
@@ -120,6 +97,10 @@
             },
             call_phone(item){
                 window.open(`tel:${item.phone}`)
+            },
+            on_PersonPhoneCRUD_cruded(){
+                this.dialog = false;   
+                this.$emit('cruded')   
             }
         },
     }
