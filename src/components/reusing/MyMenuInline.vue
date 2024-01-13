@@ -1,9 +1,8 @@
-/*
-Yo need to put items and @selected method
+<!-- You need to put items and @selected method
 
 type puede ser redirection or command
 
-            <MyMenuInline :items="menuinline_items"  :context="this"></MyMenuInline>
+            <MyMenuInline :items="menuinline_items" />
 
 
                 menuinline_items: [
@@ -13,9 +12,11 @@ type puede ser redirection or command
                             {
                                 name:"Add a new bank",
                                 icon: "mdi-pencil",
-                                code: function(this_){
-                                    alert(this_.showActive)
-                                },
+                                code: function(){
+                                    alert(this.showActive)
+                                }.bind(this),
+                                color: black //Optional
+                                disabled: true //Optional
                             },
                         ]
                     },
@@ -24,49 +25,62 @@ type puede ser redirection or command
             MyMenuInlineSelection(item){
                 item.code(this)
             },
+ -->
 
-*/
 
 <template>
     <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn text dark v-bind="attrs" v-on="on" style="color:darkgrey;">
+        <template  v-slot:activator="{ props }">
+            <v-btn data-test="MyMenuInline_Button" text dark v-bind="props" style="color:darkgrey" class="elevation-0">
                 <v-icon>mdi-menu</v-icon>
             </v-btn>
         </template>
-        <v-list dense subheader >
-            <div v-for="(subheader,indexsubheader) in items" :key="indexsubheader" inset>
-                <v-subheader inset>{{ subheader.subheader }}</v-subheader>
-                <v-list-item v-for="(item, index) in subheader.children" :key="index" @click="on_item_click(item)">
-                <v-list-item-icon>
-                    <v-icon>{{item.icon}}</v-icon>
-                </v-list-item-icon>
-                    {{ item.name }}
-                </v-list-item>
+        <v-list density="compact" subheader >
+            <div v-for="(subheader,indexsubheader) in new_items" :key="indexsubheader" inset>
+                <v-list-subheader inset>{{ subheader.subheader }}</v-list-subheader>
+                <div v-for="(item, index) in subheader.children" :key="index" >
+                    <v-list-item :data-test="`MyMenuInline_Header${indexsubheader}_Item${index}`" @click="on_item_click(item)" :prepend-icon="item.icon" :title="item.name" :disabled="item.disabled" :base-color="item.color"/>
+                </div>
                 <v-divider></v-divider>
             </div>
         </v-list>
     </v-menu>
 </template>
 <script>
+// import { toRaw } from 'vue';
     export default {
         data: function(){
             return {
+                new_items:null,
             }
         },
         props: {
             items: {
                 required: true
             },
-            context: {
-                required: true
-            },
         },
         methods: {
             on_item_click(item){
-                item.code(this.context)
+                item.code()
             },
         },
+        created() {
+            this.new_items=[]
+            var new_item
+            var new_children
+            this.items.forEach(o => {
+                new_item={
+                    subheader:o.subheader,
+                    children:[]
+                }
+                this.new_items.push(new_item)
+                o.children.forEach(item =>{
+                    new_children=Object.assign({color:"black",disabled:false}, item)
+                    new_item.children.push(new_children)
+
+                })
+            });
+        }
     }
 </script>
 

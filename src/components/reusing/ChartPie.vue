@@ -1,5 +1,5 @@
 <template>
-    <div class="ma-4">
+    <div ref="div" class="ma-4">
         <p v-if="items.length==0">No data to show</p>
         <v-card v-if="items.length>0">
             <v-row :style="styleheight()">
@@ -7,25 +7,21 @@
                     <v-chart ref="chart" autoresize :option="options" :key="key" @finished="on_finished"/>
                 </v-col>
                 <v-col v-if="new_show_data" >
-                    <v-data-table dense :headers="tableHeaders"  :items="items" class="elevation-1" disable-pagination  hide-default-footer :sort-by="['value']" :sort-desc="['value']">
-                        <template v-slot:[`item.percentage`]="{ item }">
-                            {{ getPercentage(item) }}
+                    <v-data-table density="compact" :headers="tableHeaders"  :items="items" class="elevation-1" :sort-by="[{key:'value',order:'desc'}]" :items-per-page="10000" >
+                        <template #item.percentage="{item}">
+                            <div class="text-right">{{ getPercentage(item) }}</div>
                         </template>
-                        <template v-slot:[`body.append`]="{headers}">
-                            <tr style="background-color: lightgrey">
-                                <td v-for="(header,i) in headers" :key="i">
-                                    <div v-if="header.value == 'name'" >
-                                        Total
-                                    </div>
-                                    <div v-if="header.value == 'value'"  class="d-flex justify-end">
-                                        {{total}}
-                                    </div>
-                                    <div v-if="header.value == 'percentage'" class="d-flex justify-end">
-                                        100 %
-                                    </div>
-                                </td>
+                        <template #item.value="{item}">
+                            <div class="text-right">{{ item.value }}</div>
+                        </template>
+                        <template #tbody>
+                            <tr class="totalrow">
+                                <td>{{ $t("Total") }}</td>
+                                <td class="text-right">{{total}}</td>
+                                <td class="text-right">100 %</td>
                             </tr>
                         </template>
+                        <template #bottom ></template>   
                     </v-data-table>
                 </v-col>
             </v-row>       
@@ -39,9 +35,11 @@
 </template>
 
 <script>
-    import axios from 'axios'
     export default {
         props: {
+            name: {
+                required: true,
+            },
             items: {
                 required: true
             },
@@ -50,7 +48,7 @@
                 required: false,
                 default:600
             },
-            save_name:{
+            reference:{ //used to pass in on_finished signal
                 required:false,
                 default:null,
             },
@@ -59,15 +57,20 @@
                 required:false,
                 default:false,
             },
+            hidden:{ //Hide using visibility==hidden it will take up space
+                type: Boolean,
+                required:false,
+                default:false,
+            }
         },
         data: function () {
             return {
                 new_show_data: this.show_data, //To avoid prop mutation
                 key:0,
                 tableHeaders: [
-                    { text: 'Name', value: 'name',sortable: true },
-                    { text: 'Value', value: 'value',sortable: true, align: 'right'},
-                    { text: 'Percentage', value: 'percentage',sortable: false, align: 'right'},
+                    { title: 'Name', key: 'name',sortable: true },
+                    { title: 'Value', key: 'value',sortable: true, align: 'end'},
+                    { title: 'Percentage', key: 'percentage',sortable: false, align: 'end'},
                 ],   
             }
         },
@@ -119,21 +122,18 @@
                 
             },
             on_finished(){
-                if (this.save_name!=null){
-                    var data=this.$refs.chart.getDataURL({pixelRatio: 6, backgroundColor: '#fff'}).replace('data:image/png;base64,','')
-                    axios.post(`${this.$store.state.apiroot}/binary/to/global/`, {global:this.save_name,data:data,}, this.myheaders())
-                    .then(() => {
-                        this.$emit("finished")
-                    }, (error) => {
-                        this.parseResponseError(error)
-                    });
-                }
-                
+                this.$emit("finished",this.reference, this.$refs.chart.getDataURL({pixelRatio: 6, backgroundColor: '#fff'}))
             },
             styleheight: function(){
                 return `height: ${this.height}px`
             },
 
         },
+        mounted(){
+            if (this.hidden){
+                console.log(`Chart ${this.reference} has been hidden`)
+                this.$refs.div.style.visibility="hidden"
+            } 
+        }
     }
 </script>

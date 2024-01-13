@@ -3,7 +3,7 @@
         <h1>{{ $t("Group members") }}</h1>
         <v-card class="mx-auto padding" max-width="40%">
             <v-card-title>{{ $t("Select your group members")}}</v-card-title>
-            <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.$store.state.apiroot}/api/groups/`" field="name" @input="refresh_members" />
+            <AutoCompleteApiOneField v-model="group" :label="$t('Select a group')" :placeholder="$t('Enter a string to search a group')" :apiurl="`${this.useStore().apiroot}/api/groups/`" field="name" @input="refresh_members" />
             <v-switch v-model="members_switch" :label="$t('Show group members')" @change="refresh_members"/>
         </v-card> 
         <br>
@@ -18,7 +18,7 @@
         :placeholder="$t('Add a string to filter table')"
       ></v-text-field>
     </v-card-title>
-        <v-data-table :headers="headers" :items="data" sort-by="name" class="elevation-1 padding" enabled="i" 
+        <v-data-table :headers="headers" :items="data"  :sort-by="[{key:'name',order:'asc'}]" class="elevation-1 padding" enabled="i" 
       :search="search" :no-data-text="$t('No records found')">
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small @click="deleteItem(item)" v-show="members_switch && loaded" >mdi-minus</v-icon>
@@ -30,10 +30,10 @@
         <v-row class="padding"> 
             <v-card-actions >
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members") }}</v-btn>
-                <v-btn color="primary" @click.native="generateBirthdayCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate birthday calendar") }}</v-btn>
-                <v-btn color="primary" @click.native="generateDeathCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate death day calendar") }}</v-btn>
-                <v-btn color="primary" @click.native="dlgAddMembers = true" :disabled="group=='' || !loaded">{{ $t("Add members to group") }}</v-btn>
+                <v-btn color="primary" @click="generateVcardFile()" :disabled="group=='' || !loaded" >{{ $t("Export all members") }}</v-btn>
+                <v-btn color="primary" @click="generateBirthdayCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate birthday calendar") }}</v-btn>
+                <v-btn color="primary" @click="generateDeathCalendar()" :disabled="group=='' || !loaded">{{ $t("Generate death day calendar") }}</v-btn>
+                <v-btn color="primary" @click="dlgAddMembers = true" :disabled="group=='' || !loaded">{{ $t("Add members to group") }}</v-btn>
             </v-card-actions>            
         </v-row>    
         <v-dialog v-model="dlgAddMembers" max-width="450">
@@ -42,8 +42,8 @@
                 <SelectPersons v-model="newmember"></SelectPersons>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click.native="add_member()" :disabled="newmember == ''">{{ $t("Add member") }}</v-btn>
-                    <v-btn color="error" @click.native="dlgAddMembers = false">{{ $t("Cancel") }}</v-btn>
+                    <v-btn color="primary" @click="add_member()" :disabled="newmember == ''">{{ $t("Add member") }}</v-btn>
+                    <v-btn color="error" @click="dlgAddMembers = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -58,6 +58,8 @@
     import axios from 'axios'
     import {createEvents} from 'ics'
     import {age_in_a_date, generateVcardObject} from '../functions.js'
+    import { myheaders,parseResponseError,parseResponse } from '@/functions'
+    import { useStore } from '@/store';
     export default {
         name: 'GroupMembers',
         components: {
@@ -70,12 +72,12 @@
                 group: '',
                 data: [],
                 headers: [
-                    { text: this.$t('Name'), align: 'start', sortable: true, value: 'name'},
-                    { text: this.$t('Surname'), value: 'surname' },
-                    { text: this.$t('Second surname'), value: 'surname2' },
-                    { text: this.$t('Birth date'), value: 'birth' },
-                    { text: this.$t('Death date'), value: 'death' },
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Name'), align: 'start', sortable: true, value: 'name'},
+                    { title: this.$t('Surname'), value: 'surname' },
+                    { title: this.$t('Second surname'), value: 'surname2' },
+                    { title: this.$t('Birth date'), value: 'birth' },
+                    { title: this.$t('Death date'), value: 'death' },
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],
                 members_switch: true,
                 dlgAddMembers:false,
@@ -85,12 +87,14 @@
         },          
         methods: {
             age_in_a_date,
+            useStore,
+            myheaders, parseResponse,parseResponseError,
             generateVcardObject,
             refresh_members: function() {
                 if (this.group=="") return
                 this.loaded=false
                 console.log("refresh_members")
-                axios.get(`${this.$store.state.apiroot}/api/groups/members/full/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/groups/members/full/?search=${this.group}&members=${this.members_switch}`, this.myheaders())
                 .then((response) => {
                     this.data= response.data
                     this.loaded=true
@@ -104,7 +108,7 @@
                     return;
                 }  
                 console.log(item)
-                axios.delete(`${this.$store.state.apiroot}/api/groups/deletebyname/?url=${item.url}&name=${this.group}`, this.myheaders())
+                axios.delete(`${this.useStore().apiroot}/api/groups/deletebyname/?url=${item.url}&name=${this.group}`, this.myheaders())
                 .then((response) => {
                     console.log(response)
                     this.refresh_members()
@@ -124,7 +128,7 @@
                     dt_update: new Date(),
                     person: this.newmember,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected,  this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/group/`, this.selected,  this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.dlgAddMembers=false;
@@ -142,7 +146,7 @@
                     dt_update: new Date(),
                     person: item.url,
                 }
-                axios.post(`${this.$store.state.apiroot}/api/group/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/group/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data)
                     this.refresh_members()

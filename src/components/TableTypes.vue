@@ -3,10 +3,10 @@
     <div>
         <h1>{{ $t('Auxiliar tables management') }}</h1>
         <br>
-        <v-select class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-text="name"  return-object ></v-select>
+        <v-select data-test="TableTypes_Table" class="ml-4 mr-4" v-model="combo" :items="tables" :label="$t('Select a database table')" item-title="name"  return-object ></v-select>
         <v-card class="padding">
             <v-text-field v-model="search" append-icon="mdi-magnify" label="Bucar en tabla" single-line></v-text-field>
-            <v-data-table dense v-model="items_selected" :headers="headers" :items="items" sort-by="count" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
+            <v-data-table dense v-model="items_selected" :headers="headers" :items="items"  :sort-by="[{key:'count',order:'asc'}]" class="elevation-1" show-select :search="search"  item-key="name"></v-data-table>
         </v-card>
         <v-btn color="error"  @click="mergeItems()" :disabled="items_selected.length<1">{{ $t("Merge / Rename types") }}</v-btn>
         <v-dialog v-model="dialog" max-width="550">
@@ -17,7 +17,7 @@
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="acceptDialog()" :disabled="!form_valid">{{ $t("Log in") }}</v-btn>
+                    <v-btn color="primary" @click="acceptDialog()" :disabled="!form_valid">{{ $t("Merge / Rename") }}</v-btn>
                     <v-btn color="error" @click="dialog = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
@@ -26,6 +26,8 @@
 </template>
 <script>
     import axios from 'axios'
+    import { useStore } from '@/store';
+    import { myheaders, parseResponseError,arrayobjects_to_stringofstrings } from '@/functions';
     export default {
         data(){ 
             return{
@@ -40,8 +42,8 @@
                 dialog_title:"",
                 form_valid:true,
                 headers: [
-                    { text: this.$t('Name'), value: 'name'},
-                    { text: this.$t('Number'), align: 'right', value: 'count', width:"10%"},
+                    { title: this.$t('Name'), value: 'name'},
+                    { title: this.$t('Number'), align: 'right', value: 'count', width:"10%"},
                     ],
                 combo: null,
                 items: [],
@@ -56,8 +58,12 @@
             },
         },
         methods: {
+            useStore,
+            myheaders,
+            parseResponseError,
+            arrayobjects_to_stringofstrings,
             update(){
-                axios.get(`${this.$store.state.apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}/`, this.myheaders())
                 .then((response) => {
                     console.log(response.data)
                     this.items=response.data
@@ -73,7 +79,7 @@
                 find=find.slice(0, -1)
                 var replace=this.newname
 
-                axios.get(`${this.$store.state.apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}?${find}&replace=${replace}`,  this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/merge_text_fields/${this.combo.table}/${this.combo.field}/?${find}&replace=${replace}`,  this.myheaders())
                 .then((response) => {
                         console.log(response.data)
                         this.items_selected=[]

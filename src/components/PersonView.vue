@@ -1,7 +1,8 @@
 <template>
-    <div v-show="this.$store.state.logged">
-        <h1>{{ this.fullNameWithAge }}
-                <MyMenuInline :items="menuinline_items" :context="this"></MyMenuInline>
+    <div v-show="useStore().logged">
+        <h1>{{ fullNameWithAge }}
+                <MyMenuInline :items="menuinline_items"></MyMenuInline>
+                <v-btn data-test="PersonView_ButtonClose" small style="color:darkgrey" icon="mdi-close" class="elevation-0" @click="on_close"/>
         </h1>
 
         <DisplayValues :items="displayvalues()" :key="key+1"></DisplayValues>
@@ -10,65 +11,64 @@
         <div class="tabs login">
             <v-card>
                 <v-tabs  background-color="primary" dark v-model="tab" next-icon="mdi-arrow-right-bold-box-outline" prev-icon="mdi-arrow-left-bold-box-outline" show-arrows>
-                    <v-tab key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}<v-badge v-show="badge_number('alias')>0" color="error" class="ml-2" :content="badge_number('alias')"/></v-tab>
-                    <v-tab key="Mails"><v-icon small class="mr-2">mdi-mail</v-icon>{{ $t("Mails")}}<v-badge v-show="badge_number('mail')>0" color="error" class="ml-2" :content="badge_number('mail')"/></v-tab>
-                    <v-tab key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}<v-badge v-show="badge_number('phone')>0" color="error" class="ml-2" :content="badge_number('phone')"/></v-tab>
-                    <v-tab key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}<v-badge v-show="badge_number('address')>0" color="error" class="ml-2" :content="badge_number('address')"/></v-tab>
-                    <v-tab key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}<v-badge v-show="badge_number('job')>0" color="error" class="ml-2" :content="badge_number('job')"/></v-tab>
-                    <v-tab key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}<v-badge v-show="badge_number('relationship')>0" color="error" class="ml-2" :content="badge_number('relationship')"/></v-tab>
-                    <v-tab key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}<v-badge v-show="badge_number('group')>0" color="error" class="ml-2" :content="badge_number('group')"/></v-tab>
-                    <v-tab key="Media"><v-icon small style="margin:6px">mdi-folder-multiple-image</v-icon>{{ $t("Media")}}<v-badge v-show="badge_number('blob')>0"  color="error" class="ml-2" :content="badge_number('blob')"/></v-tab>
-                    <v-tab key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}<v-badge v-show="badge_number('log')>0"  color="error" class="ml-2" :content="badge_number('log')"/></v-tab>
-                    <v-tabs-slider color="yellow"></v-tabs-slider>
+                    <v-tab data-test="PersonView_TabAlias" key="Alias"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Aliases")}}<v-badge v-show="badge_number('alias')>0" color="error" class="ml-2" :content="badge_number('alias')"/></v-tab>
+                    <v-tab data-test="PersonView_TabMails" key="Mails"><v-icon small class="mr-2">mdi-mail</v-icon>{{ $t("Mails")}}<v-badge v-show="badge_number('mail')>0" color="error" class="ml-2" :content="badge_number('mail')"/></v-tab>
+                    <v-tab data-test="PersonView_TabPhones" key="Phones"><v-icon small style="margin:6px">mdi-phone</v-icon>{{ $t("Phones")}}<v-badge v-show="badge_number('phone')>0" color="error" class="ml-2" :content="badge_number('phone')"/></v-tab>
+                    <v-tab data-test="PersonView_TabAddresses" key="Addresses"><v-icon small style="margin:6px">mdi-map-marker</v-icon>{{ $t("Addresses")}}<v-badge v-show="badge_number('address')>0" color="error" class="ml-2" :content="badge_number('address')"/></v-tab>
+                    <v-tab data-test="PersonView_TabJobs" key="Jobs"><v-icon small style="margin:6px">mdi-briefcase</v-icon>{{ $t("Jobs")}}<v-badge v-show="badge_number('job')>0" color="error" class="ml-2" :content="badge_number('job')"/></v-tab>
+                    <v-tab data-test="PersonView_TabRelationships" key="Relations"><v-icon small style="margin:6px">mdi-family-tree</v-icon>{{ $t("Relations")}}<v-badge v-show="badge_number('relationship')>0" color="error" class="ml-2" :content="badge_number('relationship')"/></v-tab>
+                    <v-tab data-test="PersonView_TabGroups" key="Groups"><v-icon small style="margin:6px">mdi-group</v-icon>{{ $t("Groups")}}<v-badge v-show="badge_number('group')>0" color="error" class="ml-2" :content="badge_number('group')"/></v-tab>
+                    <v-tab data-test="PersonView_TabMedia" key="Media"><v-icon small style="margin:6px">mdi-folder-multiple-image</v-icon>{{ $t("Media")}}<v-badge v-show="badge_number('blob')>0"  color="error" class="ml-2" :content="badge_number('blob')"/></v-tab>
+                    <v-tab data-test="PersonView_TabLogs" key="Logs"><v-icon small style="margin:6px">mdi-calendar-clock</v-icon>{{ $t("Logs")}}<v-badge v-show="badge_number('log')>0"  color="error" class="ml-2" :content="badge_number('log')"/></v-tab>
                 </v-tabs>
-                <v-tabs-items v-model="tab">
-                    <v-tab-item key="Alias">
+                <v-window v-model="tab">
+                    <v-window-item key="Alias">
                         <v-card flat>
-                            <TableCrudAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
+                            <TableAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
                         </v-card>
-                    </v-tab-item>
+                    </v-window-item>
                     
-                    <v-tab-item key="Mails">
+                    <v-window-item key="Mails">
                         <v-card flat>
-                            <TableCrudMail :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
+                            <TableMail :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Phones">
+                    </v-window-item>
+                    <v-window-item key="Phones">
                         <v-card flat>
-                            <TableCrudPhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
+                            <TablePhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Address">
+                    </v-window-item>
+                    <v-window-item key="Address">
                         <v-card flat>
-                            <TableCrudAddress :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
+                            <TableAddress :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Jobs">
+                    </v-window-item>
+                    <v-window-item key="Jobs">
                         <v-card flat>
-                            <TableCrudJob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
+                            <TableJob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Relations">
+                    </v-window-item>
+                    <v-window-item key="Relations">
                         <v-card flat>
-                            <TableCrudRelationship :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
+                            <TableRelationship :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Groups">
+                    </v-window-item>
+                    <v-window-item key="Groups">
                         <v-card flat>
-                            <TableCrudGroup :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
+                            <TableGroup :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Media">
+                    </v-window-item>
+                    <v-window-item key="Media">
                         <v-card flat>
-                            <TableCrudBlob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
+                            <TableBlob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
                         </v-card>
-                    </v-tab-item>
-                    <v-tab-item key="Logs">
+                    </v-window-item>
+                    <v-window-item key="Logs">
                         <v-card flat>
-                            <TableCrudLog :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
+                            <TableLog :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
                         </v-card>
-                    </v-tab-item>
-                </v-tabs-items>
+                    </v-window-item>
+                </v-window>
             </v-card>
         </div>
         
@@ -77,47 +77,46 @@
              <QrcodeVue :value="qr" :size="800" ></QrcodeVue>
         </v-dialog>
 
-        <!-- DIALOG PERSONCRUD -->
-        <v-dialog v-model="dialog_person_crud" width="35%">
-            <v-card class="pa-4">
-                <PersonCRUD :person="person" :deleting="person_deleting" :key="key_person_crud" @cruded="on_PersonCRUD_cruded()"></PersonCRUD>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
 <script>
     import axios from 'axios'
-    import TableCrudAlias from './TableCrudAlias'
-    import TableCrudAddress from './TableCrudAddress'
-    import TableCrudBlob from './TableCrudBlob'
-    import TableCrudGroup from './TableCrudGroup'
-    import TableCrudJob from './TableCrudJob'
-    import TableCrudLog from './TableCrudLog'
-    import TableCrudMail from './TableCrudMail'
-    import TableCrudPhone from './TableCrudPhone'
-    import TableCrudRelationship from './TableCrudRelationship'
-    import PersonCRUD from './PersonCRUD.vue'
+    import TableAlias from './TableAlias'
+    import TableAddress from './TableAddress'
+    import TableBlob from './TableBlob'
+    import TableGroup from './TableGroup'
+    import TableJob from './TableJob'
+    import TableLog from './TableLog'
+    import TableMail from './TableMail'
+    import TablePhone from './TablePhone'
+    import TableRelationship from './TableRelationship'
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
-    import {age_today, age_in_a_date, generateVcardObject} from '../functions.js'
+    import {age_today, age_in_a_date, generateVcardObject,getObjectPropertyByValue,myheaders,parseResponseError} from '../functions.js'
+    import { localtime } from 'vuetify_rules'
+    import { useStore } from '@/store';
     import QrcodeVue from 'qrcode.vue'
     export default {
         name: 'PersonView',    
         components: {
-            TableCrudAlias,
-            TableCrudAddress,
-            TableCrudBlob,
-            TableCrudMail,
-            TableCrudPhone,
-            TableCrudJob,
-            TableCrudLog,
-            TableCrudRelationship,
-            TableCrudGroup,
+            TableAlias,
+            TableAddress,
+            TableBlob,
+            TableMail,
+            TablePhone,
+            TableJob,
+            TableLog,
+            TableRelationship,
+            TableGroup,
             QrcodeVue,
             MyMenuInline,
             DisplayValues,
-            PersonCRUD,
+        },
+        props: {
+            person_url: { //url
+                required: true
+            },
         },
         data () {
             return {
@@ -125,58 +124,42 @@
                     {
                         subheader: this.$t("Contact options"),
                         children: [
-                            {
-                                name: this.$t("Edit contact"),
-                                icon: "mdi-plus",
-                                code: function(this_){
-                                    this_.person_deleting=false
-                                    this_.key_person_crud=this_.key_person_crud+1
-                                    this_.dialog_person_crud=true
-                                },
-                            },
-                            {
-                                name: this.$t("Delete contact"),
-                                icon: "mdi-plus",
-                                code: function(this_){
-                                    this_.person_deleting=true
-                                    this_.key_person_crud=this_.key_person_crud+1
-                                    this_.dialog_person_crud=true
-                                },
-                            },
+
                             {
                                 name: this.$t("Generate QR"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    const vCard=this_.generateVcardObject(this_.person)
+                                code: function(){
+                                    const vCard=this.generateVcardObject(this.person)
                                     console.log(vCard.getFormattedString())
-                                    this_.qr=vCard.getFormattedString()
-                                    this_.dialog_qr=true
-                                },
+                                    this.qr=vCard.getFormattedString()
+                                    this.dialog_qr=true
+                                }.bind(this),
                             },
                             {
                                 name: this.$t("Generate VCard"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    var blob = new Blob([this_.generateVcardObject(this_.person).getFormattedString()], { type: 'text/vcard' })
+                                code: function(){
+                                    var blob = new Blob([this.generateVcardObject(this.person).getFormattedString()], { type: 'text/vcard' })
                                     var link = window.document.createElement('a')
                                     link.href = window.URL.createObjectURL(blob)
-                                    link.download = `${this_.person.fullname}.vcf`
+                                    link.download = `${this.person.fullname}.vcf`
                                     document.body.appendChild(link)
                                     link.click()
                                     document.body.removeChild(link)
-                                },
+                                }.bind(this),
                             },
                             {
                                 name: this.$t("Show search string"),
                                 icon: "mdi-plus",
-                                code: function(this_){
-                                    let searchString=this_.$t("Problems with search string")
-                                    if (this_.person.search.length==1){
-                                        searchString=this_.person.search[0].string
+                                code: function(){
+                                    let searchString=this.$t("Problems with search string")
+                                    if (this.person.search.length==1){
+                                        searchString=this.person.search[0].string
                                     }
                                     alert(searchString)
-                                },
+                                }.bind(this),
                             },
+
                         ]
                     },
                 ],
@@ -187,11 +170,6 @@
                 dialog_qr: false,
                 key:0,
 
-
-                // DIALOG PERSONCRUD
-                dialog_person_crud:false,
-                person_deleting: false,
-                key_person_crud:0,
             }
         },
         computed: {
@@ -210,9 +188,17 @@
             }
         },        
         methods: {
+            useStore,
+            localtime,
+            myheaders,
+            getObjectPropertyByValue,
+            age_today,
+            age_in_a_date,
+            generateVcardObject,
+            parseResponseError,
             displayvalues(){
                 var r=[
-                    {title:this.$t('Gender'), value: this.$store.getters.getObjectPropertyByValue("persongender",this.person.gender,"display_name")},
+                    {title:this.$t('Gender'), value: getObjectPropertyByValue("persongender",this.person.gender,"display_name")},
                     {title:this.$t('Birth date'), value: this.person.birth},
                 ]
                 if (this.person.death!=null){
@@ -220,20 +206,12 @@
                 }
                 return r
             },
-            age_today,
-            age_in_a_date,
-            generateVcardObject,
             after_crud: function() {
-                console.log("after_crud")
                 this.get_person()
             },
             get_person(){
-                if (!this.$route.params.id){
-                    alert(this.$t("Something is wrong"))
-                    this.$router.push({ name: 'home'})
-                    return
-                }
-                axios.get(`${this.$store.state.apiroot}/api/persons/${this.$route.params.id}/`, this.myheaders())
+
+                axios.get(this.person_url, this.myheaders())
                 .then((response) => {
                     this.person= response.data
                     console.log(this.person)
@@ -266,17 +244,13 @@
                     return 0
                 }
             },
-            on_PersonCRUD_cruded(){
-                this.dialog_person_crud=false
-                this.get_person()
-            },
+            on_close(){
+                this.$emit("closed")
+            }
         },
 
-        mounted: function() {
+        created() {
             this.get_person()
-
-            
-
         }
     }
 </script>

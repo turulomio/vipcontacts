@@ -1,10 +1,10 @@
 <template>
     <div class="paragraph">
         <h1>{{ $t(`About Vip Contacts`) }}</h1>
-        <h2>{{ `${$store.state.version} (${$store.state.versiondate.toISOString().slice(0,10)})` }}</h2>
+        <h2>{{ `${useStore().version} (${useStore().versiondate.toISOString().slice(0,10)})` }}</h2>
         
         <v-container  class="paragraph">
-            <p>{{ $t("Vip Contacts is a contact management application") }}<p>
+            <p>{{ $t("Vip Contacts is a contact management application") }}</p>
             
             <p class="paragraph" ref="github"></p>
             <p class="paragraph">{{ $t("Main features:") }}</p>
@@ -22,11 +22,15 @@
 </template>
 
 <script>
+    import { useStore } from '@/store';
     export default {
         name: 'About',
         data(){
             return {
             }
+        },
+        methods:{
+            useStore,
         },
         mounted(){
             this.$refs.github.innerHTML=this.$t("Project main page is located in Github , where you can help me coding or translating to different languages.").replace("Github",'<a href="https://github.com/turulomio/vipcontacts">Github</a>')

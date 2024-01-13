@@ -1,5 +1,5 @@
 <template>
-    <div v-show="this.$store.state.logged">
+    <div v-show="useStore().logged">
         <div class="pa-3">
             <h1>{{ $t("Statistics") }}</h1>
 
@@ -10,42 +10,43 @@
                 <v-tab key="Cities"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Cities")}}</v-tab>
                 <v-tab key="Registers"><v-icon small style="margin:6px">mdi-rename-box</v-icon>{{ $t("Registers")}}</v-tab>
 
-                <v-tabs-slider color="yellow"></v-tabs-slider>
             </v-tabs>
-            <v-tabs-items v-model="tab" v-if="statistics">
-                <v-tab-item key="Gender">
+            <v-window v-model="tab" v-if="statistics">
+                <v-window-item key="Gender">
                     <v-card flat>
                       <chart-pie :name="$t('Gender')" :items="statistics.gender" :key="key"></chart-pie>
                     </v-card>
-                </v-tab-item>
-                <v-tab-item key="Jobs">
+                </v-window-item>
+                <v-window-item key="Jobs">
                     <v-card flat>
                       <chart-pie :name="$t('Jobs')" :items="statistics.jobs" :key="key"></chart-pie>
                     </v-card>
-                </v-tab-item>
-                <v-tab-item key="Countries">
+                </v-window-item>
+                <v-window-item key="Countries">
                     <v-card flat>
                       <chart-pie :name="$t('Countries')" :items="statistics.countries" :key="key"></chart-pie>
                     </v-card>
-                </v-tab-item>
-                <v-tab-item key="Cities">
+                </v-window-item>
+                <v-window-item key="Cities">
                     <v-card flat>
                       <chart-pie :name="$t('Cities')" :items="statistics.cities" :key="key"></chart-pie>
                     </v-card>
-                </v-tab-item>
-                <v-tab-item key="Registers">
+                </v-window-item>
+                <v-window-item key="Registers">
                     <v-card flat>
                       <chart-pie :name="$t('Vip Contacts registers')" :items="statistics.registers" :key="key"></chart-pie>
                     </v-card>
-                </v-tab-item>
-            </v-tabs-items>
+                </v-window-item>
+            </v-window>
         </div>
     </div>
 </template>
 
 <script>
     import ChartPie from './reusing/ChartPie.vue'
+    import { useStore } from '@/store';
     import axios from "axios"
+    import { myheaders, parseResponseError,parseResponse } from '@/functions';
     export default {
         name: 'Statistics',
         components: {
@@ -59,8 +60,12 @@
             }
         },
         methods: {
+            useStore,
+            myheaders,
+            parseResponse,
+            parseResponseError,
             getStatistics(){
-                axios.get(`${this.$store.state.apiroot}/api/statistics/`, this.myheaders())
+                axios.get(`${this.useStore().apiroot}/api/statistics/`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
                     this.statistics=response.data 
