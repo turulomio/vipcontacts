@@ -8,9 +8,6 @@
                 <v-icon :data-test="`TableCrudAlias_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon :data-test="`TableCrudAlias_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon :data-test="`TableCrudAlias_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>        
         <v-btn data-test="TableCrudAlias_Add" color="primary" @click="addItem()" >{{ $t('Add alias') }}</v-btn>
@@ -30,6 +27,7 @@
     import { myheaders, parseResponseError } from '@/functions';
     import { empty_person_alias } from '@/empty_objects';
     import PersonAliasCRUD from './PersonAliasCRUD.vue';
+    import { localtime } from 'vuetify_rules';
     export default {
         components: {
             PersonAliasCRUD,
@@ -39,8 +37,8 @@
             return {
                 key:0,
                 tableHeaders: [
-                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {
+                    { title: this.$t('Last update'), value: 'dt_update',sortable: true },
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {
                         if (value==null){
                             return true;
                         } else if ( this.vShowObsolete==true) {
@@ -48,8 +46,8 @@
                         }
                         return false;
                     }},
-                    { text: this.$t('Name'),  sortable: true, value: 'name'},
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Name'),  sortable: true, value: 'name'},
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.alias,
                 vShowObsolete:false,
@@ -63,6 +61,7 @@
         },
         methods:{
             useStore,
+            localtime,
             myheaders,
             parseResponseError,
             empty_person_alias,
@@ -74,13 +73,13 @@
             },
             
             editItem(item){
-                this.mail=item
+                this.alias=item
                 this.mode="U"
                 this.dialog=true;
             },
             deleteItem(item){
 
-                this.mail=item
+                this.alias=item
                 this.mode="D"
                 this.dialog=true;
             },
@@ -102,6 +101,9 @@
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
+            },
+            on_PersonAliasCRUD_cruded(){
+                this.$emit('cruded')
             },
         },
     }

@@ -41,7 +41,7 @@ export function empty_person_mail(){
 
 export function empty_person_alias(){
     return {
-        alias: "",
+        name: "",
         dt_obsolete: null,
         dt_update: new Date(),
         person: null,
