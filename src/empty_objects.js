@@ -47,3 +47,13 @@ export function empty_person_alias(){
         person: null,
     };
 }
+
+export function empty_person_phone(){
+    return {
+        phone: "",
+        dt_obsolete: null,
+        dt_update: new Date(),
+        person: null,
+        retypes: 0,
+    }
+}
