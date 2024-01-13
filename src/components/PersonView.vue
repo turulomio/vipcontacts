@@ -24,48 +24,48 @@
                 <v-window v-model="tab">
                     <v-window-item key="Alias">
                         <v-card flat>
-                            <TableCrudAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
+                            <TableAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
                         </v-card>
                     </v-window-item>
                     
                     <v-window-item key="Mails">
                         <v-card flat>
-                            <TableCrudMail :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
+                            <TableMail :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Phones">
                         <v-card flat>
-                            <TableCrudPhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
+                            <TablePhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Address">
                         <v-card flat>
-                            <TableCrudAddress :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
+                            <TableAddress :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Jobs">
                         <v-card flat>
-                            <TableCrudJob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
+                            <TableJob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Relations">
                         <v-card flat>
-                            <TableCrudRelationship :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
+                            <TableRelationship :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Groups">
                         <v-card flat>
-                            <TableCrudGroup :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
+                            <TableGroup :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Media">
                         <v-card flat>
-                            <TableCrudBlob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
+                            <TableBlob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Logs">
                         <v-card flat>
-                            <TableCrudLog :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
+                            <TableLog :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
                         </v-card>
                     </v-window-item>
                 </v-window>
@@ -82,15 +82,15 @@
 
 <script>
     import axios from 'axios'
-    import TableCrudAlias from './TableCrudAlias'
-    import TableCrudAddress from './TableCrudAddress'
-    import TableCrudBlob from './TableCrudBlob'
-    import TableCrudGroup from './TableCrudGroup'
-    import TableCrudJob from './TableCrudJob'
-    import TableCrudLog from './TableCrudLog'
-    import TableCrudMail from './TableCrudMail'
-    import TableCrudPhone from './TableCrudPhone'
-    import TableCrudRelationship from './TableCrudRelationship'
+    import TableAlias from './TableAlias'
+    import TableAddress from './TableAddress'
+    import TableBlob from './TableBlob'
+    import TableGroup from './TableGroup'
+    import TableJob from './TableJob'
+    import TableLog from './TableLog'
+    import TableMail from './TableMail'
+    import TablePhone from './TablePhone'
+    import TableRelationship from './TableRelationship'
     import MyMenuInline from './reusing/MyMenuInline.vue'
     import DisplayValues from './reusing/DisplayValues.vue'
     import {age_today, age_in_a_date, generateVcardObject,getObjectPropertyByValue,myheaders,parseResponseError} from '../functions.js'
@@ -100,15 +100,15 @@
     export default {
         name: 'PersonView',    
         components: {
-            TableCrudAlias,
-            TableCrudAddress,
-            TableCrudBlob,
-            TableCrudMail,
-            TableCrudPhone,
-            TableCrudJob,
-            TableCrudLog,
-            TableCrudRelationship,
-            TableCrudGroup,
+            TableAlias,
+            TableAddress,
+            TableBlob,
+            TableMail,
+            TablePhone,
+            TableJob,
+            TableLog,
+            TableRelationship,
+            TableGroup,
             QrcodeVue,
             MyMenuInline,
             DisplayValues,

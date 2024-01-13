@@ -3,35 +3,31 @@
         <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="refreshKey" >
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
-            </template>            
-            <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("phonetype",item.retypes,"display_name") }}</template>
+            </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
-                <v-icon small class="mr-2" @click="call_phone(item)">mdi-phone</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add phone') }}</v-btn>
+        <v-btn color="primary" @click="addItem()" >{{ $t('Add job') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        
+
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
         <v-card  class="pa-3">
-            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit phone") }}</v-card-title>
-            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add phone") }}</v-card-title>
-            
-            <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-select :items="this.useStore().phonetype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value"/>
-                <v-text-field v-if="[7,8].includes(selected.retypes)" v-model="selected.phone" type="text" :counter="50" :label="$t('Phone')" required :placeholder="$t('Enter a phone')" :rules="RulesString(50,true)"/>
-                <vue-tel-input defaultCountry="es" @validate="on_phone_validate" v-if="![7,8].includes(selected.retypes)" v-model="selected.phone" showDialCode mode="international"></vue-tel-input>
-            </v-form>
-                        
+            <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
+            <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
+            <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.useStore().apiroot}/api/professions/`" field="profession" />
+            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" canadd :apiurl="`${this.useStore().apiroot}/api/organizations/`" field="organization" />
+            <AutoCompleteApiOneField v-model="selected.department" v-bind:label="$t('Department')" v-bind:placeholder="$t('Enter a department')" canadd :apiurl="`${this.useStore().apiroot}/api/departments/`" field="department" />
+            <AutoCompleteApiOneField v-model="selected.title" v-bind:label="$t('Title')" v-bind:placeholder="$t('Enter a title')" canadd :apiurl="`${this.useStore().apiroot}/api/titles/`" field="title" />   
+
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
-                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                <v-btn color="primary" @click.native="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
                 <v-btn color="error" @click.native="cancelDialog()">{{ $t("Cancel") }}</v-btn>
             </v-card-actions>
         </v-card>
@@ -43,9 +39,12 @@
 <script>
     import axios from 'axios'
     import { useStore } from '@/store';
-    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
-    import { localtime } from 'vuetify_rules';
+    import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
     export default {
+        name: 'TableJob',
+        components: {
+            AutoCompleteApiOneField,
+        },
         props: ['person','obsolete'],
         data () {
             return {
@@ -53,80 +52,63 @@
                 tableHeaders: [
                     { text: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
-                    { text: this.$t('Phone'),  sortable: true, value: 'phone'},
+                    { text: this.$t('Profession'),  sortable: true, value: 'profession'},
+                    { text: this.$t('Organization'),  sortable: true, value: 'organization'},
+                    { text: this.$t('Department'),  sortable: true, value: 'department'},
+                    { text: this.$t('Title'),  sortable: true, value: 'title'},
                     { text: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
-                tableData: this.person.phone,
+                tableData: this.person.job,
                 vShowObsolete:false,
                 isEdition: true,
                 dialog: false,
                 selected: {},
-
-                phone:null,
-                
-                form_valid:false,
             }
         },
         methods:{
             useStore,
-            localtime,
-            getObjectPropertyByValue,myheaders,parseResponseError,
             addItem(){
                 this.selected={
-                    phone: "",
+                    profession: "",
+                    organization: "",
+                    department: "",
+                    title: "",
                     dt_obsolete: null,
                     dt_update: new Date(),
                     person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
-                    retypes: 0,
                 };
                 this.dialog=true;
                 this.isEdition=false;
             },
             acceptAddition(){
-                if (![7,8].includes(this.selected.retypes) && this.phone.valid==false) {
-                    alert(this.$t("Phone is not valid"))
-                    return
-                }
-                if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
-                axios.post(`${this.useStore().apiroot}/api/phone/`, this.selected, this.myheaders())
+                axios.post(`${this.useStore().apiroot}/api/job/`, this.selected, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
                     this.selected=response.data; //To get id
                     this.tableData.push(this.selected);
                     this.dialog=false;
-                    this.TableCrudPhone_refreshKey();
+                    this.TableJob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
                 });
             },
-            on_phone_validate(phone){
-                console.log(phone)
-                this.phone=phone
-                if (phone.valid==true){
-                    this.selected.phone=phone.formatted
-                }
-            },
+            
             editItem(item){
+                console.log(item)
                 this.selected=item;
-                this.tmp_phone=item.phone
                 this.dialog=true;
                 this.isEdition=true;
             },
             acceptEdition(){
-                if (![7,8].includes(this.selected.retypes) && this.phone.valid==false) {
-                    alert(this.$t("Phone is not valid"))
-                    return
-                }
-                if (this.$refs.form.validate()==false) return
                 this.selected.dt_update=new Date();
                 axios.put(this.selected.url, this.selected, this.myheaders())
                 .then((response) => {
+                    console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableCrudPhone_refreshKey();
+                    this.TableJob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -134,11 +116,10 @@
                 
             },
             cancelDialog(){
-                this.dialog = false;   
-                this.$emit('cruded')             
+                this.dialog = false;                
             },
             deleteItem(item){
-                var r = confirm("Do you want to delete this phone?");
+                var r = confirm("Do you want to delete this job?");
                 if(r == false) {
                     return;
                 }  
@@ -147,7 +128,7 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableCrudPhone_refreshKey();
+                    this.TableJob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -163,7 +144,7 @@
                 axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
-                    this.TableCrudPhone_refreshKey();
+                    this.TableJob_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -173,13 +154,10 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            TableCrudPhone_refreshKey(){
+            TableJob_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudPhone RefreshKey to ${this.refreshKey}`)
+                console.log(`Updating TableJob RefreshKey to ${this.refreshKey}`)
             },
-            call_phone(item){
-                window.open(`tel:${item.phone}`)
-            }
         },
     }
 </script>

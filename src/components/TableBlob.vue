@@ -79,7 +79,7 @@
     import { useStore } from '@/store';
     import {empty_blob} from '../empty_objects.js'
     export default {
-        name: 'TableCrudBlob',
+        name: 'TableBlob',
         components: {
             AutoCompleteApiOneField,
             PasteImage,

@@ -44,7 +44,7 @@
     import { useStore } from '@/store';
     import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
-        name: 'TableCrudLog',
+        name: 'TableLog',
         props: ['person','obsolete'],
         data () {
             return {
@@ -102,7 +102,7 @@
                     this.tableData.push(this.selected);
                     
                     this.dialog=false;
-                    this.TableCrudLog_refreshKey();
+                    this.TableLog_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -123,7 +123,7 @@
                     console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableCrudLog_refreshKey();
+                    this.TableLog_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -140,7 +140,7 @@
                     console.log(response);
                     var i = this.person.log.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableCrudLog_refreshKey();
+                    this.TableLog_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -150,9 +150,9 @@
             showAutomatic(){
                 this.vShowAutomatic=!this.vShowAutomatic;
             },
-            TableCrudLog_refreshKey(){
+            TableLog_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudLog RefreshKey to ${this.refreshKey}`)
+                console.log(`Updating TableLog RefreshKey to ${this.refreshKey}`)
             },
         },
     }

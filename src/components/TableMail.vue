@@ -6,13 +6,13 @@
             </template>            
             <template v-slot:[`item.retypes`]="{ item }">{{getObjectPropertyByValue("mailtype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon :data-test="`TableCrudMail_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon :data-test="`TableCrudMail_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon :data-test="`TableCrudMail_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableMail_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableMail_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableMail_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
                 <v-icon small class="mr-2" @click="mail_link(item)">mdi-mail</v-icon>
             </template>
         </v-data-table>            
-        <v-btn data-test="TableCrudMail_Add" color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
+        <v-btn data-test="TableMail_Add" color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         
         <!-- DIALOG -->

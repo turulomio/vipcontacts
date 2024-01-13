@@ -97,7 +97,7 @@
                     this.selected=response.data; //To get id
                     this.tableData.push(this.selected);
                     this.dialog=false;
-                    this.TableCrudAddress_refreshKey();
+                    this.TableAddress_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -117,7 +117,7 @@
                     console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableCrudAddress_refreshKey();
+                    this.TableAddress_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -137,7 +137,7 @@
                     console.log(response);
                     var i = this.tableData.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableCrudAddress_refreshKey();
+                    this.TableAddress_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -153,7 +153,7 @@
                 axios.put(item.url, item, this.myheaders())
                 .then((response) => {
                     console.log(response.data);
-                    this.TableCrudAddress_refreshKey();
+                    this.TableAddress_refreshKey();
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -186,9 +186,9 @@
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
             },
-            TableCrudAddress_refreshKey(){
+            TableAddress_refreshKey(){
                 this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableCrudAddress RefreshKey to ${this.refreshKey}`)
+                console.log(`Updating TableAddress RefreshKey to ${this.refreshKey}`)
             },
             
         },

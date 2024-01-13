@@ -5,12 +5,12 @@
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon :data-test="`TableCrudAlias_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon :data-test="`TableCrudAlias_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon :data-test="`TableCrudAlias_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableAlias_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableAlias_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableAlias_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
             </template>
         </v-data-table>        
-        <v-btn data-test="TableCrudAlias_Add" color="primary" @click="addItem()" >{{ $t('Add alias') }}</v-btn>
+        <v-btn data-test="TableAlias_Add" color="primary" @click="addItem()" >{{ $t('Add alias') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
                
         <!-- DIALOG -->
