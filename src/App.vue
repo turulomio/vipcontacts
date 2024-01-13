@@ -22,7 +22,7 @@
                         <v-list-item data-test="LateralLastEdited" link  router :to="{ name: 'person_last_edited'}">
                             <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
                         </v-list-item>
-                        <v-list-item link  router :to="{ name: 'persons_merge'}">
+                        <v-list-item data-test="LateralContactsMerge" link  router :to="{ name: 'persons_merge'}">
                             <v-list-item-title>{{ $t("Merge contacts") }}</v-list-item-title>
                         </v-list-item>
                     </v-list-group>

@@ -3,20 +3,22 @@
         <h1>{{ $t("Merge contacts") }}</h1>           
         <v-card class="pa-6 ma-4" >
             <v-form ref="form" v-model="form_valid" lazy-validation >
-                <SelectPersons v-model="new_pm.from" :label="$t('Select a contact to merge from')" :rules="RulesSelection(true)"></SelectPersons>
-                <SelectPersons v-model="new_pm.to" :label="$t('Select a contact to merge to')" :rules="RulesSelection(true)"></SelectPersons>
+                <SelectPersons data-test="PersonsMerge_From" v-model="new_pm.from" :label="$t('Select a contact to merge from')" :rules="RulesSelection(true)"></SelectPersons>
+                <SelectPersons data-test="PersonsMerge_To" v-model="new_pm.to" :label="$t('Select a contact to merge to')" :rules="RulesSelection(true)"></SelectPersons>
             </v-form>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="error" @click="merge()" >{{ $t("Merge contacts") }}</v-btn>
+                <v-btn data-test="PersonsMerge_Button" color="error" @click="merge()" >{{ $t("Merge contacts") }}</v-btn>
             </v-card-actions>
         </v-card>
     </div>
 </template>
 <script>
     import axios from 'axios'
-    import {empty_persons_merge} from '../empty_objects.js'
+    import {empty_persons_merge} from '@/empty_objects.js'
+    import { RulesSelection } from 'vuetify_rules';
+    import { myheaders } from '@/functions';
     import { useStore } from '@/store';
     import SelectPersons from './SelectPersons.vue'
     export default {
@@ -38,7 +40,9 @@
         },
         methods: {
             empty_persons_merge,
+            RulesSelection,
             useStore,
+            myheaders,
             merge(){    
                 if( this.$refs.form.validate()==false) return
                 if (this.new_pm.from==this.new_pm.to){
