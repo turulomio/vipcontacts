@@ -5,16 +5,15 @@
             <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("addresstype",item.retypes,"display_name") }}</template>
             <template v-slot:[`item.country`]="{ item }">{{ getObjectPropertyByValue("countries",item.country,"display_name") }}</template>
             <template v-slot:[`item.actions`]="{ item }">
-                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-                <v-icon small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
+                <v-icon :data-test="`TableAddress_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon :data-test="`TableAddress_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+                <v-icon :data-test="`TableAddress_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
                 <v-icon small class="mr-2" @click="googleMaps(item)">mdi-google-maps</v-icon>
                 <v-icon small class="mr-2" @click="generateEnvelope(item)">mdi-email-open-outline</v-icon>
             </template>
         </v-data-table>            
-        <v-btn color="primary" @click="addItem()" >{{ $t('Add address') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==false">{{ $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        <v-btn color="primary" @click="showObsolete()" v-if="vShowObsolete==true">{{ $t('Hide obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn data-test="TableAddress_Add" color="primary" @click="addItem()" >{{ $t('Add address') }}</v-btn>
+        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
@@ -23,15 +22,15 @@
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add address") }}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-select :items="useStore().addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value" required />
-                    <v-text-field v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesString(300,true)"  />
-                    <v-text-field v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesString(10,false)" />
-                    <v-text-field v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesString(100,true)"/>
-                    <v-autocomplete :items="useStore().countries" v-model="selected.country" :label="$t('Select a country')" item-title="display_name" item-value="value" required/>
+                    <v-text-field data-test="TableAddress_Address" v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesString(300,true)"  />
+                    <v-text-field data-test="TableAddress_Code" v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesString(10,false)" />
+                    <v-text-field data-test="TableAddress_City" v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesString(100,true)"/>
+                    <v-autocomplete data-test="TableAddress_Country" :items="useStore().countries" v-model="selected.country" :label="$t('Select a country')" item-title="display_name" item-value="value" required/>
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" @click="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
-                    <v-btn color="primary" @click="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
+                    <v-btn data-test="TableAddress_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true" :disabled="!form_valid">{{ $t("Edit") }}</v-btn>
+                    <v-btn data-test="TableAddress_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false" :disabled="!form_valid">{{ $t("Add") }}</v-btn>
                     <v-btn color="error" @click="cancelDialog()">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
@@ -44,6 +43,7 @@
     import axios from 'axios'
     import { useStore } from '@/store';
     import { jsPDF } from "jspdf";
+    import { RulesString,localtime } from 'vuetify_rules';
     import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
         props: ['person','obsolete'],
@@ -71,6 +71,8 @@
         },
         methods:{
             useStore,
+            localtime,
+            RulesString,
             getObjectPropertyByValue,
             myheaders,parseResponseError,
             addItem(){
