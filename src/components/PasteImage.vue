@@ -26,7 +26,7 @@
         data () {
             return {
                 new_image:this.empty_image(),
-                text:"",
+                title:"",
                 text_readonly:false,
             }
         },

@@ -20,9 +20,9 @@
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit job") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add job") }}</v-card-title>
             <AutoCompleteApiOneField v-model="selected.profession" :label="$t('Profession')" :placeholder="$t('Enter a profession')" canadd :apiurl="`${this.useStore().apiroot}/api/professions/`" field="profession" />
-            <AutoCompleteApiOneField v-model="selected.organization" v-bind:label="$t('Organization')" v-bind:placeholder="$t('Enter a organization')" canadd :apiurl="`${this.useStore().apiroot}/api/organizations/`" field="organization" />
-            <AutoCompleteApiOneField v-model="selected.department" v-bind:label="$t('Department')" v-bind:placeholder="$t('Enter a department')" canadd :apiurl="`${this.useStore().apiroot}/api/departments/`" field="department" />
-            <AutoCompleteApiOneField v-model="selected.title" v-bind:label="$t('Title')" v-bind:placeholder="$t('Enter a title')" canadd :apiurl="`${this.useStore().apiroot}/api/titles/`" field="title" />   
+            <AutoCompleteApiOneField v-model="selected.organization" :label="$t('Organization')" :placeholder="$t('Enter a organization')" canadd :apiurl="`${this.useStore().apiroot}/api/organizations/`" field="organization" />
+            <AutoCompleteApiOneField v-model="selected.department" :label="$t('Department')" :placeholder="$t('Enter a department')" canadd :apiurl="`${this.useStore().apiroot}/api/departments/`" field="department" />
+            <AutoCompleteApiOneField v-model="selected.title" :label="$t('Title')" :placeholder="$t('Enter a title')" canadd :apiurl="`${this.useStore().apiroot}/api/titles/`" field="title" />   
 
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -50,13 +50,13 @@
             return {
                 refreshKey:0,
                 tableHeaders: [
-                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Profession'),  sortable: true, value: 'profession'},
-                    { text: this.$t('Organization'),  sortable: true, value: 'organization'},
-                    { text: this.$t('Department'),  sortable: true, value: 'department'},
-                    { text: this.$t('Title'),  sortable: true, value: 'title'},
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Last update'), value: 'dt_update',sortable: true },
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
+                    { title: this.$t('Profession'),  sortable: true, value: 'profession'},
+                    { title: this.$t('Organization'),  sortable: true, value: 'organization'},
+                    { title: this.$t('Department'),  sortable: true, value: 'department'},
+                    { title: this.$t('Title'),  sortable: true, value: 'title'},
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.job,
                 vShowObsolete:false,

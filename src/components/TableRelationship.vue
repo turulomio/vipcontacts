@@ -58,11 +58,11 @@
             return {
                 refreshKey:0,
                 tableHeaders: [
-                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
-                    { text: this.$t('Destiny'),  sortable: true, value: 'destiny'},
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Last update'), value: 'dt_update',sortable: true },
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
+                    { title: this.$t('Type'),  sortable: true, value: 'retypes'},
+                    { title: this.$t('Destiny'),  sortable: true, value: 'destiny'},
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.relationship,
                 vShowObsolete:false,

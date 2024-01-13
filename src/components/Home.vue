@@ -11,10 +11,10 @@
                     v-model="search" 
                     type="text" 
                     :counter="100"  
-                    v-bind:label="$t('String to search in contacts')" 
+                    :label="$t('String to search in contacts')" 
                     required 
                     autofocus
-                    v-bind:placeholder="$t('Enter search')" 
+                    :placeholder="$t('Enter search')" 
                     v-on:keyup.enter="on_search_change()"
                     :disabled="loading"
                 ></v-text-field>

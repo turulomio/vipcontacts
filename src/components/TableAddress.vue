@@ -22,7 +22,7 @@
                 <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add address") }}</v-card-title>
                 <v-form ref="form" v-model="form_valid" lazy-validation>
                     <v-select :items="useStore().addresstype" v-model="selected.retypes" :label="$t('Select a type')"  item-title="display_name" item-value="value" required />
-                    <v-text-field data-test="TableAddress_Address" v-model="selected.address" type="text" :counter="300"  v-bind:label="$t('Address')" required v-bind:placeholder="$t('Enter a address')" :rules="RulesString(300,true)"  />
+                    <v-text-field data-test="TableAddress_Address" v-model="selected.address" type="text" :counter="300"  :label="$t('Address')" required :placeholder="$t('Enter a address')" :rules="RulesString(300,true)"  />
                     <v-text-field data-test="TableAddress_Code" v-model="selected.code" type="text" :label="$t('Enter a code')" :counter="10" :placeholder="$t('Enter a code')" :rules="RulesString(10,false)" />
                     <v-text-field data-test="TableAddress_City" v-model="selected.city" type="text" :label="$t('Enter a city')" :counter="100" :placeholder="$t('Enter a city')"   :rules="RulesString(100,true)"/>
                     <v-autocomplete data-test="TableAddress_Country" :items="useStore().countries" v-model="selected.country" :label="$t('Select a country')" item-title="display_name" item-value="value" required/>
@@ -51,14 +51,14 @@
             return {
                 refreshKey:0,
                 tableHeaders: [
-                    { text: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { text: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
-                    { text: this.$t('Type'),  sortable: true, value: 'retypes'},
-                    { text: this.$t('Address'),  sortable: true, value: 'address'},
-                    { text: this.$t('Code'),  sortable: true, value: 'code'},
-                    { text: this.$t('City'),  sortable: true, value: 'city'},
-                    { text: this.$t('Country'),  sortable: true, value: 'country'},
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Last update'), value: 'dt_update',sortable: true },
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
+                    { title: this.$t('Type'),  sortable: true, value: 'retypes'},
+                    { title: this.$t('Address'),  sortable: true, value: 'address'},
+                    { title: this.$t('Code'),  sortable: true, value: 'code'},
+                    { title: this.$t('City'),  sortable: true, value: 'city'},
+                    { title: this.$t('Country'),  sortable: true, value: 'country'},
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.address,
                 vShowObsolete:false,

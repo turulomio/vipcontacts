@@ -4,7 +4,7 @@
             <v-card-title class="headline" >{{ title() }}</v-card-title>
             
             <v-form ref="form" v-model="form_valid" lazy-validation>
-                <v-text-field :readonly="mode=='D'" data-test="PersonAliasCRUD_Alias" v-model="new_alias.name" type="text" :counter="75"  v-bind:label="$t('Alias')" required v-bind:placeholder="$t('Enter an alias')" :rules="RulesString(75,true)" />
+                <v-text-field :readonly="mode=='D'" data-test="PersonAliasCRUD_Alias" v-model="new_alias.name" type="text" :counter="75"  :label="$t('Alias')" required :placeholder="$t('Enter an alias')" :rules="RulesString(75,true)" />
             </v-form>
                         
             <v-card-actions>

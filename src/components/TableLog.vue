@@ -50,8 +50,8 @@
             return {
                 refreshKey:0,
                 tableHeaders: [
-                    { text: this.$t('Datetime'), value: 'datetime', sortable: true },
-                    { text: this.$t('Type'),  sortable: true, value: 'retypes', 
+                    { title: this.$t('Datetime'), value: 'datetime', sortable: true },
+                    { title: this.$t('Type'),  sortable: true, value: 'retypes', 
                         filter: value => {
                             if (this.vShowAutomatic==true){
                                 return true;
@@ -65,8 +65,8 @@
                             }
                         }
                     },
-                    { text: this.$t('Text'),  sortable: true, value: 'text'},
-                    { text: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Text'),  sortable: true, value: 'text'},
+                    { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: this.person.log,
                 vShowAutomatic:false,
@@ -84,7 +84,7 @@
             myheaders,parseResponseError,
             addItem(){
                 this.selected={
-                    text: "",
+                    title: "",
                     datetime: new Date(),
                     person: `${this.useStore().apiroot}/api/person/${this.person.id}/`,
                     retypes: 100,

@@ -41,8 +41,8 @@
                 dialog_title:"",
                 form_valid:true,
                 headers: [
-                    { text: this.$t('Name'), value: 'name'},
-                    { text: this.$t('Number'), align: 'right', value: 'count', width:"10%"},
+                    { title: this.$t('Name'), value: 'name'},
+                    { title: this.$t('Number'), align: 'right', value: 'count', width:"10%"},
                     ],
                 combo: null,
                 items: [],

@@ -17,9 +17,9 @@
             return{
                 loading:false,
                 headers: [
-                    { text: this.$t('Date'), align: 'start', sortable: true, value: 'date2', width:"10%"},
-                    { text: this.$t('Name'), value: 'person', width:"45%" },
-                    { text: this.$t('Reason'), value: 'reason', width:"45%"},
+                    { title: this.$t('Date'), align: 'start', sortable: true, value: 'date2', width:"10%"},
+                    { title: this.$t('Name'), value: 'person', width:"45%" },
+                    { title: this.$t('Reason'), value: 'reason', width:"45%"},
                 ],
             }
         },
