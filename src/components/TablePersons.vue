@@ -23,7 +23,7 @@
         <!-- DIALOG PERSONVIEW -->
         <v-dialog v-model="dialog_person_view" width="100%">
             <v-card class="pa-4">
-                <PersonView :person_url="person_url" :key="key"/>
+                <PersonView :person_url="person_url" @closed="on_PersonView_closed" :key="key"/>
             </v-card>
         </v-dialog>
         <!-- DIALOG PERSONCRUD -->
@@ -107,7 +107,7 @@
             chipClicked(chip){
                 this.$emit('chipClicked', chip)
             },
-            on_PersonView_exited(){
+            on_PersonView_closed(){
                 this.dialog_person_view=false
             },
             on_PersonCRUD_cruded(){

@@ -2,6 +2,7 @@
     <div v-show="useStore().logged">
         <h1>{{ fullNameWithAge }}
                 <MyMenuInline :items="menuinline_items"></MyMenuInline>
+                <v-btn data-test="PersonView_ButtonClose" small style="color:darkgrey" icon="mdi-close" class="elevation-0" @click="on_close"/>
         </h1>
 
         <DisplayValues :items="displayvalues()" :key="key+1"></DisplayValues>
@@ -244,6 +245,9 @@
                     return 0
                 }
             },
+            on_close(){
+                this.$emit("closed")
+            }
         },
 
         created() {

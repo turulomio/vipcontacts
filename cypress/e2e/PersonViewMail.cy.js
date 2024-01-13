@@ -37,7 +37,7 @@ describe('e2e Home', () => {
         cy.getDataTest(`TableCrudMail_ButtonDelete${mail_id}`).click()
         cy.getDataTest(`PersonMailCRUD_Button`).click()
         //Return to home
-        cy.get("body").click(0,0)
+        cy.getDataTest(`PersonView_ButtonClose`).click()
         delete_person_from_Home(cy,person_id)
 
 
