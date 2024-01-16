@@ -16,7 +16,7 @@
         </v-data-table>            
         <v-btn data-test="TableBlob_Add" color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
         <v-btn color="primary" @click="pasteItem()" >{{ $t('Paste blob') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showCarrusel()" >{{ $t('Carrusel') }}</v-btn>
         
         <!-- DIALOG CRUD -->
