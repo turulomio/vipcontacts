@@ -3,8 +3,9 @@
     <div>
         <v-data-table :headers="headers" :items="data" :sort-by="sorting" class="elevation-1" @click:row="viewItem">
             <template v-slot:[`item.name`]="{ item }">
-                <v-icon small class="mr-2" >{{person_icon(item)}}</v-icon>
-                <div :data-test="`TablePersons_Item${item.id}`">{{item.name}}</div>
+                <div :data-test="`TablePersons_Item${item.id}`">
+                    <v-icon small class="mr-2" >{{person_icon(item)}}</v-icon>{{item.name}}
+                </div>
             </template>
             <template v-slot:[`item.birth`]="{ item }">
                 <div class="text-no-wrap">
@@ -70,8 +71,8 @@
                     { title: this.$t('Surname'), value: 'surname', width:"15%" },
                     { title: this.$t('Second surname'), value: 'surname2', width:"15%"},
                     { title: this.$t('Birth date'), value: 'birth' ,width:"10%"},
-                    { title: this.$t('Information'), value: 'information', sortable: false,  width: "45%"  },
-                    { title: this.$t('Actions'), value: 'actions', sortable: false },
+                    { title: this.$t('Information'), value: 'information', sortable: false,  width: "40%"  },
+                    { title: this.$t('Actions'), value: 'actions', sortable: false, width:"5%" },
                     ],
             }
         },
