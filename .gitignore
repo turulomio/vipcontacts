@@ -26,3 +26,4 @@ pnpm-debug.log*
 __pycache__
 .nyc_output
 coverage
+cypress/downloads/*
