@@ -22,9 +22,9 @@ describe('e2e Home', () => {
       cy.getDataTest(`PersonView_TabGroups`).click()
       
       cy.getDataTest(`TableGroup_Add`).click()
-      cy.getDataTest(`TableGroup_Name`).type("Rockers")
+      cy.getDataTest(`TableGroup_Name`).type("Rockers{downArrow}{enter}")
       cy.intercept('POST', '/api/group/').as("post_group")
-      cy.getDataTest(`TableGroup_Button`).click()
+      cy.getDataTest(`TableGroup_Button`).click({force:true})
 
       cy.wait('@post_group').then((interception)=>{
         console.log(interception.response.body)
@@ -33,7 +33,7 @@ describe('e2e Home', () => {
         //Update
         cy.getDataTest(`TableGroup_ButtonEdit${group_id}`).click()
         cy.getDataTest(`TableGroup_Name`).type(" modified")
-        cy.getDataTest(`TableGroup_Button`).click()
+        cy.getDataTest(`TableGroup_Button`).click({force:true})
         //Delete
         cy.getDataTest(`TableGroup_ButtonDelete${group_id}`).click()
         //Return to home

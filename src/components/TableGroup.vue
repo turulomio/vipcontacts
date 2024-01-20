@@ -15,7 +15,7 @@
 
 
         <!-- DIALOG -->
-        <v-dialog v-model="dialog" max-width="800">
+        <v-dialog data-test="TableGroup_Dialog" v-model="dialog" max-width="800">
         <v-card  class="pa-3">
             <v-card-title class="headline" v-if="isEdition==true">{{ $t("Edit group") }}</v-card-title>
             <v-card-title class="headline" v-if="isEdition==false">{{ $t("Add group") }}</v-card-title>

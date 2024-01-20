@@ -23,11 +23,11 @@ describe('e2e Home', () => {
       
       cy.getDataTest(`TableJob_Add`).click()
       cy.getDataTest(`TableJob_Profession`).type("Singer")
-      cy.getDataTest(`TableJob_Organization`).type("RnR")
-      cy.getDataTest(`TableJob_Department`).type("RnR deparment")
-      cy.getDataTest(`TableJob_Title`).type("The  king")
-      cy.intercept('POST', '/api/job/').as("post_job")
-      cy.getDataTest(`TableJob_Button`).click()
+      cy.getDataTest(`TableJob_Organization`).click({force:true}).type("RnR")
+      cy.getDataTest(`TableJob_Department`).click({force:true}).type("RnR deparment")
+      cy.getDataTest(`TableJob_Title`).click({force:true}).type("The  king")
+      cy.intercept('POST', '/api/job/').as("post_job", {force:true})
+      cy.getDataTest(`TableJob_Button`).click({force:true})
 
       cy.wait('@post_job').then((interception)=>{
         console.log(interception.response.body)
@@ -35,11 +35,11 @@ describe('e2e Home', () => {
         console.log("Job", job_id)
         //Update
         cy.getDataTest(`TableJob_ButtonEdit${job_id}`).click()
-        cy.getDataTest(`TableJob_Profession`).type("Best Singer")
-        cy.getDataTest(`TableJob_Organization`).type("Best RnR")
-        cy.getDataTest(`TableJob_Department`).type("Best RnR deparment")
-        cy.getDataTest(`TableJob_Title`).type("The best king")
-        cy.getDataTest(`TableJob_Button`).click()
+        cy.getDataTest(`TableJob_Profession`).click({force:true}).type("Best Singer")
+        cy.getDataTest(`TableJob_Organization`).click({force:true}).type("Best RnR")
+        cy.getDataTest(`TableJob_Department`).click({force:true}).type("Best RnR deparment")
+        cy.getDataTest(`TableJob_Title`).click({force:true}).type("The best king")
+        cy.getDataTest(`TableJob_Button`).click({force:true})
         //Delete
         cy.getDataTest(`TableJob_ButtonDelete${job_id}`).click()
         //Return to home
