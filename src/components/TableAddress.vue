@@ -9,7 +9,7 @@
                 <v-icon :data-test="`TableAddress_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
                 <v-icon :data-test="`TableAddress_ButtonObsolete${item.id}`" small class="mr-2" @click="obsoleteItem(item)">mdi-timer-off</v-icon>
                 <v-icon small class="mr-2" @click="googleMaps(item)">mdi-google-maps</v-icon>
-                <v-icon small class="mr-2" @click="generateEnvelope(item)">mdi-email-open-outline</v-icon>
+                <v-icon :data-test="`TableAddress_ButtonEnvelope${item.id}`" small class="mr-2" @click="generateEnvelope(item)">mdi-email-open-outline</v-icon>
             </template>
         </v-data-table>            
         <v-btn data-test="TableAddress_Add" color="primary" @click="addItem()" >{{ $t('Add address') }}</v-btn>
@@ -44,7 +44,7 @@
     import { useStore } from '@/store';
     import { jsPDF } from "jspdf";
     import { RulesString,localtime } from 'vuetify_rules';
-    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
+    import { getObjectPropertyByValue, myheaders,parseResponseError, getLocalStorage } from '@/functions';
     export default {
         props: ['person','obsolete'],
         data () {
@@ -71,6 +71,7 @@
         },
         methods:{
             useStore,
+            getLocalStorage,
             localtime,
             RulesString,
             getObjectPropertyByValue,

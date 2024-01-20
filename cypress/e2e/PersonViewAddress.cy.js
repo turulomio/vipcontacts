@@ -33,6 +33,10 @@ describe('e2e Home', () => {
         console.log(interception.response.body)
         var address_id=interception.response.body.id
         console.log("Address", address_id)
+        //Envelope
+        cy.getDataTest(`TableAddress_ButtonEnvelope${address_id}`).click()
+
+
         //Update
         cy.getDataTest(`TableAddress_ButtonEdit${address_id}`).click()
         cy.getDataTest(`TableAddress_Address`).type("Graceland")
