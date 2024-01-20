@@ -16,6 +16,8 @@ describe('e2e Home', () => {
     cy.getDataTest('LateralContacts').click()
     cy.getDataTest('LateralLastEdited').click()
 
+    cy.getDataTest('LateralIcon').click()
+    cy.getDataTest('LateralHome').click()
     // Log out
     cy.getDataTest("AppBar_Logout").click()
     
