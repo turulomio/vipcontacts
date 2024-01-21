@@ -24,7 +24,7 @@
                 <v-window v-model="tab">
                     <v-window-item key="Alias">
                         <v-card flat>
-                            <TableAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
+                            <TableAlias :person="this.person" :key="key+1" @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     
