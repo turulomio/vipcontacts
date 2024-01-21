@@ -32,7 +32,11 @@
         components: {
             PersonAliasCRUD,
         },
-        props: ['person'],
+        props: {
+            person: { //url
+                required: true
+            },
+        },
         data () {
             return {
                 key:0,
@@ -55,7 +59,8 @@
         computed: {
             obsolete_number(){
                 let r=0
-                this.person.alias.forEach(o=>{
+
+                this.person.alias?.forEach((o)=>{
                     if (o.dt_obsolete!=null){
                         r+=1
                     } 
@@ -111,16 +116,21 @@
             },
             refreshTableData(){
                 this.tableData=[]
-                console.log(this.person.alias, "REFRESH")
-                this.person.alias.forEach(o => {
-                    if (this.vShowObsolete==true && o.dt_obsolete!=null) this.tableData.push(o)
-                    if (this.vShowObsolete==false && o.dt_obsolete==null) this.tableData.push(o)       
+                // console.log(this.person.alias, "REFRESH")
+                // console.log(this.person.alias.length)
+                this.person.alias?.forEach((o) => {
+                    if (this.vShowObsolete==true && o.dt_obsolete!=null){
+                        this.tableData.push(o)
+                    } else if  (this.vShowObsolete==false && o.dt_obsolete==null) {
+                        this.tableData.push(o)       
+                    }
                 });
+                console.log("FINISHED", this.tableData)
             }
         },
         created(){
-            console.log(this.person, "PERSON")
-            console.log(this.person.alias, "ALIAS")
+            // console.log(this.person, "PERSON")
+            // console.log(this.person.alias, "ALIAS")
             this.refreshTableData()
         }
     }

@@ -30,11 +30,11 @@ describe('e2e Home', () => {
         console.log("Alias", alias_id)
 
         //Set obsolete
-        cy.getDataTest(`TableAlias_ButtonObsolete${phone_id}`).click()
+        cy.getDataTest(`TableAlias_ButtonObsolete${alias_id}`).click()
         cy.wait(300)
         cy.getDataTest(`TableAlias_ButtonObsolete`).click()
         cy.wait(300)
-        cy.getDataTest(`TableAlias_ButtonObsolete${phone_id}`).click()
+        cy.getDataTest(`TableAlias_ButtonObsolete${alias_id}`).click()
         cy.wait(300)
         //Update
         cy.getDataTest(`TableAlias_ButtonEdit${alias_id}`).click()
