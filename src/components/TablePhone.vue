@@ -98,7 +98,6 @@
                 }
                 axios.put(item.url, item, this.myheaders())
                 .then(() => {
-                    this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)

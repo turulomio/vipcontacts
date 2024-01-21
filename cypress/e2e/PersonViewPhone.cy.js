@@ -31,24 +31,28 @@ describe('e2e Person Phone', () => {
         console.log(interception.response.body)
         var phone_id=interception.response.body.id
         console.log("Phone", phone_id)
-        //Set obsolete
-        cy.getDataTest(`TablePhone_ButtonObsolete${phone_id}`).click()
-        // cy.getDataTest(`TablePhone_ButtonObsolete`).click()
 
         
+        //Set obsolete
+        cy.getDataTest(`TablePhone_ButtonObsolete${phone_id}`).click()
+        cy.wait(300)
+        cy.getDataTest(`TablePhone_ButtonObsolete`).click()
+        cy.wait(300)
+        cy.getDataTest(`TablePhone_ButtonObsolete${phone_id}`).click()
+        cy.wait(300)
 
 
 
-        // //Update
-        // cy.getDataTest(`TablePhone_ButtonEdit${phone_id}`).click()
-        // cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("999999999")
-        // cy.getDataTest(`PersonPhoneCRUD_Button`).click()
-        // //Delete
-        // cy.getDataTest(`TablePhone_ButtonDelete${phone_id}`).click()
-        // cy.getDataTest(`PersonPhoneCRUD_Button`).click()
-        // //Return to home
-        // cy.getDataTest(`PersonView_ButtonClose`).click()
-        // delete_person_from_Home(cy,person_id)
+        //Update
+        cy.getDataTest(`TablePhone_ButtonEdit${phone_id}`).click()
+        cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("999999999")
+        cy.getDataTest(`PersonPhoneCRUD_Button`).click()
+        //Delete
+        cy.getDataTest(`TablePhone_ButtonDelete${phone_id}`).click()
+        cy.getDataTest(`PersonPhoneCRUD_Button`).click()
+        //Return to home
+        cy.getDataTest(`PersonView_ButtonClose`).click()
+        delete_person_from_Home(cy,person_id)
 
 
       })
