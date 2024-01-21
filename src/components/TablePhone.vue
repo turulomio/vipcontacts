@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="key" >
+        <v-data-table :headers="tableHeaders" :items="tableData" :search="search" :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="key" >
               <template v-slot:[`item.dt_update`]="{ item }">
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>            
@@ -13,7 +13,7 @@
             </template>
         </v-data-table>            
         <v-btn data-test="TablePhone_Add" color="primary" @click="addItem()" >{{ $t('Add phone') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+        <v-btn data-test="TablePhone_ButtonObsolete" color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete_number>0" class="ml-2" :content="obsolete_number"/></v-btn>
  
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
@@ -34,24 +34,38 @@
         components:{
             PersonPhoneCRUD
         },
-        props: ['person','obsolete'],
+        props: [
+            'person'
+        ],
         data () {
             return {
                 key:0,
                 tableHeaders: [
                     { title: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true},
                     { title: this.$t('Type'),  sortable: true, value: 'retypes'},
                     { title: this.$t('Phone'),  sortable: true, value: 'phone'},
                     { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
-                tableData: this.person.phone,
+                tableData: [],
                 vShowObsolete:false,
                 dialog: false,
                 phone:null,
                 mode:"",
+                search:"",
                 
                 form_valid:false,
+            }
+        },
+        computed: {
+            obsolete_number(){
+                let r=0
+                this.person.phone.forEach(o=>{
+                    if (o.dt_obsolete!=null){
+                        r+=1
+                    } 
+                })
+                return r
             }
         },
         methods:{
@@ -78,13 +92,12 @@
             },
             obsoleteItem(item){
                 if (item.dt_obsolete == null){
-                    item.dt_obsolete=this.localtime(new Date());
+                    item.dt_obsolete=new Date().toISOString()
                 }else{
                     item.dt_obsolete=null;
                 }
                 axios.put(item.url, item, this.myheaders())
-                .then((response) => {
-                    console.log(response.data);
+                .then(() => {
                     this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
@@ -94,6 +107,8 @@
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
+                this.refreshTableData()
+                this.key=this.key+1
             },
             call_phone(item){
                 window.open(`tel:${item.phone}`)
@@ -101,9 +116,18 @@
             on_PersonPhoneCRUD_cruded(){
                 this.dialog = false;   
                 this.$emit('cruded')   
+            },
+            refreshTableData(){
+                this.tableData=[]
+                this.person.phone.forEach(o => {
+                    if (this.vShowObsolete==true && o.dt_obsolete!=null) this.tableData.push(o)
+                    if (this.vShowObsolete==false && o.dt_obsolete==null) this.tableData.push(o)       
+                });
             }
+
         },
+        created(){
+            this.refreshTableData()
+        }
     }
 </script>
-<style scoped>
-</style>

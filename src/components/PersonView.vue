@@ -35,7 +35,7 @@
                     </v-window-item>
                     <v-window-item key="Phones">
                         <v-card flat>
-                            <TablePhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
+                            <TablePhone :person="this.person" :key="key+1"  @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Address">
