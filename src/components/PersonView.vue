@@ -55,7 +55,7 @@
                     </v-window-item>
                     <v-window-item key="Groups">
                         <v-card flat>
-                            <TableGroup :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
+                            <TableGroup :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Media">
@@ -65,7 +65,7 @@
                     </v-window-item>
                     <v-window-item key="Logs">
                         <v-card flat>
-                            <TableLog :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
+                            <TableLog :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                 </v-window>
