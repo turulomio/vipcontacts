@@ -13,7 +13,8 @@
             </template>
         </v-data-table>            
         <v-btn data-test="TableMail_Add" color="primary" @click="addItem()" >{{ $t('Add mail') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+
+        <v-btn data-test="TableMail_ButtonObsolete" color="primary" @click="showObsolete">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete_number>0" class="ml-2" :content="obsolete_number"/></v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
@@ -31,7 +32,11 @@
     import PersonMailCRUD from './PersonMailCRUD.vue';
     import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
     export default {
-        props: ['person','obsolete'],
+        props: {
+            person: { 
+                required: true
+            },
+        },
         components:{
             PersonMailCRUD,
         },
@@ -40,16 +45,28 @@
                 key:0,
                 tableHeaders: [
                     { title: this.$t('Last update'), value: 'dt_update',sortable: true },
-                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true, filter: value => {if (value==null){return true;} else if ( this.vShowObsolete==true) {return true;} return false;}},
+                    { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true},
                     { title: this.$t('Type'),  sortable: true, value: 'retypes'},
                     { title: this.$t('Mail'),  sortable: true, value: 'mail'},
                     { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
-                tableData: this.person.mail,
+                tableData: [],
                 vShowObsolete:false,
                 dialog: false,
                 mail: null,
                 mode: "",
+            }
+        },
+        computed: {
+            obsolete_number(){
+                let r=0
+
+                this.person.mail?.forEach((o)=>{
+                    if (o.dt_obsolete!=null){
+                        r+=1
+                    } 
+                })
+                return r
             }
         },
         methods:{
@@ -77,14 +94,12 @@
             },
             obsoleteItem(item){
                 if (item.dt_obsolete == null){
-                    item.dt_obsolete=this.localtime(new Date());
+                    item.dt_obsolete=new Date().toISOString();
                 }else{
                     item.dt_obsolete=null;
                 }
                 axios.put(item.url, item, this.myheaders())
-                .then((response) => {
-                    console.log(response.data);
-                    this.key+=1
+                .then(() => {
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -98,10 +113,30 @@
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
+                this.refreshTableData()
+                this.key=this.key+1
             },
             mail_link(item){
                 window.open(`mailto:${this.person.fullname}<${item.mail}>`)
             },
+            refreshTableData(){
+                this.tableData=[]
+                // console.log(this.person.alias, "REFRESH")
+                // console.log(this.person.alias.length)
+                this.person.mail?.forEach((o) => {
+                    if (this.vShowObsolete==true && o.dt_obsolete!=null){
+                        this.tableData.push(o)
+                    } else if  (this.vShowObsolete==false && o.dt_obsolete==null) {
+                        this.tableData.push(o)       
+                    }
+                });
+                console.log("FINISHED", this.tableData)
+            }
         },
+        created(){
+            // console.log(this.person, "PERSON")
+            // console.log(this.person.alias, "ALIAS")
+            this.refreshTableData()
+        }
     }
 </script>

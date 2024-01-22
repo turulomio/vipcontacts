@@ -33,7 +33,7 @@
             PersonAliasCRUD,
         },
         props: {
-            person: { //url
+            person: { 
                 required: true
             },
         },

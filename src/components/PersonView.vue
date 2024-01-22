@@ -30,7 +30,7 @@
                     
                     <v-window-item key="Mails">
                         <v-card flat>
-                            <TableMail :person="person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
+                            <TableMail :person="person" :key="key+1"  @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Phones">
