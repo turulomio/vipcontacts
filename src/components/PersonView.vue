@@ -50,7 +50,7 @@
                     </v-window-item>
                     <v-window-item key="Relations">
                         <v-card flat>
-                            <TableRelationship :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
+                            <TableRelationship :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Groups">
