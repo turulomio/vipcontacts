@@ -29,6 +29,14 @@ describe('e2e Home', () => {
         console.log(interception.response.body)
         var mail_id=interception.response.body.id
         console.log("Mail", mail_id)
+        //Set obsolete
+        cy.getDataTest(`TableMail_ButtonObsolete${mail_id}`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableMail_ButtonObsolete`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableMail_ButtonObsolete${mail_id}`).click()
+        cy.wait(300)
+
         //Update
         cy.getDataTest(`TableMail_ButtonEdit${mail_id}`).click()
         cy.getDataTest(`PersonMailCRUD_Mail`).type(".edited.com")

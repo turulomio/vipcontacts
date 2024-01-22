@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="refreshKey" >
+        <v-data-table :headers="tableHeaders" :items="tableData"  :sort-by="[{key:'dt_update',order:'asc'}]" class="elevation-1" :key="key" >
               <template v-slot:[`item.datetime`]="{ item }">
                 <span>{{ localtime(item.datetime) }}</span>
             </template>
@@ -12,8 +12,8 @@
             </template>
         </v-data-table>            
         <v-btn data-test="TableLog_Add" color="primary" @click="addItem()" >{{ $t('Add log') }}</v-btn>
-        <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==false">{{ $t('Show automatic logs') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
-        <v-btn color="primary" @click="showAutomatic()" v-if="vShowAutomatic==true">{{ $t('Hide automatic logs') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+
+        <v-btn data-test="TableLog_ButtonAutomatic" color="primary" @click="showAutomatic">{{ (vShowAutomatic) ?$t('Hide automatic logs'):  $t('Show automatic logs') }}<v-badge inline color="error" v-if="automatic_number>0" class="ml-2" :content="automatic_number"/></v-btn>
         
         <!-- DIALOG -->
         <v-dialog v-model="dialog" max-width="800">
@@ -46,30 +46,21 @@
     import { localtime, RulesString } from 'vuetify_rules';
     export default {
         name: 'TableLog',
-        props: ['person','obsolete'],
+        props: {
+            person: { 
+                required: true
+            },
+        },
         data () {
             return {
-                refreshKey:0,
+                key:0,
                 tableHeaders: [
                     { title: this.$t('Datetime'), value: 'datetime', sortable: true },
-                    { title: this.$t('Type'),  sortable: true, value: 'retypes', 
-                        filter: value => {
-                            if (this.vShowAutomatic==true){
-                                return true;
-                            } else {
-                                
-                                if (value<99){
-                                    return false;
-                                } else {
-                                    return true;
-                                }
-                            }
-                        }
-                    },
+                    { title: this.$t('Type'),  sortable: true, value: 'retypes'},
                     { title: this.$t('Text'),  sortable: true, value: 'text'},
                     { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
-                tableData: this.person.log,
+                tableData: [],
                 vShowAutomatic:false,
                 isEdition: true,
                 dialog: false,
@@ -77,6 +68,18 @@
                 nonAutomaticTypes: this.useStore().logtype.filter( x=> x.value>=100),
                 
                 form_valid:false,
+            }
+        },
+        computed: {
+            automatic_number(){
+                let r=0
+
+                this.person.log?.forEach((o)=>{
+                    if (o.dt_obsolete!=null){
+                        r+=1
+                    } 
+                })
+                return r
             }
         },
         methods:{
@@ -105,7 +108,7 @@
                     this.tableData.push(this.selected);
                     
                     this.dialog=false;
-                    this.TableLog_refreshKey();
+                    this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -126,7 +129,7 @@
                     console.log(response.data);
                     this.selected=response.data;
                     this.dialog=false;
-                    this.TableLog_refreshKey();
+                    this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -143,7 +146,7 @@
                     console.log(response);
                     var i = this.person.log.indexOf( item ); //Remove item
                     this.tableData.splice( i, 1 );
-                    this.TableLog_refreshKey();
+                    this.key+=1
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -152,11 +155,22 @@
             },
             showAutomatic(){
                 this.vShowAutomatic=!this.vShowAutomatic;
+                this.refreshTableData()
+                this.key=this.key+1
             },
-            TableLog_refreshKey(){
-                this.refreshKey=this.refreshKey+1;
-                console.log(`Updating TableLog RefreshKey to ${this.refreshKey}`)
-            },
+            refreshTableData(){
+                this.tableData=[]
+                this.person.log?.forEach((o) => {
+                    if (this.vShowAutomatic==true && o.retypes<100){
+                        this.tableData.push(o)
+                    } else if  (this.vShowAutomatic==false && o.retypes>=100) {
+                        this.tableData.push(o)       
+                    }
+                });
+            }
         },
+        created(){
+            this.refreshTableData()
+        }
     }
 </script>

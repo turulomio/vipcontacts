@@ -24,48 +24,48 @@
                 <v-window v-model="tab">
                     <v-window-item key="Alias">
                         <v-card flat>
-                            <TableAlias :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('alias')"/>
+                            <TableAlias :person="person" :key="key+1" @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     
                     <v-window-item key="Mails">
                         <v-card flat>
-                            <TableMail :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('mail')"/>
+                            <TableMail :person="person" :key="key+1"  @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Phones">
                         <v-card flat>
-                            <TablePhone :person="this.person" :key="key+1"  @cruded="after_crud" :obsolete="obsolete_number('phone')"/>
+                            <TablePhone :person="person" :key="key+1"  @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Address">
                         <v-card flat>
-                            <TableAddress :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
+                            <TableAddress :person="person" :key="key+1" @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Jobs">
                         <v-card flat>
-                            <TableJob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
+                            <TableJob :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Relations">
                         <v-card flat>
-                            <TableRelationship :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('relationship')"/>
+                            <TableRelationship :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Groups">
                         <v-card flat>
-                            <TableGroup :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('group')"/>
+                            <TableGroup :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Media">
                         <v-card flat>
-                            <TableBlob :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
+                            <TableBlob :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Logs">
                         <v-card flat>
-                            <TableLog :person="this.person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('log')"/>
+                            <TableLog :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                 </v-window>
@@ -163,7 +163,7 @@
                         ]
                     },
                 ],
-                tab: null,
+                tab: 0,
                 person: {}, //Created in created method works not in mounted                     
                 qr:"",
                 qrsize: 800,
@@ -214,7 +214,6 @@
                 axios.get(this.person_url, this.myheaders())
                 .then((response) => {
                     this.person= response.data
-                    console.log(this.person)
                     this.key=this.key+1
                     return response.data//To make syncronous
                     

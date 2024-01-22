@@ -29,7 +29,14 @@ describe('e2e Home', () => {
       cy.wait('@post_group').then((interception)=>{
         console.log(interception.response.body)
         var group_id=interception.response.body.id
-        console.log("Group", group_id)
+        console.log("Group", group_id)       
+        //Set obsolete
+        cy.getDataTest(`TableGroup_ButtonObsolete${group_id}`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableGroup_ButtonObsolete`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableGroup_ButtonObsolete${group_id}`).click()
+        cy.wait(300)
         //Update
         cy.getDataTest(`TableGroup_ButtonEdit${group_id}`).click()
         cy.getDataTest(`TableGroup_Name`).type(" modified")

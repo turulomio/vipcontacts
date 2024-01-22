@@ -36,6 +36,8 @@ describe('e2e Person View Log', () => {
         cy.getDataTest(`TableLog_Button`).click()
         //Delete
         cy.getDataTest(`TableLog_ButtonDelete${log_id}`).click()
+        //Show automatic
+        cy.getDataTest(`TableLog_ButtonAutomatic`).click()
         //Return to home
         cy.getDataTest(`PersonView_ButtonClose`).click()
         delete_person_from_Home(cy,person_id)

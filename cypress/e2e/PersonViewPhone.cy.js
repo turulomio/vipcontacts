@@ -31,6 +31,18 @@ describe('e2e Person Phone', () => {
         console.log(interception.response.body)
         var phone_id=interception.response.body.id
         console.log("Phone", phone_id)
+
+        
+        //Set obsolete
+        cy.getDataTest(`TablePhone_ButtonObsolete${phone_id}`).click()
+        cy.wait(300)
+        cy.getDataTest(`TablePhone_ButtonObsolete`).click()
+        cy.wait(300)
+        cy.getDataTest(`TablePhone_ButtonObsolete${phone_id}`).click()
+        cy.wait(300)
+
+
+
         //Update
         cy.getDataTest(`TablePhone_ButtonEdit${phone_id}`).click()
         cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("999999999")
