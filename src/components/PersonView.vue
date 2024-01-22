@@ -40,12 +40,12 @@
                     </v-window-item>
                     <v-window-item key="Address">
                         <v-card flat>
-                            <TableAddress :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('address')"/>
+                            <TableAddress :person="person" :key="key+1" @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Jobs">
                         <v-card flat>
-                            <TableJob :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('job')"/>
+                            <TableJob :person="person" :key="key+1" @cruded="after_crud" />
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Relations">

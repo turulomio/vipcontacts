@@ -121,8 +121,6 @@
             },
             refreshTableData(){
                 this.tableData=[]
-                // console.log(this.person.alias, "REFRESH")
-                // console.log(this.person.alias.length)
                 this.person.mail?.forEach((o) => {
                     if (this.vShowObsolete==true && o.dt_obsolete!=null){
                         this.tableData.push(o)
@@ -133,8 +131,6 @@
             }
         },
         created(){
-            // console.log(this.person, "PERSON")
-            // console.log(this.person.alias, "ALIAS")
             this.refreshTableData()
         }
     }

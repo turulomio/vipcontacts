@@ -32,7 +32,14 @@ describe('e2e Home', () => {
       cy.wait('@post_job').then((interception)=>{
         console.log(interception.response.body)
         var job_id=interception.response.body.id
-        console.log("Job", job_id)
+        console.log("Job", job_id)        
+        //Set obsolete
+        cy.getDataTest(`TableJob_ButtonObsolete${job_id}`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableJob_ButtonObsolete`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableJob_ButtonObsolete${job_id}`).click()
+        cy.wait(300)
         //Update
         cy.getDataTest(`TableJob_ButtonEdit${job_id}`).click()
         cy.getDataTest(`TableJob_Profession`).click({force:true}).type("Best Singer")
