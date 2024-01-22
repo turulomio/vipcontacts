@@ -130,7 +130,6 @@
                         this.tableData.push(o)       
                     }
                 });
-                console.log("FINISHED", this.tableData)
             }
         },
         created(){

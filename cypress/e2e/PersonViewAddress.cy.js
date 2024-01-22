@@ -33,6 +33,14 @@ describe('e2e Home', () => {
         console.log(interception.response.body)
         var address_id=interception.response.body.id
         console.log("Address", address_id)
+        //Set obsolete
+        cy.getDataTest(`TableAddress_ButtonObsolete${address_id}`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableAddress_ButtonObsolete`).click()
+        cy.wait(300)
+        cy.getDataTest(`TableAddress_ButtonObsolete${address_id}`).click()
+        cy.wait(300)
+
         //Envelope
         cy.getDataTest(`TableAddress_ButtonEnvelope${address_id}`).click()
 
