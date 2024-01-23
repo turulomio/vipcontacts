@@ -15,6 +15,10 @@ import { createVuetify } from 'vuetify'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 const vuetify = createVuetify({
+  locale: {
+    locale: localStorage.locale,
+    fallback: 'en',
+  },
   icons: {
     defaultSet: 'mdi',
     aliases,
