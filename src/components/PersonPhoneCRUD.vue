@@ -111,7 +111,6 @@
                     this.new_phone.phone=this.phone_text
                     return true
                 } else {
-                    console.log(this.phone_object)
                     if (this.phone_object.valid) {
                         this.new_phone.phone=this.phone_object.formatted
                         return true
@@ -124,6 +123,7 @@
         },
         created(){
             this.new_phone=Object.assign({},this.phone)
+            this.phone_text=this.new_phone.phone
         }
     }
 
