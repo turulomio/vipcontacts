@@ -45,7 +45,7 @@ describe('e2e Person Phone', () => {
 
         //Update
         cy.getDataTest(`TablePhone_ButtonEdit${phone_id}`).click()
-        cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("999999999")
+        cy.getDataTest(`PersonPhoneCRUD_Phone`).click().type("{backspace}{backspace}").type("20")
         cy.getDataTest(`PersonPhoneCRUD_Button`).click()
         //Delete
         cy.getDataTest(`TablePhone_ButtonDelete${phone_id}`).click()
