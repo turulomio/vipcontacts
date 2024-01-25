@@ -16,7 +16,10 @@
         </v-data-table>            
         <v-btn data-test="TableBlob_Add" color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
         <v-btn data-test="TableBlob_Paste" color="primary" @click="pasteItem()" >{{ $t('Paste blob') }}</v-btn>
-        <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
+
+        <v-btn data-test="TableBlob_Obsolete" color="primary" @click="showObsolete">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete_number>0" class="ml-2" :content="obsolete_number"/></v-btn>
+
+
         <v-btn color="primary" @click="showCarrusel()" >{{ $t('Carrusel') }}</v-btn>
         
         <!-- DIALOG CRUD -->
@@ -85,7 +88,11 @@
             AutoCompleteApiOneField,
             PasteImage,
         },
-        props: ['person','obsolete'],
+        props: {
+            person: { 
+                required: true
+            },
+        },
         data () {
             return {
                 key:0,
@@ -111,6 +118,18 @@
                 carrusel:[],
                 selected: {},
                 file_input: null,
+            }
+        },
+        computed: {
+            obsolete_number(){
+                let r=0
+
+                this.person.blob?.forEach((o)=>{
+                    if (o.dt_obsolete!=null){
+                        r+=1
+                    } 
+                })
+                return r
             }
         },
         methods:{
@@ -214,15 +233,12 @@
             },
             obsoleteItem(item){
                 if (item.dt_obsolete == null){
-                    item.dt_obsolete=this.localtime(new Date());
+                    item.dt_obsolete=new Date().toISOString();
                 }else{
                     item.dt_obsolete=null;
                 }
                 axios.put(item.url, item, this.myheaders())
-                .then((response) => {
-                    this.parseResponse(response)
-                    console.log(response.data);
-                    this.key=this.key+1
+                .then(() => {
                     this.$emit('cruded')
                 }, (error) => {
                     this.parseResponseError(error)
@@ -231,6 +247,8 @@
             },
             showObsolete(){
                 this.vShowObsolete=!this.vShowObsolete;
+                this.refreshTableData()
+                this.key=this.key+1
             },
             canBeViewed(item){
                 if (item.mime=="image/png" || item.mime=="image/jpeg") return true
@@ -248,7 +266,21 @@
                     return {src:`data:${o.mime};base64,${o.blob}`}
                 })
                 this.dialog_carrusel=true
+            },
+
+            refreshTableData(){
+                this.tableData=[]
+                this.person.blob?.forEach((o) => {
+                    if (this.vShowObsolete==true && o.dt_obsolete!=null){
+                        this.tableData.push(o)
+                    } else if  (this.vShowObsolete==false && o.dt_obsolete==null) {
+                        this.tableData.push(o)       
+                    }
+                });
             }
         },
+        created() {
+            this.refreshTableData()         
+        }
     }
 </script>

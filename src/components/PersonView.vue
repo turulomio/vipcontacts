@@ -60,7 +60,7 @@
                     </v-window-item>
                     <v-window-item key="Media">
                         <v-card flat>
-                            <TableBlob :person="person" :key="key+1" @cruded="after_crud" :obsolete="obsolete_number('blob')"/>
+                            <TableBlob :person="person" :key="key+1" @cruded="after_crud"/>
                         </v-card>
                     </v-window-item>
                     <v-window-item key="Logs">
@@ -227,17 +227,6 @@
                         return this.person[s].filter(p => p.retypes>=100).reduce((accum) => accum + 1, 0)
                     } else {
                         return this.person[s].filter(p => p.dt_obsolete==null).reduce((accum) => accum + 1, 0)
-                    }
-                } catch (error) {
-                    return 0
-                }
-            },
-            obsolete_number(s){
-                try{
-                    if (s=='log'){
-                        return this.person[s].filter(p => p.retypes<100).reduce((accum) => accum + 1, 0)
-                    } else {
-                        return this.person[s].filter(p => p.dt_obsolete!=null).reduce((accum) => accum + 1, 0)
                     }
                 } catch (error) {
                     return 0
