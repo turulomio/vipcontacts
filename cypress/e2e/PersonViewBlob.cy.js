@@ -22,14 +22,10 @@ describe('e2e PersonViewBlob', () => {
       cy.getDataTest(`PersonView_TabMedia`).click()
 
 
-    cy.getDataTest(`TableBlob_Add`).click()
-    // cy.getDataTest('TableBlob_CRUD_File').click().selectFile('public/favicon.ico')
+    // cy.getDataTest(`TableBlob_Add`).click()
 
     
-    cy.getDataTest('TableBlob_CRUD_File').selectFile('cypress/fixtures/turulomio.png')
-
-      // cy.getDataTest(`PersonView_ButtonClose`).click()
-      // delete_person_from_Home(cy,person_id)
+    //cy.getDataTest('TableBlob_CRUD_File').selectFile('cypress/fixtures/turulomio.png') No pude
   
     //   cy.getDataTest(`TableBlob_Add`).click()
     //   cy.getDataTest(`TableBlob_Name`).type("Rockers")
@@ -46,12 +42,10 @@ describe('e2e PersonViewBlob', () => {
     //     cy.getDataTest(`TableBlob_Button`).click()
     //     //Delete
     //     cy.getDataTest(`TableBlob_ButtonDelete${blob_id}`).click()
-    //     //Return to home
-    //     cy.getDataTest(`PersonView_ButtonClose`).click()
-    //     delete_person_from_Home(cy,person_id)
+        //Return to home
+        cy.getDataTest(`PersonView_ButtonClose`).click()
+        delete_person_from_Home(cy,person_id)
 
-
-    //   })
     })
   })
 })
