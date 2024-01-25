@@ -15,7 +15,7 @@
             </template>
         </v-data-table>            
         <v-btn data-test="TableBlob_Add" color="primary" @click="addItem()" >{{ $t('Add blob') }}</v-btn>
-        <v-btn color="primary" @click="pasteItem()" >{{ $t('Paste blob') }}</v-btn>
+        <v-btn data-test="TableBlob_Paste" color="primary" @click="pasteItem()" >{{ $t('Paste blob') }}</v-btn>
         <v-btn color="primary" @click="showObsolete()">{{ (vShowObsolete) ?$t('Hide obsolete'):  $t('Show obsolete') }}<v-badge inline color="error" v-if="obsolete>0" class="ml-2" :content="obsolete"/></v-btn>
         <v-btn color="primary" @click="showCarrusel()" >{{ $t('Carrusel') }}</v-btn>
         
@@ -25,13 +25,13 @@
                 <h1 class="headline" v-if="isEdition==true">{{ $t("Edit media file") }}</h1>
                 <h1 class="headline" v-if="isEdition==false">{{ $t("Add media file") }}</h1>
                 <v-form ref="form" v-model="form_valid" lazy-validation >
-                    <v-file-input data-test="TableBlob_File" v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
-                    <AutoCompleteApiOneField data-test="TableBlob_Name" v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${useStore().apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
+                    <v-file-input data-test="TableBlob_CRUD_File" v-model="file_input" :label="$t('File')" required :placeholder="$t('Select a filename')" v-if ="isEdition==false" :rules="RulesSelection(true)"/>
+                    <AutoCompleteApiOneField data-test="TableBlob_CRUD_Name" v-model="selected.name" :label="$t('Name')" :placeholder="$t('Enter a name')" canadd :apiurl="`${useStore().apiroot}/api/blobnames/`" field="name" :rules="RulesSelection(true)"/>   
                 </v-form>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn data-test="TableBlob_Button" color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
-                    <v-btn data-test="TableBlob_Button" color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
+                    <v-btn data-test="TableBlob_CRUD_ButtonAdd" color="primary" @click="acceptEdition()" v-if="isEdition==true">{{ $t("Edit") }}</v-btn>
+                    <v-btn data-test="TableBlob_CRUD_ButtonAdd" color="primary" @click="acceptAddition()" v-if="isEdition==false">{{ $t("Add") }}</v-btn>
                     <v-btn color="error" @click="dialog = false">{{ $t("Cancel") }}</v-btn>
                 </v-card-actions>
             </v-card>
@@ -74,11 +74,11 @@
 <script>
     import axios from 'axios'
     import AutoCompleteApiOneField from './reusing/AutoCompleteApiOneField.vue'
-    import PasteImage from './PasteImage.vue'
+    import PasteImage from '@/components/reusing/PasteImage.vue'
     import { useStore } from '@/store';
     import {empty_blob} from '../empty_objects.js'
     import { localtime, RulesSelection } from 'vuetify_rules';
-    import { getObjectPropertyByValue, myheaders,parseResponseError } from '@/functions';
+    import { getObjectPropertyByValue, myheaders,parseResponseError, parseResponse, getBase64 } from '@/functions';
     export default {
         name: 'TableBlob',
         components: {
@@ -115,8 +115,10 @@
         },
         methods:{
             useStore,
+            getBase64,
             RulesSelection,
             localtime,
+            parseResponse,
             parseResponseError,
             getObjectPropertyByValue,
             myheaders,
@@ -156,7 +158,7 @@
             },
             async acceptAddition(){     
                 if (this.$refs.form.validate()==false) return          
-                var image= await this.getBase64(this.file_input)
+                var image= await this.getBase64(this.file_input[0])
                 this.selected.mime=image.mime
                 this.selected.blob=image.image
                 this.selected.person=`${this.useStore().apiroot}/api/person/${this.person.id}/`
