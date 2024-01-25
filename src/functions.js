@@ -173,6 +173,7 @@ export function getBase64(file) {
             return reject(error);
         };
         // Calls reader function
+        console.log(typeof file)
         reader.readAsDataURL(file);
     })
 }

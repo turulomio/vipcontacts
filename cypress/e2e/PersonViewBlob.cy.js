@@ -4,8 +4,8 @@ import {
   delete_person_from_Home
 } from "./commons"
 
-describe('e2e Home', () => {
-  it('Home List', () => {    
+describe('e2e PersonViewBlob', () => {
+  it('Person View Blob', () => {    
 
     login_test_User(cy)
 
@@ -20,9 +20,12 @@ describe('e2e Home', () => {
       console.log("Person clicked", person_id)
       cy.getDataTest(`TablePersons_Item${person_id}`).click()
       cy.getDataTest(`PersonView_TabMedia`).click()
-      
-      cy.getDataTest(`PersonView_ButtonClose`).click()
-      delete_person_from_Home(cy,person_id)
+
+
+    // cy.getDataTest(`TableBlob_Add`).click()
+
+    
+    //cy.getDataTest('TableBlob_CRUD_File').selectFile('cypress/fixtures/turulomio.png') No pude
   
     //   cy.getDataTest(`TableBlob_Add`).click()
     //   cy.getDataTest(`TableBlob_Name`).type("Rockers")
@@ -39,12 +42,10 @@ describe('e2e Home', () => {
     //     cy.getDataTest(`TableBlob_Button`).click()
     //     //Delete
     //     cy.getDataTest(`TableBlob_ButtonDelete${blob_id}`).click()
-    //     //Return to home
-    //     cy.getDataTest(`PersonView_ButtonClose`).click()
-    //     delete_person_from_Home(cy,person_id)
+        //Return to home
+        cy.getDataTest(`PersonView_ButtonClose`).click()
+        delete_person_from_Home(cy,person_id)
 
-
-    //   })
     })
   })
 })
