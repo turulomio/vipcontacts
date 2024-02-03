@@ -79,14 +79,13 @@
         
         <v-app-bar color="primary" dark  fixed fill-height app >
             <v-app-bar-nav-icon data-test="LateralIcon" @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-btn color="primary" :to="{ name: 'home'}"><v-icon dark>mdi-home</v-icon></v-btn>
+            <v-btn :to="{ name: 'home'}" icon="mdi-home"></v-btn>
             <v-spacer />
             <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
             <v-spacer />
             <BtnSwitchLanguages data-test="AppBar_SwitchLanguages" />
             <BtnLogIn data-test="AppBar_Login" v-show="!useStore().logged" />
             <BtnLogOut data-test="AppBar_Logout" v-show="useStore().logged"/>
-
         </v-app-bar>
         <v-main>   
             <router-view></router-view>
