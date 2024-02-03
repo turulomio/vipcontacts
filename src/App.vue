@@ -13,20 +13,6 @@
 <!--                     HOME -->
                     <v-list-item data-test="LateralHome" link router :to="{ name: 'home'}" prepend-icon="mdi-home" :title="$t('Home')"></v-list-item>
 
-<!--                     CONTACTS -->
-                    <v-list-group data-test="LateralContacts" value="Contacts" prepend-icon="mdi-account-circle" v-if="useStore().logged">
-                        <template v-slot:activator="{props}">
-                            <v-list-item v-bind="props" prepend-icon="mdi-account-circle" :title="$t('Contacts')" />
-                        </template>
-
-                        <v-list-item data-test="LateralLastEdited" link  router :to="{ name: 'person_last_edited'}">
-                            <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item data-test="LateralContactsMerge" link  router :to="{ name: 'persons_merge'}">
-                            <v-list-item-title>{{ $t("Merge contacts") }}</v-list-item-title>
-                        </v-list-item>
-                    </v-list-group>
-
 <!--                     GROUP -->
                     <v-list-group data-test="LateralGroup" value="Group" v-if="useStore().logged">
                         <template v-slot:activator="{props}">
