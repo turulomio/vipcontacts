@@ -4,27 +4,28 @@
             <MyMenuInline :items="menuinline_items" v-if="useStore().logged"></MyMenuInline>
         </h1>
         <div v-show="this.useStore().logged">
-             <v-alert dense class="ma-3 px-10" outlined type="error" v-if="next_important_dates.length>0" @click="on_click_alert_next_important_dates">{{$t("You have next important dates")}}</v-alert>
+             <v-alert density="compact" class="ma-3 px-10" outlined type="error" v-if="next_important_dates.length>0" @click="on_click_alert_next_important_dates">{{$t("You have next important dates")}}</v-alert>
             <v-row class="pa-5">
                 <v-text-field 
                     data-test="Home_Search"
                     v-model="search" 
-                    type="text" 
-                    :counter="100"  
+                    type="text"
+                    :counter="100"
                     :label="$t('String to search in contacts')" 
                     required 
                     autofocus
                     :placeholder="$t('Enter search')" 
                     v-on:keyup.enter="on_search_change()"
                     :disabled="loading"
+                    clearable
                 ></v-text-field>
-                <v-btn data-test="Home_Button" ref="cmdSearch" @click="on_search_change()" :disabled="loading" color="primary">
+                <v-btn data-test="Home_Button" ref="cmdSearch" class="ml-5" @click="on_search_change()" :disabled="loading" color="primary">
                     <v-icon>mdi-search</v-icon>
                     <span class="mr-2">{{ $t("Search") }}</span>
                 </v-btn>    
             </v-row>
             <br>
-            <TablePersons :data="data" @chipClicked="on_chip_clicked" @cruded="on_PersonCRUD_cruded"></TablePersons>
+            <TablePersons :data="data" :sorting="sortBy" @chipClicked="on_chip_clicked" @cruded="on_PersonCRUD_cruded"></TablePersons>
         </div>
         <!-- DIALOG PERSONCRUD -->
         <v-dialog v-model="dialog_person_crud" width="50%">
@@ -73,10 +74,32 @@
                             },
                         ]
                     },
+                    {
+                        subheader: this.$t("Search options"),
+                        children: [
+                            {
+                                name: this.$t("Last editions"),
+                                icon: "mdi-plus",
+                                code: function(){
+                                    this.search=":LAST 40"
+                                    this.sortBy=[{key:"contact_last_update", order:"desc"}]
+                                    this.on_search_change()
+                                }.bind(this),
+                            },
+                            {
+                                name: this.$t("Merge contacts"),
+                                icon: "mdi-plus",
+                                code: function(){
+                                    this.$router.push({name: "persons_merge"})
+                                }.bind(this),
+                            },
+                        ]
+                    },
                 ],
                 data: [],
                 loading:false,
                 search:this.useStore().lastsearch,
+                sortBy: [{key:"name",order:'asc'}],
 
 
                 //IMPORTANT DAYS
@@ -115,6 +138,7 @@
                 axios.get(`${this.useStore().apiroot}/api/person/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
+                    console.log(response.data)
                     this.data= response.data
                     this.loading=false
                 }, (error) => {

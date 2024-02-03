@@ -15,6 +15,9 @@
             </template>
             <template v-slot:[`item.information`]="{ item }">
                 <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
+            </template>  
+            <template v-slot:[`item.contact_last_update`]="{ item }">
+                {{ localtime(item.contact_last_update) }}
             </template>            
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon :data-test="`TablePersons_ButtonEdit${item.id}`" small class="mr-2" @click.stop="editPerson(item)">mdi-pencil</v-icon>
@@ -38,6 +41,7 @@
 <script>
     import PersonCRUD from '@/components/PersonCRUD.vue'
     import PersonView from '@/components/PersonView.vue'
+    import { localtime } from 'vuetify_rules'
     export default {
         name: 'home',
         components: {
@@ -70,13 +74,15 @@
                     { title: this.$t('Name'), align: 'start', sortable: true, value: 'name', width:"15%"},
                     { title: this.$t('Surname'), value: 'surname', width:"15%" },
                     { title: this.$t('Second surname'), value: 'surname2', width:"15%"},
-                    { title: this.$t('Birth date'), value: 'birth' ,width:"10%"},
-                    { title: this.$t('Information'), value: 'information', sortable: false,  width: "40%"  },
+                    { title: this.$t('Birth date'), value: 'birth' ,width:"8%"},
+                    { title: this.$t('Information'), value: 'information', sortable: false,  width: "27%" },
+                    { title: this.$t('Last update'), value: 'contact_last_update', sortable: false,  width: "10%"  },
                     { title: this.$t('Actions'), value: 'actions', sortable: false, width:"5%" },
                     ],
             }
         },
         methods: {
+            localtime,
             viewItem (event,object) {
                 this.person_url=object.item.url
                 this.key+=1

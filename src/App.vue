@@ -13,20 +13,6 @@
 <!--                     HOME -->
                     <v-list-item data-test="LateralHome" link router :to="{ name: 'home'}" prepend-icon="mdi-home" :title="$t('Home')"></v-list-item>
 
-<!--                     CONTACTS -->
-                    <v-list-group data-test="LateralContacts" value="Contacts" prepend-icon="mdi-account-circle" v-if="useStore().logged">
-                        <template v-slot:activator="{props}">
-                            <v-list-item v-bind="props" prepend-icon="mdi-account-circle" :title="$t('Contacts')" />
-                        </template>
-
-                        <v-list-item data-test="LateralLastEdited" link  router :to="{ name: 'person_last_edited'}">
-                            <v-list-item-title>{{ $t("Last edited") }}</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item data-test="LateralContactsMerge" link  router :to="{ name: 'persons_merge'}">
-                            <v-list-item-title>{{ $t("Merge contacts") }}</v-list-item-title>
-                        </v-list-item>
-                    </v-list-group>
-
 <!--                     GROUP -->
                     <v-list-group data-test="LateralGroup" value="Group" v-if="useStore().logged">
                         <template v-slot:activator="{props}">
@@ -79,14 +65,13 @@
         
         <v-app-bar color="primary" dark  fixed fill-height app >
             <v-app-bar-nav-icon data-test="LateralIcon" @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <v-btn color="primary" :to="{ name: 'home'}"><v-icon dark>mdi-home</v-icon></v-btn>
+            <v-btn :to="{ name: 'home'}" icon="mdi-home"></v-btn>
             <v-spacer />
             <h1 class="font-weight-black text-no-wrap text-truncate" >{{ $t("Vip Contacts. Another way to manage your contacts") }}</h1>
             <v-spacer />
             <BtnSwitchLanguages data-test="AppBar_SwitchLanguages" />
             <BtnLogIn data-test="AppBar_Login" v-show="!useStore().logged" />
             <BtnLogOut data-test="AppBar_Logout" v-show="useStore().logged"/>
-
         </v-app-bar>
         <v-main>   
             <router-view></router-view>
