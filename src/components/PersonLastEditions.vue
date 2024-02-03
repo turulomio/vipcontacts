@@ -3,7 +3,7 @@
         <h1>{{ $t('Last contacts edited') }}</h1>
         <br>
         <div v-show="useStore().logged" class="padding">
-            <TablePersons :data="data" :sorting="[{key:'name',order:'asc'}]"></TablePersons>
+            <TablePersons :data="data" :sorting="[{key:'contact_last_update',order:'desc'}]"></TablePersons>
         </div>
     </div>
 </template>
