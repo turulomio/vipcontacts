@@ -101,7 +101,6 @@
                 search: useStore().lastsearch ?? ":LAST 40",
                 sortBy: [{key:"dt_update", order:"desc"}],
 
-
                 //IMPORTANT DAYS
                 next_important_dates:[],
                 dialog_next_important_dates:false,
@@ -138,6 +137,7 @@
                 axios.get(`${this.useStore().apiroot}/api/person/?search=${parsedsearch}`, this.myheaders())
                 .then((response) => {
                     this.parseResponse(response)
+                    console.log(response.data)
                     this.data= response.data
                     this.loading=false
                 }, (error) => {

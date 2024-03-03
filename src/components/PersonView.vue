@@ -6,7 +6,6 @@
         </h1>
 
         <DisplayValues :items="displayvalues()" :key="key+1"></DisplayValues>
-
         <div class="last_update mr-8" v-html="$t('Last modification: {0}').format(localtime(person.dt_update))"></div>
         <div class="tabs login">
             <v-card>
@@ -233,6 +232,7 @@
                 axios.get(this.person_url, this.myheaders())
                 .then((response) => {
                     this.person= response.data
+                    console.log(this.person.contact_last_update)
                     this.key=this.key+1
                     return response.data//To make syncronous
                     
