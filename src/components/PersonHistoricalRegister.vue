@@ -118,7 +118,6 @@
                 axios.get(this.person.url+"historical_register/", this.myheaders())
                 .then((response) => {
                     this.historical=response.data
-                    console.log(this.historical)
                     this.key=this.key+1
                     
                 }, (error) => {
