@@ -77,11 +77,19 @@
              <QrcodeVue :value="qr" :size="800" ></QrcodeVue>
         </v-dialog>
 
+        <!-- PERSON HISTORICAL REGISTER -->
+        <v-dialog v-model="dialog_historical_register" max-width="95%">
+            <v-card>
+             <PersonHistoricalRegister :person="person" />
+             </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import PersonHistoricalRegister from './PersonHistoricalRegister'
     import TableAlias from './TableAlias'
     import TableAddress from './TableAddress'
     import TableBlob from './TableBlob'
@@ -112,6 +120,7 @@
             QrcodeVue,
             MyMenuInline,
             DisplayValues,
+            PersonHistoricalRegister,
         },
         props: {
             person_url: { //url
@@ -159,6 +168,13 @@
                                     alert(searchString)
                                 }.bind(this),
                             },
+                            {
+                                name: this.$t("Show historical register"),
+                                icon: "mdi-plus",
+                                code: function(){
+                                    this.dialog_historical_register=true
+                                }.bind(this),
+                            },
 
                         ]
                     },
@@ -169,6 +185,9 @@
                 qrsize: 800,
                 dialog_qr: false,
                 key:0,
+
+                // Dialog historical register
+                dialog_historical_register:false
 
             }
         },

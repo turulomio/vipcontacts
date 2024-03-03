@@ -98,7 +98,7 @@
                 ],
                 data: [],
                 loading:false,
-                search:this.useStore().lastsearch,
+                search:this.useStore().lastsearch ?? ":LAST 40",
                 sortBy: [{key:"name",order:'asc'}],
 
 
