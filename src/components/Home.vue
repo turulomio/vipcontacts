@@ -98,8 +98,8 @@
                 ],
                 data: [],
                 loading:false,
-                search:this.useStore().lastsearch ?? ":LAST 40",
-                sortBy: [{key:"name",order:'asc'}],
+                search: useStore().lastsearch ?? ":LAST 40",
+                sortBy: [{key:"dt_update", order:"desc"}],
 
 
                 //IMPORTANT DAYS

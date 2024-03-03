@@ -1,6 +1,6 @@
 <template>
     <div v-show="useStore().logged">
-        <h1>{{ $t("Historical register of") + fullNameWithAge }}
+        <h1>{{ $t("Historical register of ") + fullNameWithAge }}
                 <v-btn data-test="PersonHistoricalRegister_ButtonClose" small style="color:darkgrey" icon="mdi-close" class="elevation-0" @click="on_close"/>
         </h1>
         <div class="tabs login" v-if="historical">
