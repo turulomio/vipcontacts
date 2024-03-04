@@ -109,7 +109,7 @@
                 }
             },
             chips(item){
-                return eval(item.search[0].chips)
+                return eval(item.search.chips)
             },
             chipClicked(chip){
                 this.$emit('chipClicked', chip)

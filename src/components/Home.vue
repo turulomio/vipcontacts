@@ -82,7 +82,7 @@
                                 icon: "mdi-plus",
                                 code: function(){
                                     this.search=":LAST 40"
-                                    this.sortBy=[{key:"contact_last_update", order:"desc"}]
+                                    this.sortBy=[{key:"dt_update", order:"desc"}]
                                     this.on_search_change()
                                 }.bind(this),
                             },
