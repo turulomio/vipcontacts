@@ -5,10 +5,6 @@
                 <span>{{ localtime(item.dt_update) }}</span>
             </template>
             <template v-slot:[`item.retypes`]="{ item }">{{ getObjectPropertyByValue("relationshiptype",item.retypes,"display_name") }}</template>
-
-              <template v-slot:[`item.destiny`]="{ item }">
-                <span>{{ showRelationShipName(item) }}</span>
-            </template>
             <template v-slot:[`item.actions`]="{ item }">
                 <v-icon :data-test="`TableRelationship_ButtonEdit${item.id}`" small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon :data-test="`TableRelationship_ButtonDelete${item.id}`" small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
@@ -64,7 +60,7 @@
                     { title: this.$t('Last update'), value: 'dt_update',sortable: true },
                     { title: this.$t('Obsolete'), value: 'dt_obsolete',sortable: true },
                     { title: this.$t('Type'),  sortable: true, value: 'retypes'},
-                    { title: this.$t('Destiny'),  sortable: true, value: 'destiny'},
+                    { title: this.$t('Destiny'),  sortable: true, value: 'destiny_fullname'},
                     { title: this.$t('Actions'), value: 'actions', sortable: false },
                 ],   
                 tableData: [],
@@ -194,16 +190,6 @@
                 }
             
             },
-            updateRelationshipNames(){
-                axios.get(`${this.useStore().apiroot}/api/find/relationship/${this.person.id}/`, this.myheaders())
-                .then((response) => {
-                    this.relationship_names= response.data;         
-                    console.log(this.relationship_names)
-                    this.key+=1
-                }, (error) => {
-                    this.parseResponseError(error)
-                });
-            },
             refreshTableData(){
                 this.tableData=[]
                 this.person.relationship?.forEach((o) => {
@@ -217,8 +203,7 @@
         },
         
         created() {
-            this.refreshTableData()
-            this.updateRelationshipNames()            
+            this.refreshTableData()  
         }
     }
 </script>

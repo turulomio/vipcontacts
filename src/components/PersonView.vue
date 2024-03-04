@@ -162,7 +162,7 @@
                                 code: function(){
                                     let searchString=this.$t("Problems with search string")
                                     if (this.person.search.length==1){
-                                        searchString=this.person.search[0].string
+                                        searchString=this.person.search.string
                                     }
                                     alert(searchString)
                                 }.bind(this),
@@ -232,7 +232,6 @@
                 axios.get(this.person_url, this.myheaders())
                 .then((response) => {
                     this.person= response.data
-                    console.log(this.person.contact_last_update)
                     this.key=this.key+1
                     return response.data//To make syncronous
                     
