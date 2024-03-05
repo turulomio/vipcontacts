@@ -160,11 +160,7 @@
                                 name: this.$t("Show search string"),
                                 icon: "mdi-plus",
                                 code: function(){
-                                    let searchString=this.$t("Problems with search string")
-                                    if (this.person.search.length==1){
-                                        searchString=this.person.search.string
-                                    }
-                                    alert(searchString)
+                                    alert(this.person.search.string)
                                 }.bind(this),
                             },
                             {
