@@ -3,7 +3,7 @@
         v-model="new_value"
         :items="entries"
         :loading="isLoading"
-        v-model:search="search"
+        :search="search"
         :no-data-text="$t('You must select a item')"
         hide-selected
         outlined
