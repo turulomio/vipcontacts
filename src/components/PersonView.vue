@@ -242,7 +242,7 @@
                     } else {
                         return this.person[s].filter(p => p.dt_obsolete==null).reduce((accum) => accum + 1, 0)
                     }
-                } catch (error) {
+                } catch  {
                     return 0
                 }
             },
