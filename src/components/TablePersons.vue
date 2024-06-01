@@ -14,7 +14,7 @@
                 </div>
             </template>
             <template v-slot:[`item.information`]="{ item }">
-                <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click="chipClicked(chip)">{{ chip }}</v-chip>
+                <v-chip v-for="chip in chips(item)" :key="chip" small class="mr-2" @click.stop="chipClicked(chip)">{{ chip }}</v-chip>
             </template>  
             <template v-slot:[`item.dt_update`]="{ item }">
                 {{ localtime(item.dt_update) }}
